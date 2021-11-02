@@ -1,0 +1,26 @@
+[tool.isort]
+profile = "black"
+
+[tool.poetry]
+name = "hr-db-manager"
+version = "0.0.1"
+description = "HR Database Manager"
+authors = ["Dimitri Merejkowsky <dimitri@dmerej.info>"]
+readme = "README.md"
+license = "BSD-3-Clause"
+repository = ""
+
+
+[tool.poetry.dependencies]
+python = "^3.6.2"
+
+django = "^3.2.9"
+"django-hamlpy" = "^1.4"
+
+[tool.poetry.dev-dependencies]
+black = "21.10b0"
+isort = "^5.7.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

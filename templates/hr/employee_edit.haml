@@ -1,0 +1,56 @@
+- extends "hr/base.haml"
+
+- block title
+    #{title}
+
+- block contents
+  %h2 #{title}
+
+  - if form.errors
+    %p Errors:
+      #{form.errors}
+
+
+  %form(method="post")
+    - csrf_token
+
+    %fieldset.card
+      %span.lead
+        Basic Info
+      .row
+        .col
+          %label.form-label(for="name") Name
+        .col.col-10
+          %input.form-control(name="name" value="#{employee.name}")
+      .row
+        .col
+          %label.form-label(for="email")Email
+        .col.col-10
+          %input.form-control(name="email" type="email" value="#{employee.email}")
+
+      %fieldset.card
+          %span.lead
+            Address
+        .row
+          .col.col-10
+            %input.form-control(name="address_line1" value="#{employee.address_line1}")
+        .row
+          .col.col-10
+             %input.form-control(name="address_line2" value="#{employee.address_line2}")
+        .row
+          .col
+            %label.form-label(for="city")City
+          .col
+            %input.form-control(name="city" value="#{employee.city}")
+          .col
+            %label.form-label(for="zip_code")Zip code
+          .col
+            %input.form-control(name="zip_code" value="#{employee.zip_code}")
+
+    %button.btn.btn-primary(type="submit")Submit
+
+    - if action == "update"
+        %a.btn.btn-danger(
+            href="{% url 'hr:employee_delete' employee.pk %}"
+            role="button") Delete
+

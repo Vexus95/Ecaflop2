@@ -1,0 +1,24 @@
+- extends "hr/base.haml"
+
+- block title
+    Confirm Employee deletion
+
+- block contents
+  %h2 Employees (#{employee_list | length})
+
+  %table.table
+    %tr
+     %th ID
+     %th Name
+     %th email
+    - for employee in employee_list
+     %tr
+      %td
+        %a(href="{% url 'hr:employee_update' employee.pk %}")
+          #{employee.pk}
+      %td
+        #{employee.name}
+      %td
+        #{employee.email}
+
+  %a.btn.btn-primary(href="{% url 'hr:employee_create' %}" role="button") Add ...

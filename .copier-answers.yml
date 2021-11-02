@@ -1,0 +1,9 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v1.1.2-6-g9dbc1bc
+_src_path: git@git.sr.ht:~dmerej/copier-python
+author_email: dimitri@dmerej.info
+author_name: Dimitri Merejkowsky
+package_import_name: hr_db_manager
+project_description: HR Database Manager
+project_name: hr-db-manager
+project_version: 0.0.1

@@ -1,0 +1,17 @@
+!!! 5
+- load static
+
+%head
+  %meta(name="generator" value="django")
+  %link(rel="stylesheet" href="{% static 'bootstrap.min.css' %}")
+  %link(rel="stylesheet" href="{% static 'style.css' %}")
+
+  %title
+    HR Manager &bullet;
+    - block title
+
+%body
+
+  %h1(id="title") HR Manager
+
+  - block contents
