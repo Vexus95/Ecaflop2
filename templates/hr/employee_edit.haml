@@ -36,7 +36,7 @@
             %input.form-control(name="address_line1" value="#{employee.address_line1}")
         .row
           .col.col-10
-             %input.form-control(name="address_line2" value="#{employee.address_line2}")
+             %input.form-control(name="address_line2" value='#{employee.address_line2 | default:""}')
         .row
           .col
             %label.form-label(for="city")City
