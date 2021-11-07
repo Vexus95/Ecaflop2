@@ -18,9 +18,12 @@ django = "^3.2.9"
 "django-hamlpy" = "^1.4"
 
 [tool.poetry.dev-dependencies]
+invoke = "^1.5.0"
+
 black = "21.10b0"
 isort = "^5.7.0"
 pytest-django = "^4.4.0"
+flake8 = "^4.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

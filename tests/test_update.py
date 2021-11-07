@@ -1,15 +1,5 @@
-from django.forms.models import model_to_dict
 import pytest
-
-from hr.models import Employee
-
-
-@pytest.mark.django_db
-def test_empty(client, homer):
-
-    homer.save()
-
-    response = client.post(f"/employee/{homer.pk}/update", data={})
+from django.forms.models import model_to_dict
 
 
 @pytest.mark.django_db

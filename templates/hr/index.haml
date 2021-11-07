@@ -1,0 +1,13 @@
+- extends "hr/base.haml"
+
+- block title
+    HR Database Manager
+
+- block contents
+
+  %ul
+    %li
+      %a(href="{% url 'hr:employee_list' %}") List employees
+    %li
+      %a(href="{% url 'hr:clean_db' %}") Reset database
+
