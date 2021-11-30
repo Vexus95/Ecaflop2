@@ -11,10 +11,13 @@ while read local_ref local_sha remote_ref remote_sha
 do
   if [[ "${local_sha}" = $z40 ]]; then
     echo "Deleting stuff, nothing to do"
-else
-    poetry install
-    poetry run invoke lint
-    poetry run pytest
+  else
+    (
+      cd python
+      poetry install
+      poetry run invoke lint
+      poetry run pytest
+    )
   fi
 done
 
