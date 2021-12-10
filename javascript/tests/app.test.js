@@ -32,7 +32,7 @@ describe('server', () => {
     assert.deepEqual(body, { name: 'John', email: 'john@corp.tld', id })
   })
 
-  specify.only('POST /employee/new', async () => {
+  specify('POST /employee/new', async () => {
     const response = await request.post('/employee/new').type('form').send({ name: 'Alice', email: 'alice@corp.tld' }).expect(201)
     assert.isOk(response.body.id)
   })
