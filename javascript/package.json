@@ -1,0 +1,12 @@
+{
+  "name": "hr-manager",
+  "version": "1.0.0",
+  "description": "A web application dying to be tested",
+  "main": "index.js",
+  "author": "Dimitri Merejkowsky",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "koa": "^2.13.4"
+  }
+}
