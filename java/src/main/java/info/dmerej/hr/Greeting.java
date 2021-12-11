@@ -1,4 +1,4 @@
-package com.example.springboot;
+package info.dmerej.hr;
 
 public class Greeting {
     private final long id;

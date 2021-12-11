@@ -1,4 +1,4 @@
-package com.example.springboot;
+package info.dmerej.hr;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
