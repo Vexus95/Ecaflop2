@@ -22,7 +22,6 @@ class Employee(models.Model):
         for key in self.__json_fields:
             value = data.get(key)
             if value:
-                print("set", key, value)
                 setattr(self, key, value)
 
     def to_json(self):
