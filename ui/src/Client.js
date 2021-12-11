@@ -1,6 +1,6 @@
 export default class Client {
   constructor (path) {
-    this.url = 'http://127.0.0.1:5678/api' + path
+    this.url = 'http://127.0.0.1:5678/api/v1' + path
   }
 
   onRequestStart (element) {

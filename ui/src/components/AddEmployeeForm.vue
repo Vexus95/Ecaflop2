@@ -88,7 +88,7 @@ export default {
   methods: {
     onSubmit: async function (event) {
       event.preventDefault()
-      const client = new Client('/employee/new')
+      const client = new Client('/employee')
       await client.update(this, 'employee', fields)
       this.$router.push('/employees')
     }
