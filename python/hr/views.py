@@ -1,9 +1,14 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, ListView
 
 from .models import Employee
+
+
+def hello(request):
+    return JsonResponse({"message": "hello from django"})
 
 
 def index(request):
