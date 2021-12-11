@@ -1,7 +1,6 @@
 <template>
-<div id="employee-fom">
-  <span v-if="error">{{ error }}</span>
-  <form v-if="success" @submit="onSubmit">
+<div id="add-employee-fom">
+  <form @submit="onSubmit">
   <fieldset>
     <legend>
      Basic Info
@@ -56,8 +55,8 @@
     <br>
 
     <button type='submit' class='btn btn-primary'>Submit</button>
-    <span>{{ status }}</span>
   </fieldset>
+  <span v-if="error">{{ error }}</span>
 </form>
 </div>
 </template>
@@ -74,14 +73,12 @@ const fields = [
 ]
 
 export default {
-  name: 'EmployeeForm',
-  props: ['id'],
+  name: 'AddEmployeeForm',
   data () {
     const res = {
       loading: true,
       error: '',
-      success: false,
-      status: ''
+      success: false
     }
     for (const field of fields) {
       res[field] = ''
@@ -89,24 +86,12 @@ export default {
     return res
   },
   methods: {
-    url: function () {
-      return '/employee/' + this.id
-    },
-    refresh: async function () {
-      const client = new Client(this.url())
-      await client.fetch(this, 'employee', fields)
-    },
     onSubmit: async function (event) {
-      this.status = 'Saving ...'
       event.preventDefault()
-      const client = new Client(this.url())
+      const client = new Client('/employee/new')
       await client.update(this, 'employee', fields)
-      await this.refresh()
-      this.status = 'Saved'
+      this.$router.push('/employees')
     }
-  },
-  async mounted () {
-    await this.refresh()
   }
 }
 </script>

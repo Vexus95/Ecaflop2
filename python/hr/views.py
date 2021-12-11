@@ -40,6 +40,15 @@ def employee(request, pk):
         employee.save()
         return JsonResponse({"status": "updated"})
 
+@csrf_exempt
+def new_employee(request):
+    body = request.body.decode()
+    payload = json.loads(body)
+    employee = Employee()
+    employee.update(payload)
+    employee.save()
+    return JsonResponse({"status": "created"})
+
 
 def index(request):
     return TemplateResponse(request, "hr/index.haml")

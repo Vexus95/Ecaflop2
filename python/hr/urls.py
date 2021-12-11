@@ -9,6 +9,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("api/employees", views.employees, name="employees"),
     path("api/employee/<int:pk>", views.employee, name="employee"),
+    path("api/employee/new", views.new_employee, name="new_employee"),
     path(
         "employees",
         views.EmployeeListView.as_view(),

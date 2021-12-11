@@ -19,7 +19,7 @@
                  to="/employee/{{ employee.id }}"
                 >
                 {{ employee.id }}
-                </rooter-link>
+                </router-link>
             </td>
             <td>{{ employee.name }}</td>
             <td>{{ employee.email }}</td>

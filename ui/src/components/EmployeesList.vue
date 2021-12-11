@@ -27,6 +27,7 @@
         </tbody>
       </table>
     </div>
+    <router-link to="/employee/add">Add new employee</router-link>
   </div>
 </template>
 
