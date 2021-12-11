@@ -40,6 +40,24 @@ class Repository {
     const response = await this.db.get('SELECT name, email, id FROM employee WHERE id = ?', id)
     return response
   }
+
+  async getEmployees (id) {
+    const response = await this.db.all('SELECT name, email, id FROM employee')
+    return response
+  }
+
+  async updateEmployee (id, fields) {
+    const { name, email } = fields
+    const statement = await this.db.prepare(`
+       UPDATE employee
+       SET
+         name=?,
+         email=?
+       WHERE
+         id=?
+     `)
+    await statement.run([name, email, id])
+  }
 }
 
 module.exports = Repository
