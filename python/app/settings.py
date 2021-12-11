@@ -8,8 +8,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-from django.middleware.csrf import CsrfViewMiddleware
-
 INSTALLED_APPS = [
     "corsheaders",
     "django.contrib.auth",

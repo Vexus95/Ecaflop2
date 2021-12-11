@@ -1,15 +1,11 @@
 import json
 
 from django.http import JsonResponse
-from django.middleware.csrf import get_token as get_csrf_token
-from django.shortcuts import get_object_or_404, redirect
-from django.template.response import TemplateResponse
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
 
 # TODO: figure out how to set the token when the view is *not*
 # served by django
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import DeleteView, ListView
 
 from .models import Employee
 
