@@ -1,38 +1,53 @@
 <template>
-  <div class="hello">
+  <div class="employees-list">
     <span v-if="loading">Loading ...</span>
-    <div v-if="info">
-        <p> {{ info.message }} </p>
-    </div>
     <span v-if="error">{{ error }}</span>
+    <div v-if="success">
+      <h3>Employees ({{ count }})</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="employee in employees" :key="employee.id">
+            <td>
+               <router-link
+                 :to="{path : 'employee/' + employee.id }"
+                >
+                {{ employee.id }}
+                </router-link>
+            </td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.email }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
+import Client from '../Client'
+
 export default {
-  name: 'HelloWorld',
+  name: 'EmployideesList',
   data () {
     return {
       loading: true,
-      info: null,
-      error: ''
+      error: '',
+      success: false,
+      info: {},
+      employees: [],
+      count: 0
     }
   },
   async mounted () {
-    this.loading = true
-    try {
-      const response = await fetch('http://127.0.0.1:5678/api/hello')
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`)
-      }
-      const json = await response.json()
-      this.info = json
-      this.loading = false
-      this.error = ''
-    } catch (error) {
-      this.loading = false
-      this.error = error
-    }
+    const client = new Client('/employees')
+    await client.fetch(this, 'info', ['employees', 'count'])
   }
 }
 </script>

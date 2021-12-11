@@ -1,14 +1,44 @@
+import json
+
+from django.http import JsonResponse
+from django.middleware.csrf import get_token as get_csrf_token
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
-from django.http import JsonResponse
 from django.urls import reverse_lazy
+
+# TODO: figure out how to set the token when the view is *not*
+# served by django
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DeleteView, ListView
 
 from .models import Employee
 
 
-def hello(request):
-    return JsonResponse({"message": "hello from django"})
+@csrf_exempt
+def employees(request):
+    rows = Employee.objects.all()
+    as_json = [x.to_json() for x in rows]
+    return JsonResponse(
+        {
+            "info": {
+                "employees": as_json,
+                "count": len(rows),
+            },
+        }
+    )
+
+
+@csrf_exempt
+def employee(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+    if request.method == "GET":
+        return JsonResponse({"employee": employee.to_json()})
+    elif request.method == "PUT":
+        body = request.body.decode()
+        payload = json.loads(body)
+        employee.update(payload)
+        employee.save()
+        return JsonResponse({"status": "updated"})
 
 
 def index(request):

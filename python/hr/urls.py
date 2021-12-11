@@ -7,7 +7,8 @@ app_name = "hr"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("api/hello", views.hello, name="index"),
+    path("api/employees", views.employees, name="employees"),
+    path("api/employee/<int:pk>", views.employee, name="employee"),
     path(
         "employees",
         views.EmployeeListView.as_view(),

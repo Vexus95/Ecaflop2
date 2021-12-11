@@ -8,6 +8,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+from django.middleware.csrf import CsrfViewMiddleware
 
 INSTALLED_APPS = [
     "corsheaders",
@@ -91,3 +92,4 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8080"]
+CORS_ALLOW_CREDENTIALS = True
