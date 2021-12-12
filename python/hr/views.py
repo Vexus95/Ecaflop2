@@ -25,7 +25,7 @@ def employees(request):
 def employee(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     if request.method == "GET":
-        return JsonResponse(employee.to_json())
+        return JsonResponse({"employee": employee.to_json()})
     elif request.method == "PUT":
         body = request.body.decode()
         payload = json.loads(body)
