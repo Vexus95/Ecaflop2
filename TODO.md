@@ -1,10 +1,6 @@
 # TODO
 
-* [ ] Finish transition from old school web app to brand new vue stuff
-* [ ] Add a button to clean the whole db
-* [ ] Check it's testable with selenium
-* [ ] Check if it's possible to write unit tests
-* [ ] ui: factorize employee form
+* [ ] Fix double json encoding when testing javascript/src/app.js with tests/test_api.py
 
 ## Preparation
 
