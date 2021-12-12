@@ -1,17 +1,17 @@
 <template>
   <div>
     <h2>Add Employee</h2>
-    <AddEmployeeForm/>
+    <AddEmployee/>
   </div>
 </template>
 
 <script>
-import AddEmployeeForm from '@/components/AddEmployeeForm.vue'
+import AddEmployee from '@/components/AddEmployee.vue'
 
 export default {
   name: 'AddEmployeeView',
   components: {
-    AddEmployeeForm
+    AddEmployee
   }
 }
 </script>

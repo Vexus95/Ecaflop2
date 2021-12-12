@@ -20,7 +20,7 @@ import EmployeeForm from './EmployeeForm.vue'
 import Employee from '../Employee'
 
 export default {
-  name: 'AddEmployeeForm',
+  name: 'AddEmployee',
   components: {
     EmployeeForm
   },
