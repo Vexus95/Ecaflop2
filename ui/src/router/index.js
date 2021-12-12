@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import AddEmployee from '../views/AddEmployee.vue'
-import EditEmployee from '../views/EditEmployee.vue'
-import ListEmployees from '../views/ListEmployees.vue'
-import ResetDatabase from '../views/ResetDatabase.vue'
+import AddEmployeeView from '../views/AddEmployeeView.vue'
+import EditEmployeeView from '../views/EditEmployeeView.vue'
+import ListEmployeesView from '../views/ListEmployeesView.vue'
+import ResetDatabaseView from '../views/ResetDatabaseView.vue'
 
 Vue.use(VueRouter)
 
@@ -12,22 +12,22 @@ const routes = [
   {
     path: '/employees',
     name: 'ListEmployees',
-    component: ListEmployees
+    component: ListEmployeesView
   },
   {
     path: '/employee/add',
     name: 'AddEmployee',
-    component: AddEmployee
+    component: AddEmployeeView
   },
   {
     path: '/employee/:id',
     name: 'EditEmployee',
-    component: EditEmployee
+    component: EditEmployeeView
   },
   {
     path: '/reset-db',
     name: 'ResetDatabase',
-    component: ResetDatabase
+    component: ResetDatabaseView
   }
 ]
 

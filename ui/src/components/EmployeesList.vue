@@ -3,7 +3,7 @@
     <span v-if="loading">Loading ...</span>
     <span v-if="error">{{ error }}</span>
     <div v-if="success">
-      <h3>Employees ({{ count }})</h3>
+      <h3>Employees ({{ employees.length }})</h3>
       <table class="table">
         <thead>
           <tr>
@@ -35,20 +35,22 @@
 import Client from '../Client'
 
 export default {
-  name: 'EmployideesList',
+  name: 'EmployeesList',
   data () {
     return {
       loading: true,
       error: '',
       success: false,
-      info: {},
-      employees: [],
-      count: 0
+      employees: []
     }
   },
   async mounted () {
-    const client = new Client('/employees')
-    await client.fetch(this, 'info', ['employees', 'count'])
+    const client = new Client(this)
+    const json = await client.doRequest('/employees')
+    if (!json) {
+      return
+    }
+    this.employees = json.employees
   }
 }
 </script>

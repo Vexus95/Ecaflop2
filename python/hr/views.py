@@ -11,30 +11,27 @@ from .models import Employee
 
 
 @csrf_exempt
-def list_employees(request):
-    rows = Employee.objects.all()
-    as_json = [x.to_json() for x in rows]
-    return JsonResponse(
-        {
-            "info": {
-                "employees": as_json,
-                "count": len(rows),
-            },
-        }
-    )
+def employees(request):
+    if request.method == "GET":
+        rows = Employee.objects.all()
+        as_json = [x.to_json() for x in rows]
+        return JsonResponse({"employees": as_json})
+    elif request.method == "DELETE":
+        n, _ = Employee.objects.all().delete()
+        return JsonResponse({"deleted": n}, status=202)
 
 
 @csrf_exempt
 def employee(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     if request.method == "GET":
-        return JsonResponse({"employee": employee.to_json()})
+        return JsonResponse(employee.to_json())
     elif request.method == "PUT":
         body = request.body.decode()
         payload = json.loads(body)
         employee.update(payload)
         employee.save()
-        return JsonResponse({"employee": employee.to_json()}, status_code=202)
+        return JsonResponse({"employee": employee.to_json()}, status=202)
 
 
 @csrf_exempt
@@ -44,10 +41,10 @@ def new_employee(request):
     employee = Employee()
     employee.update(payload)
     employee.save()
-    return JsonResponse({"employee": employee.to_json()}, status_code=201)
+    return JsonResponse({"employee": employee.to_json()}, status=201)
 
 
 @csrf_exempt
 def clean_db(request):
     Employee.objects.all().delete()
-    return JsonResponse({"message": "database reset"}, status_code=202)
+    return JsonResponse({"message": "database reset"}, status=202)

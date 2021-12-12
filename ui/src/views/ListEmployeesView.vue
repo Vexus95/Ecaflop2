@@ -9,7 +9,7 @@
 import EmployeesList from '@/components/EmployeesList.vue'
 
 export default {
-  name: 'ListEmployees',
+  name: 'ListEmployeesView',
   components: {
     EmployeesList
   }

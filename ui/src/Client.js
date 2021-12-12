@@ -1,62 +1,38 @@
 export default class Client {
-  constructor (path) {
-    this.url = 'http://127.0.0.1:5678/api/v1' + path
+  constructor (element) {
+    this.baseUrl = 'http://127.0.0.1:5678/api/v1'
+    this.element = element
   }
 
-  onRequestStart (element) {
-    element.loading = true
-    element.error = ''
+  onRequestStart () {
+    this.element.loading = true
+    this.element.error = ''
   }
 
-  onRequestSuccess (element) {
-    element.loading = false
-    element.error = ''
-    element.success = true
+  onRequestSuccess () {
+    this.element.loading = false
+    this.element.error = ''
+    this.element.success = true
   }
 
-  onRequestError (element, error) {
-    element.loading = false
-    element.error = error
+  onRequestError (error) {
+    this.element.loading = false
+    this.element.error = error
   }
 
-  async update (element, name, fields) {
-    this.onRequestStart(element)
+  async doRequest (path, options) {
+    const url = this.baseUrl + path
+    this.onRequestStart()
     try {
-      const data = { }
-      for (const field of fields) {
-        data[field] = element[field]
-      }
-      const response = await fetch(this.url, {
-        method: 'put',
-        body: JSON.stringify(data)
-      })
+      const response = await fetch(url, options)
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`)
       }
+      this.onRequestSuccess()
       const json = await response.json()
-      element.status = json.status
-      this.onRequestSuccess(element)
+      return json
     } catch (error) {
-      this.onRequestError(element, error)
-    }
-  }
-
-  async fetch (element, name, fields) {
-    this.onRequestStart(element)
-    try {
-      const response = await fetch(this.url)
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`)
-      }
-      const json = await response.json()
-      const newValues = json[name]
-      for (const field of fields) {
-        const newValue = newValues[field]
-        element[field] = newValue
-      }
-      this.onRequestSuccess(element)
-    } catch (error) {
-      this.onRequestError(element, error)
+      this.onRequestError(error)
     }
   }
 }

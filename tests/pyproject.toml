@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "hr-manager-tests"
+version = "0.1.0"
+description = "End-to-end tests for HR Manager"
+authors = ["Dimitri Merejkowsky <dimitri@dmerej.info>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+playwright = "^1.17.2"
+pytest-playwright = "^0.2.2"
+Faker = "^10.0.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

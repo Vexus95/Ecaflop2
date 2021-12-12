@@ -9,7 +9,7 @@
 import AddEmployeeForm from '@/components/AddEmployeeForm.vue'
 
 export default {
-  name: 'AddEmployee',
+  name: 'AddEmployeeView',
   components: {
     AddEmployeeForm
   }
