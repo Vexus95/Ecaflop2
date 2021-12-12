@@ -30,11 +30,6 @@ def clean_db(client):
     client.call("delete", "/employees")
 
 
-def test_delete_employees(client):
-    actual = client.call("delete", "/employees")
-    assert actual["deleted"]
-
-
 def test_create_employee(client, clean_db):
     response = client.call("put", "/employee", json={"name": "john"})
     actual = response["employee"]

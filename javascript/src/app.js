@@ -36,6 +36,7 @@ router.put('/api/v1/employee/:id', async (ctx, next) => {
 })
 
 router.put('/api/v1/employee', async (ctx, next) => {
+  console.log(ctx.request.body)
   const { name, email } = JSON.parse(ctx.request.body)
   if (!name) {
     ctx.throw(400, 'name is required')
