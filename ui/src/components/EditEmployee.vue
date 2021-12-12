@@ -60,7 +60,7 @@ export default {
       if (!json) {
         return
       }
-      Employee.updateElementFromJson(this, json)
+      Employee.updateElementFromJson(this, json.employee)
     }
   }
 }
