@@ -10,17 +10,20 @@ const router = new Router()
 
 router.get('/api/v1/employees', async (ctx, next) => {
   const employees = await ctx.repository.getEmployees()
-  ctx.body = {
-    info:
-      { employees, count: employees.length }
-  }
+  ctx.body = { employees }
+  next()
+})
+
+router.delete('/api/v1/employees', async (ctx, next) => {
+  const deleted = await ctx.repository.deleteEmployees()
+  ctx.body = { deleted }
   next()
 })
 
 router.get('/api/v1/employee/:id', async (ctx, next) => {
   const { id } = ctx.params
   const result = await ctx.repository.getEmployeedById(id)
-  ctx.body = { employee: result }
+  ctx.body = result
   next()
 })
 
@@ -28,7 +31,7 @@ router.put('/api/v1/employee/:id', async (ctx, next) => {
   const { id } = ctx.params
   const { name, email } = JSON.parse(ctx.request.body)
   const result = await ctx.repository.updateEmployee(id, { name, email })
-  ctx.body = { employee: result }
+  ctx.body = result
   next()
 })
 

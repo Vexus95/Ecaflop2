@@ -58,6 +58,11 @@ class Repository {
      `)
     await statement.run([name, email, id])
   }
+
+  async deleteEmployees () {
+    const result = await this.db.run('DELETE FROM employee')
+    return result.changes
+  }
 }
 
 module.exports = Repository

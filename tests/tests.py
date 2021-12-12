@@ -87,7 +87,6 @@ def employee(page):
     )
 
 
-
 def find_employee_row(page, employee_name):
     page.wait_for_selector("text=ID")
 
@@ -119,6 +118,6 @@ def test_edit_employee_name(clean_db, employee, page):
     page.fill('input[name="name"]', new_name)
     page.click('button[type="submit"]')
 
-    page.goto(BASE_URL + '/employees')
+    page.goto(BASE_URL + "/employees")
 
     find_employee_row(page, new_name)
