@@ -1,5 +1,8 @@
+import dataclasses
+
 import requests
 import pytest
+from faker import Faker
 
 
 class Client:
@@ -19,38 +22,42 @@ def client():
     return Client()
 
 
-def test_delete_employees(client):
+@pytest.fixture()
+def test_delete_employees(client, saved_employee):
     response = client.call("delete", "/employees")
     deleted = response["deleted"]
-    assert deleted >= 0
+    assert deleted >= 1
+
+
+def put_employee(client, employee):
+    response = client.call("put", "/employee", json=dataclasses.asdict(employee))
+    return response["employee"]["id"]
 
 
 @pytest.fixture
-def clean_db(client):
-    client.call("delete", "/employees")
+def saved_employee(client, fake_employee):
+    id = put_employee(client, fake_employee)
+    fake_employee.id = id
+    return fake_employee
 
 
-def test_create_employee(client, clean_db):
-    response = client.call("put", "/employee", json={"name": "john"})
+def test_create_employee(client, fake_employee):
+    put_employee(client, fake_employee)
+
+
+def test_get_employee(client, saved_employee):
+    response = client.call("get", f"/employee/{saved_employee.id}")
     actual = response["employee"]
-    assert actual["name"] == "john"
+    assert actual["name"] == saved_employee.name
+    assert actual["email"] == saved_employee.email
 
 
-def test_get_employee(client, clean_db):
-    response = client.call("put", "/employee", json={"name": "john"})
-    id = response["employee"]["id"]
+def test_update_employee_name(client, saved_employee):
+    body = dataclasses.asdict(saved_employee)
+    faker = Faker()
+    body["name"] = "New Name"
+    client.call("put", f"/employee/{saved_employee.id}", json=body)
 
-    response = client.call("get", f"/employee/{id}")
+    response = client.call("get", f"/employee/{saved_employee.id}")
     actual = response["employee"]
-    assert actual["name"] == "john"
-
-
-def test_update_employe_name(client, clean_db):
-    response = client.call("put", "/employee", json={"name": "john"})
-    id = response["employee"]["id"]
-
-    client.call("put", f"/employee/{id}", json={"name": "jane"})
-
-    response = client.call("get", f"/employee/{id}")
-    actual = response["employee"]
-    assert actual["name"] == "jane"
+    assert actual["name"] == "New Name"

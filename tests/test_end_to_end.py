@@ -2,20 +2,10 @@ import pytest
 from dataclasses import dataclass
 from typing import Optional
 
+from conftest import Employee
 from faker import Faker
 
 BASE_URL = "http://127.0.0.1:8080"
-
-
-@dataclass
-class Employee:
-    id: Optional[int]
-    name: str
-    email: str
-    address_line1: str
-    address_line2: str
-    city: str
-    zip_code: str
 
 
 def on_console_message(message):
@@ -53,38 +43,22 @@ def clean_db(page):
 
 
 @pytest.fixture
-def employee(page):
+def saved_employee(page, fake_employee):
     page.goto(BASE_URL + "/reset-db")
     page.click("text=Proceed")
     page.goto(BASE_URL)
     page.click("text=List employees")
     page.click("text=Add new employee")
 
-    fake = Faker()
-    name = fake.name()
-    email = fake.email()
-    address_line1, address_line2 = fake.address().split("\n")
-    city = fake.city()
-    zip_code = fake.zipcode()
-
-    page.fill('input[name="name"]', name)
-    page.fill('input[name="email"]', email)
-    page.fill('input[name="address_line1"]', address_line1)
-    page.fill('input[name="address_line2"]', address_line2)
-    page.fill('input[name="city"]', city)
-    page.fill('input[name="zip_code"]', zip_code)
+    page.fill('input[name="name"]', fake_employee.name)
+    page.fill('input[name="email"]', fake_employee.email)
+    page.fill('input[name="address_line1"]', fake_employee.address_line1)
+    page.fill('input[name="address_line2"]', fake_employee.address_line2)
+    page.fill('input[name="city"]', fake_employee.city)
+    page.fill('input[name="zip_code"]', fake_employee.zip_code)
 
     page.click('button[type="submit"]')
-
-    return Employee(
-        id=None,
-        name=name,
-        email=email,
-        address_line1=address_line1,
-        address_line2=address_line2,
-        city=city,
-        zip_code=zip_code,
-    )
+    return fake_employee
 
 
 def find_employee_row(page, employee_name):
@@ -100,14 +74,14 @@ def find_employee_row(page, employee_name):
     pytest.fail(f"{employee.name} not found in the list")
 
 
-def test_add_employee(clean_db, employee, page):
-    find_employee_row(page, employee.name)
-    assert page.text_content(f"text={employee.name}")
-    assert page.text_content(f"text={employee.email}")
+def test_add_employee(clean_db, saved_employee, page):
+    find_employee_row(page, saved_employee.name)
+    assert page.text_content(f"text={saved_employee.name}")
+    assert page.text_content(f"text={saved_employee.email}")
 
 
-def test_edit_employee_name(clean_db, employee, page):
-    row = find_employee_row(page, employee.name)
+def test_edit_employee_name(clean_db, saved_employee, page):
+    row = find_employee_row(page, saved_employee.name)
 
     link = row.locator("a")
     link.click()
