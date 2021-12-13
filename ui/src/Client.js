@@ -22,9 +22,12 @@ export default class Client {
 
   async doRequest (path, options) {
     const url = this.baseUrl + path
+    const headers = new Headers()
+    headers.append('Content-Type', 'application/json')
+    const fetchOptions = { headers, ...options }
     this.onRequestStart()
     try {
-      const response = await fetch(url, options)
+      const response = await fetch(url, fetchOptions)
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`)
       }

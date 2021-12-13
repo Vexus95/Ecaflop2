@@ -30,7 +30,7 @@ router.get('/api/v1/employee/:id', async (ctx, next) => {
 
 router.put('/api/v1/employee/:id', async (ctx, next) => {
   const { id } = ctx.params
-  const { name, email } = JSON.parse(ctx.request.body)
+  const { name, email } = ctx.request.body
   const result = await ctx.repository.updateEmployee(id, { name, email })
   ctx.body = result
   next()
@@ -38,7 +38,7 @@ router.put('/api/v1/employee/:id', async (ctx, next) => {
 
 router.put('/api/v1/employee', async (ctx, next) => {
   console.log(ctx.request.body)
-  const { name, email } = JSON.parse(ctx.request.body)
+  const { name, email } = ctx.request.body
   if (!name) {
     ctx.throw(400, 'name is required')
   }
