@@ -15,7 +15,7 @@ public class Application {
 
   @Bean
   public Repository repository() {
-    File dbPath = new File("hr.db");
+    File dbPath = new File("hr.sqlite3");
     Repository repository;
     if (dbPath.exists()) {
       // We can't instantiate the repository before checking the db path
