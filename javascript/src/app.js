@@ -23,21 +23,20 @@ router.delete('/api/v1/employees', async (ctx, next) => {
 
 router.get('/api/v1/employee/:id', async (ctx, next) => {
   const { id } = ctx.params
-  const result = await ctx.repository.getEmployeedById(id)
-  ctx.body = result
+  const employee = await ctx.repository.getEmployeedById(id)
+  ctx.body = { employee }
   next()
 })
 
 router.put('/api/v1/employee/:id', async (ctx, next) => {
   const { id } = ctx.params
   const { name, email } = ctx.request.body
-  const result = await ctx.repository.updateEmployee(id, { name, email })
-  ctx.body = result
+  await ctx.repository.updateEmployee(id, { name, email })
+  ctx.body = { status: 'updated' }
   next()
 })
 
 router.put('/api/v1/employee', async (ctx, next) => {
-  console.log(ctx.request.body)
   const { name, email } = ctx.request.body
   if (!name) {
     ctx.throw(400, 'name is required')
@@ -47,7 +46,7 @@ router.put('/api/v1/employee', async (ctx, next) => {
   }
   const id = await ctx.repository.insertEmployee({ name, email })
   ctx.status = 201
-  ctx.body = { id, name, email }
+  ctx.body = { employee: { id, name, email } }
   next()
 })
 
