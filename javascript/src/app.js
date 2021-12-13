@@ -1,7 +1,8 @@
 const Koa = require('koa')
 const koaBody = require('koa-body')
-const Router = require('@koa/router')
 const cors = require('@koa/cors')
+const logger = require('koa-logger')
+const Router = require('@koa/router')
 
 const Repository = require('./repository')
 
@@ -51,6 +52,7 @@ router.put('/api/v1/employee', async (ctx, next) => {
 })
 
 app
+  .use(logger())
   .use(cors({ origin: ['http://127.0.0.1:8080'] }))
   .use(koaBody({ jsonLimit: '1kb' }))
   .use(router.routes())
