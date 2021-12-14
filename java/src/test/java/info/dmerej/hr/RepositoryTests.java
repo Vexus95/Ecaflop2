@@ -5,13 +5,16 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RepositoryTests {
   private Repository repository;
 
   @Before
   public void setUp() {
+    // Note: this is called before each test, so we get a brand-new
+    // database every time, no need to clean it
     repository = new Repository(":memory:");
     repository.migrate();
   }
@@ -20,18 +23,18 @@ public class RepositoryTests {
   public void canInsertEmployee() {
     Employee bob = new Employee("bob", "bob@domain.tld");
 
-    int id = repository.saveEmployee(bob);
-    assertTrue(id >= 0);
+    SavedEmployee saved = repository.saveEmployee(bob);
+    assertTrue(saved.id() >= 0);
   }
 
   @Test
   public void canRetrieveInsertedEmployee() {
     Employee bob = new Employee("bob", "bob@domain.tld");
 
-    int id = repository.saveEmployee(bob);
+    SavedEmployee saved = repository.saveEmployee(bob);
 
-    Employee saved = repository.getEmployee(id);
-    assertNotNull(saved);
+    SavedEmployee actual = repository.getEmployee(saved.id());
+    assertEquals(bob, actual.employee());
   }
 
   @Test
@@ -42,8 +45,34 @@ public class RepositoryTests {
     repository.saveEmployee(bob);
     repository.saveEmployee(alice);
 
-    List<Employee> saved = repository.getEmployees();
+    List<SavedEmployee> saved = repository.getEmployees();
     assertEquals(2, saved.size());
+  }
+
+  @Test
+  public void canUpdateEmployeeName() {
+    Employee alice = new Employee("alice", "alice@domain.tld");
+    SavedEmployee saved = repository.saveEmployee(alice);
+    int aliceId = saved.id();
+
+    Employee payload = new Employee("new name", "alice@domain.tld");
+    repository.updateEmployee(aliceId, payload);
+
+    SavedEmployee actual = repository.getEmployee(aliceId);
+    assertEquals("new name", actual.employee().name());
+  }
+
+  @Test
+  public void canDeleteEmployees() {
+    Employee alice = new Employee("alice", "alice@domain.tld");
+    repository.saveEmployee(alice);
+
+    Employee bob = new Employee("alice", "alice@domain.tld");
+    repository.saveEmployee(bob);
+
+    int deleted = repository.deleteEmployees();
+
+    assertEquals(2, deleted);
   }
 
 }

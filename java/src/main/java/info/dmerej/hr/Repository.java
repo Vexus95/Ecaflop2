@@ -33,7 +33,7 @@ public class Repository {
     System.out.println("Done migrating database");
   }
 
-  public int saveEmployee(Employee employee) {
+  public SavedEmployee saveEmployee(Employee employee) {
     try {
       PreparedStatement statement = connection.prepareStatement("INSERT INTO employee(name, email) VALUES (?, ?)");
       statement.setString(1, employee.name());
@@ -46,39 +46,66 @@ public class Repository {
     try {
       Statement statement = connection.createStatement();
       ResultSet res = statement.executeQuery("SELECT last_insert_rowid() AS id");
-      return res.getInt(1);
+      int id = res.getInt(1);
+      return new SavedEmployee(id, employee);
     } catch (SQLException e) {
       throw new RuntimeException("Could not get employee id " + e);
     }
   }
 
-  public Employee getEmployee(int id) {
+  public SavedEmployee getEmployee(int id) {
     try {
       PreparedStatement statement = connection.prepareStatement("SELECT name, email FROM employee WHERE id = ?");
       statement.setInt(1, id);
       ResultSet set = statement.executeQuery();
       String name = set.getString(1);
       String email = set.getString(2);
-      return new Employee(name, email);
+      Employee employee = new Employee(name, email);
+      return new SavedEmployee(id, employee);
     } catch (SQLException e) {
       throw new RuntimeException("Could not save employee: " + e);
     }
   }
 
-  public List<Employee> getEmployees() {
+  public List<SavedEmployee> getEmployees() {
     try {
       Statement statement = connection.createStatement();
-      ResultSet resultSet = statement.executeQuery("SELECT name, email FROM employee");
-      ArrayList<Employee> res = new ArrayList<>();
+      ResultSet resultSet = statement.executeQuery("SELECT id, name, email FROM employee");
+      ArrayList<SavedEmployee> res = new ArrayList<>();
       while (resultSet.next()) {
-        String name = resultSet.getString(1);
-        String email = resultSet.getString(2);
+        Integer id = resultSet.getInt(1);
+        String name = resultSet.getString(2);
+        String email = resultSet.getString(3);
         Employee employee = new Employee(name, email);
-        res.add(employee);
+        SavedEmployee savedEmployee = new SavedEmployee(id, employee);
+        res.add(savedEmployee);
       }
       return res;
     } catch (SQLException e) {
       throw new RuntimeException("Could not fetch employees: " + e);
+    }
+  }
+
+  public void updateEmployee(int id, Employee employee) {
+    try {
+      PreparedStatement statement = connection.prepareStatement("""
+        UPDATE employee SET name=?, email=? WHERE id = ?
+        """);
+      statement.setString(1, employee.name());
+      statement.setString(2, employee.email());
+      statement.setInt(3, id);
+      statement.execute();
+    } catch (SQLException e) {
+      throw new RuntimeException("Could not update employee: " + e);
+    }
+  }
+
+  public int deleteEmployees() {
+    try {
+      Statement statement = connection.createStatement();
+      return statement.executeUpdate("DELETE FROM employee");
+    } catch (SQLException e) {
+      throw new RuntimeException("Could not update employee: " + e);
     }
   }
 }
