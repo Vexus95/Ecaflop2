@@ -4,6 +4,8 @@ import requests
 import pytest
 from faker import Faker
 
+from conftest import new_fake_employee
+
 
 class Client:
     def __init__(self):
@@ -22,7 +24,11 @@ def client():
     return Client()
 
 
-@pytest.fixture()
+@pytest.fixture
+def clean_db(client):
+    client.call("delete", "/employees")
+
+
 def test_delete_employees(client, saved_employee):
     response = client.call("delete", "/employees")
     deleted = response["deleted"]
@@ -50,6 +56,17 @@ def test_get_employee(client, saved_employee):
     actual = response["employee"]
     assert actual["name"] == saved_employee.name
     assert actual["email"] == saved_employee.email
+
+
+def test_list_employees(client, clean_db):
+    alice = new_fake_employee()
+    bob = new_fake_employee()
+    put_employee(client, alice)
+    put_employee(client, bob)
+
+    returned_alice, returned_bob = client.call("get", f"/employees/")
+    assert returned_alice["name"] == alice.name
+    assert returned_bob["name"] == bob.name
 
 
 def test_update_employee_name(client, saved_employee):

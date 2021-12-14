@@ -15,8 +15,7 @@ class Employee:
     zip_code: str
 
 
-@pytest.fixture
-def fake_employee():
+def new_fake_employee():
     fake = Faker()
     name = fake.name()
     email = fake.email()
@@ -33,3 +32,8 @@ def fake_employee():
         city=city,
         zip_code=zip_code,
     )
+
+
+@pytest.fixture
+def fake_employee():
+    return new_fake_employee()
