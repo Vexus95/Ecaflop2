@@ -11,7 +11,7 @@ const router = new Router()
 
 router.get('/api/v1/employees', async (ctx, next) => {
   const employees = await ctx.repository.getEmployees()
-  ctx.body = { employees }
+  ctx.body = employees
   next()
 })
 
