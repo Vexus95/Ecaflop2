@@ -50,7 +50,7 @@ export default {
     if (!json) {
       return
     }
-    this.employees = json.employees
+    this.employees = json
   }
 }
 </script>
