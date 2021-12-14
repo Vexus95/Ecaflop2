@@ -64,7 +64,7 @@ def test_list_employees(client, clean_db):
     put_employee(client, alice)
     put_employee(client, bob)
 
-    returned_alice, returned_bob = client.call("get", f"/employees/")
+    returned_alice, returned_bob = client.call("get", f"/employees")
     assert returned_alice["name"] == alice.name
     assert returned_bob["name"] == bob.name
 
