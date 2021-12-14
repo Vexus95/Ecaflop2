@@ -15,7 +15,7 @@ def employees(request):
     if request.method == "GET":
         rows = Employee.objects.all()
         as_json = [x.to_json() for x in rows]
-        return JsonResponse({"employees": as_json})
+        return JsonResponse(as_json, safe=False)
     elif request.method == "DELETE":
         n, _ = Employee.objects.all().delete()
         return JsonResponse({"deleted": n}, status=202)
