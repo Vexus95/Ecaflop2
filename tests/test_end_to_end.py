@@ -71,7 +71,7 @@ def find_employee_row(page, employee_name):
         if employee_name in row.inner_html():
             return row
 
-    pytest.fail(f"{employee.name} not found in the list")
+    pytest.fail(f"{employee_name} not found in the list")
 
 
 def test_add_employee(clean_db, saved_employee, page):
