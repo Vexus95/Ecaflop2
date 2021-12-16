@@ -15,7 +15,6 @@ repository = ""
 python = "^3.6.2"
 
 django = "^3.2.9"
-"django-hamlpy" = "^1.4"
 django-cors-headers = "^3.10.1"
 
 [tool.poetry.dev-dependencies]
