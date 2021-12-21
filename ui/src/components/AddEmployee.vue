@@ -37,8 +37,6 @@ export default {
         return
       }
       this.$router.push('/employees')
-    },
-    onMounted: function () {
     }
   }
 }
