@@ -103,7 +103,7 @@ export default {
     zip_code: String
   },
   async mounted () {
-    this.onMounted()
+    await this.onMounted()
   }
 }
 </script>
