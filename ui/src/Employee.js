@@ -16,12 +16,6 @@ export default class Employee {
     return res
   }
 
-  static updateElementFromJson (element, json) {
-    for (const field of Employee.fields) {
-      element[field] = json[field]
-    }
-  }
-
   static getPayloadFromElement (element) {
     const payload = {}
     for (const field of Employee.fields) {
