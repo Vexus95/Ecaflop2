@@ -1,13 +1,37 @@
 <template>
 <div id="employee-fom">
   <form @submit="submitClicked">
-   <label for='name' class='form-label'>Name</label>
-     <input
-      class='form-control'
-      name='name'
-      v-model="name"
-    >
+  <fieldset>
+    <legend>
+     Basic Info
+    </legend>
+    <div class='row'>
+      <div class='col'>
+        <label for='name' class='form-label'>Name</label>
+      </div>
+      <div class='col col-10'>
+        <input
+          class='form-control'
+          name='name'
+          v-model="name"
+        >
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col'>
+        <label for='email' class='form-label'>Email</label>
+      </div>
+      <div class='col col-10'>
+        <input
+          class='form-control'
+          name='email'
+          v-model="email"
+        >
+      </div>
+    </div>
+    <hr>
     <button type='submit' class='btn btn-primary'>{{ submitText }}</button>
+  </fieldset>
 </form>
 </div>
 </template>
@@ -21,12 +45,12 @@ export default {
     onSubmit: Function
   },
   data: function () {
-    return { name: this.initialData.name }
+    return { name: this.initialData.name, email: this.initialData.email }
   },
   methods: {
     submitClicked: function (event) {
       event.preventDefault()
-      this.onSubmit({ name: this.name })
+      this.onSubmit({ name: this.name, email: this.email })
     }
   }
 }

@@ -7,6 +7,7 @@
     :onSubmit="this.onSubmit"
     submitText="Save"
   />
+  <span v-if="error">{{ error }}</span>
   <span>{{ status }}</span>
 </div>
 </template>
@@ -33,6 +34,9 @@ export default {
   mounted: async function () {
     const client = new Client(this)
     const json = await client.doRequest(this.url())
+    if (!json) {
+      return
+    }
     this.initialData = json.employee
   },
   methods: {

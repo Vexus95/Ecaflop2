@@ -79,10 +79,10 @@ def test_add_employee(clean_db, saved_employee, page):
     [
         "name",
         "email",
-        "address_line1",
-        "address_line2",
-        "city",
-        "zip_code",
+        # "address_line1",
+        # "address_line2",
+        # "city",
+        # "zip_code",
     ],
 )
 def test_edit_employee(clean_db, saved_employee, page, key):
