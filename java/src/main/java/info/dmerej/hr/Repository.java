@@ -142,6 +142,18 @@ public class Repository {
     }
   }
 
+  public void deleteEmployee(int id) {
+    try {
+      PreparedStatement statement = connection.prepareStatement("""
+        DELETE FROM employee WHERE id = ?
+        """);
+      statement.setInt(1, id);
+      statement.execute();
+    } catch (SQLException e) {
+      throw new RuntimeException("Could not delete employee: " + e);
+    }
+  }
+
   public int deleteEmployees() {
     try {
       Statement statement = connection.createStatement();

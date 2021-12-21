@@ -49,4 +49,10 @@ public class EmployeeController {
     SavedEmployee savedEmployee = new SavedEmployee(id, employee);
     return Map.of("employee", savedEmployee.asMap());
   }
+
+  @DeleteMapping("api/v1/employee/{id}")
+  public Map<String, Object> deleteEmployee(@PathVariable("id") int id) {
+    repository.deleteEmployee(id);
+    return Map.of("status", "deleted");
+  }
 }
