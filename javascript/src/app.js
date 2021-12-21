@@ -30,21 +30,33 @@ router.get('/api/v1/employee/:id', async (ctx, next) => {
 
 router.put('/api/v1/employee/:id', async (ctx, next) => {
   const { id } = ctx.params
-  const { name, email } = ctx.request.body
-  await ctx.repository.updateEmployee(id, { name, email })
+  const { name, email, address_line1, address_line2, city, zip_code } = ctx.request.body
+  await ctx.repository.updateEmployee(id, { name, email, address_line1, address_line2, city, zip_code })
   ctx.body = { status: 'updated' }
   next()
 })
 
 router.put('/api/v1/employee', async (ctx, next) => {
-  const { name, email } = ctx.request.body
+  const { name, email, address_line1, address_line2, city, zip_code } = ctx.request.body
   if (!name) {
     ctx.throw(400, 'name is required')
   }
   if (!email) {
     ctx.throw(400, 'email is required')
   }
-  const id = await ctx.repository.insertEmployee({ name, email })
+  if (!address_line1) {
+    ctx.throw(400, 'address_line1 is required')
+  }
+  if (!address_line2) {
+    ctx.throw(400, 'address_line2 is required')
+  }
+  if (!city) {
+    ctx.throw(400, 'city is required')
+  }
+  if (!zip_code) {
+    ctx.throw(400, 'zip_code is required')
+  }
+  const id = await ctx.repository.insertEmployee({ name, email, address_line1, address_line2, city, zip_code })
   ctx.status = 201
   ctx.body = { employee: { id, name, email } }
   next()

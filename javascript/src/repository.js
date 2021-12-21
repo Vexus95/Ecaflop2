@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const sqlite3 = require('sqlite3')
 const open = require('sqlite').open
 const fs = require('fs')
@@ -14,7 +15,11 @@ class Repository {
             CREATE TABLE employee(
               id INTEGER PRIMARY KEY,
               name TEXT NOT NULL,
-              email TEXT NOT NULL
+              email TEXT NOT NULL,
+              address_line1 TEXT NOT NULL,
+              address_line2 TEXT NOT NULL,
+              city TEXT NOT NULL,
+              zip_code TEXT NOT NULL
              )
          `)
   }
@@ -29,34 +34,55 @@ class Repository {
     }
   }
 
-  async insertEmployee ({ name, email }) {
-    const statement = await this.db.prepare('INSERT INTO employee(name, email) VALUES (?, ?)')
-    await statement.run([name, email])
+  async insertEmployee ({ name, email, address_line1, address_line2, city, zip_code }) {
+    const statement = await this.db.prepare(
+        `
+        INSERT INTO employee
+          (name, email, address_line1, address_line2, city, zip_code)
+        VALUES
+            (?, ?, ?, ?, ?, ?)
+         `
+    )
+    await statement.run([name, email, address_line1, address_line2, city, zip_code])
     const response = await this.db.get('SELECT last_insert_rowid() AS id')
     return response.id
   }
 
   async getEmployeedById (id) {
-    const response = await this.db.get('SELECT name, email, id FROM employee WHERE id = ?', id)
+    const response = await this.db.get(`
+        SELECT
+          id, name, email, address_line1, address_line2, city, zip_code
+        FROM
+          employee
+        WHERE
+        id = ?
+        `,
+    id
+    )
     return response
   }
 
   async getEmployees (id) {
-    const response = await this.db.all('SELECT name, email, id FROM employee')
+    const response = await this.db.all(`
+      SELECT
+          id, name, email, address_line1, address_line2, city, zip_code
+      FROM
+        employee
+        `
+    )
     return response
   }
 
   async updateEmployee (id, fields) {
-    const { name, email } = fields
+    const { name, email, address_line1, address_line2, city, zip_code } = fields
     const statement = await this.db.prepare(`
        UPDATE employee
        SET
-         name=?,
-         email=?
+         name=?, email=?, address_line1=?, address_line2=?, city=?, zip_code=?
        WHERE
          id=?
      `)
-    await statement.run([name, email, id])
+    await statement.run([name, email, address_line1, address_line2, city, zip_code, id])
   }
 
   async deleteEmployees () {
