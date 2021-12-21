@@ -102,3 +102,12 @@ def test_edit_employee(clean_db, saved_employee, page, key):
     page.wait_for_selector("text=Edit Employee")
     input_element = page.locator(f'input[name="{key}"]')
     assert input_element.input_value() == "new value"
+
+
+def test_delete_employee(clean_db, saved_employee, page):
+    row = find_employee_row(page, saved_employee.name)
+    link = row.locator("a")
+    url = link.get_attribute("href")
+    page.goto(BASE_URL + url)
+    page.wait_for_selector("text=Edit Employee")
+    page.click('button[text="Delete"]')
