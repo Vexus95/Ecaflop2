@@ -23,7 +23,11 @@ public class Repository {
         CREATE TABLE employee(
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
-        email TEXT NOT NULL
+        email TEXT NOT NULL,
+        address_line1 TEXT NOT NULL,
+        address_line2 TEXT NOT NULL,
+        city TEXT NOT NULL,
+        zip_code TEXT NOT NULL
         )
         """
       );
@@ -35,9 +39,18 @@ public class Repository {
 
   public SavedEmployee saveEmployee(Employee employee) {
     try {
-      PreparedStatement statement = connection.prepareStatement("INSERT INTO employee(name, email) VALUES (?, ?)");
-      statement.setString(1, employee.name());
-      statement.setString(2, employee.email());
+      PreparedStatement statement = connection.prepareStatement("""
+          INSERT INTO
+            employee(name, email, address_line1, address_line2, city, zip_code)
+          VALUES
+            (?, ?, ?, ?, ?, ?)
+        """);
+      statement.setString(1, employee.name);
+      statement.setString(2, employee.email);
+      statement.setString(3, employee.addressLine1);
+      statement.setString(4, employee.addressLine2);
+      statement.setString(5, employee.city);
+      statement.setString(6, employee.zipCode);
       statement.execute();
     } catch (SQLException e) {
       throw new RuntimeException("Could not save employee: " + e);
@@ -55,12 +68,22 @@ public class Repository {
 
   public SavedEmployee getEmployee(int id) {
     try {
-      PreparedStatement statement = connection.prepareStatement("SELECT name, email FROM employee WHERE id = ?");
+      PreparedStatement statement = connection.prepareStatement("""
+        SELECT
+          name, email, address_line1, address_line2, city, zip_code
+        FROM
+          employee
+        WHERE id = ?
+        """);
       statement.setInt(1, id);
       ResultSet set = statement.executeQuery();
       String name = set.getString(1);
       String email = set.getString(2);
-      Employee employee = new Employee(name, email);
+      String addressLine1 = set.getString(3);
+      String addressLine2 = set.getString(4);
+      String city = set.getString(5);
+      String zipCode = set.getString(6);
+      Employee employee = new Employee(name, email, addressLine1, addressLine2, city, zipCode);
       return new SavedEmployee(id, employee);
     } catch (SQLException e) {
       throw new RuntimeException("Could not save employee: " + e);
@@ -70,13 +93,23 @@ public class Repository {
   public List<SavedEmployee> getEmployees() {
     try {
       Statement statement = connection.createStatement();
-      ResultSet resultSet = statement.executeQuery("SELECT id, name, email FROM employee");
+      ResultSet set = statement.executeQuery("""
+        SELECT
+          id, name, email, address_line1, address_line2, city, zip_code
+        FROM 
+          employee
+        """
+      );
       ArrayList<SavedEmployee> res = new ArrayList<>();
-      while (resultSet.next()) {
-        Integer id = resultSet.getInt(1);
-        String name = resultSet.getString(2);
-        String email = resultSet.getString(3);
-        Employee employee = new Employee(name, email);
+      while (set.next()) {
+        Integer id = set.getInt(1);
+        String name = set.getString(2);
+        String email = set.getString(3);
+        String addressLine1 = set.getString(4);
+        String addressLine2 = set.getString(5);
+        String city = set.getString(6);
+        String zipCode = set.getString(7);
+        Employee employee = new Employee(name, email, addressLine1, addressLine2, city, zipCode);
         SavedEmployee savedEmployee = new SavedEmployee(id, employee);
         res.add(savedEmployee);
       }
@@ -89,11 +122,20 @@ public class Repository {
   public void updateEmployee(int id, Employee employee) {
     try {
       PreparedStatement statement = connection.prepareStatement("""
-        UPDATE employee SET name=?, email=? WHERE id = ?
+        UPDATE
+          employee
+        SET
+          name=?, email=?, address_line1=?, address_line2=?, city=?, zip_code=?
+        WHERE
+           id = ?
         """);
-      statement.setString(1, employee.name());
-      statement.setString(2, employee.email());
-      statement.setInt(3, id);
+      statement.setString(1, employee.name);
+      statement.setString(2, employee.email);
+      statement.setString(3, employee.addressLine1);
+      statement.setString(4, employee.addressLine2);
+      statement.setString(5, employee.city);
+      statement.setString(6, employee.zipCode);
+      statement.setInt(7, id);
       statement.execute();
     } catch (SQLException e) {
       throw new RuntimeException("Could not update employee: " + e);
