@@ -1,5 +1,4 @@
 import pytest
-from faker import Faker
 
 BASE_URL = "http://127.0.0.1:8080"
 
@@ -46,12 +45,8 @@ def saved_employee(page, fake_employee):
     page.click("text=List employees")
     page.click("text=Add new employee")
 
-    page.fill('input[name="name"]', fake_employee.name)
-    page.fill('input[name="email"]', fake_employee.email)
-    page.fill('input[name="address_line1"]', fake_employee.address_line1)
-    page.fill('input[name="address_line2"]', fake_employee.address_line2)
-    page.fill('input[name="city"]', fake_employee.city)
-    page.fill('input[name="zip_code"]', fake_employee.zip_code)
+    for (key, value) in fake_employee.to_json(with_id=False).items():
+        page.fill(f'input[name="{key}"]', value)
 
     page.click('button[type="submit"]')
     return fake_employee
@@ -70,23 +65,40 @@ def find_employee_row(page, employee_name):
 
 
 def test_add_employee(clean_db, saved_employee, page):
-    find_employee_row(page, saved_employee.name)
-    assert page.text_content(f"text={saved_employee.name}")
-    assert page.text_content(f"text={saved_employee.email}")
-
-
-def test_edit_employee_name(clean_db, saved_employee, page):
     row = find_employee_row(page, saved_employee.name)
-
     link = row.locator("a")
     link.click()
 
+    for (key, value) in saved_employee.to_json(with_id=False).items():
+        input_element = page.locator(f'input[name="{key}"]')
+        assert input_element.input_value() == value
+
+
+@pytest.mark.parametrize(
+    "key",
+    [
+        "name",
+        "email",
+        "address_line1",
+        "address_line2",
+        "city",
+        "zip_code",
+    ],
+)
+def test_edit_employee(clean_db, saved_employee, page, key):
+    row = find_employee_row(page, saved_employee.name)
+    link = row.locator("a")
+    url = link.get_attribute("href")
+    page.goto(BASE_URL + url)
+
     page.wait_for_selector("text=Edit Employee")
-    fake = Faker()
-    new_name = fake.name()
-    page.fill('input[name="name"]', new_name)
+    page.fill(f'input[name="{key}"]', "new value")
     page.click('button[type="submit"]')
 
+    # Making sure we make a round-trip through the db
     page.goto(BASE_URL + "/employees")
 
-    find_employee_row(page, new_name)
+    page.goto(BASE_URL + url)
+    page.wait_for_selector("text=Edit Employee")
+    input_element = page.locator(f'input[name="{key}"]')
+    assert input_element.input_value() == "new value"

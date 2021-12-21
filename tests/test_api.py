@@ -68,7 +68,7 @@ def test_list_employees(client, clean_db):
 
 
 @pytest.mark.parametrize(
-    "field",
+    "key",
     [
         "name",
         "email",
@@ -78,11 +78,11 @@ def test_list_employees(client, clean_db):
         "zip_code",
     ],
 )
-def test_update_employee_name(client, saved_employee, field):
-    body = dataclasses.asdict(saved_employee)
-    body[field] = "new value"
+def test_update_employee_field(client, saved_employee, key):
+    body = saved_employee.to_json(with_id=True)
+    body[key] = "new value"
     client.call("put", f"/employee/{saved_employee.id}", json=body)
 
     response = client.call("get", f"/employee/{saved_employee.id}")
     actual = response["employee"]
-    assert actual[field] == "new value"
+    assert actual[key] == "new value"

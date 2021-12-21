@@ -15,9 +15,8 @@ class Employee:
     city: str
     zip_code: str
 
-    def to_json(self):
-        return {
-            "id": self.id,
+    def to_json(self, with_id=True):
+        res = {
             "name": self.name,
             "email": self.email,
             "address_line1": self.address_line1,
@@ -25,6 +24,9 @@ class Employee:
             "city": self.city,
             "zip_code": self.zip_code,
         }
+        if with_id:
+            res["id"] = id
+        return res
 
 
 def new_fake_employee():
