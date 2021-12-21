@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const Koa = require('koa')
 const koaBody = require('koa-body')
 const cors = require('@koa/cors')
