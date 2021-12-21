@@ -30,6 +30,51 @@
       </div>
     </div>
     <hr>
+
+    <fieldset>
+       <legend>Address</legend>
+      <div class='row'>
+        <div class='col col-10'>
+          <input
+            class='form-control'
+            name='address_line1'
+            v-model='address_line1'
+          >
+        </div>
+      </div>
+      <div class='col col-10'>
+          <input
+            class='form-control'
+            name='address_line2'
+            v-model='address_line2'
+          >
+        </div>
+      <div class='row'>
+        <div class='col col-2'>
+          <label for='city' class='form-label'>City</label>
+        </div>
+        <div class='col col-3'>
+          <input
+            class='form-control'
+            name='city'
+            v-model='city'
+          >
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col col-2'>
+          <label for='zip_code' class='form-label'>Zip code</label>
+        </div>
+        <div class='col col-3'>
+          <input
+            class='form-control'
+            name='zip_code'
+            v-model='zip_code'
+          >
+        </div>
+      </div>
+    </fieldset>
+    <br>
     <button type='submit' class='btn btn-primary'>{{ submitText }}</button>
   </fieldset>
 </form>
@@ -37,8 +82,6 @@
 </template>
 
 <script>
-import Employee from '../Employee'
-
 export default {
   name: 'EmployeeForm',
   props: {
@@ -47,13 +90,22 @@ export default {
     onSubmit: Function
   },
   data: function () {
-    console.log(Employee.fields)
-    return { name: this.initialData.name, email: this.initialData.email }
+    const { name, email, address_line1, address_line2, city, zip_code } = this.initialData
+    return {
+      name, email, address_line1, address_line2, city, zip_code
+    }
   },
   methods: {
     submitClicked: function (event) {
       event.preventDefault()
-      this.onSubmit({ name: this.name, email: this.email })
+      this.onSubmit({
+        name: this.name,
+        email: this.email,
+        address_line1: this.address_line1,
+        address_line2: this.address_line2,
+        city: this.city,
+        zip_code: this.zip_code
+      })
     }
   }
 }
