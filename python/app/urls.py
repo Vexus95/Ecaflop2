@@ -1,6 +1,5 @@
-from django.urls import include, path
-
 import hr.urls
+from django.urls import include, path
 
 urlpatterns = [
     path("", include(hr.urls)),

@@ -25,7 +25,7 @@ class Employee:
             "zip_code": self.zip_code,
         }
         if with_id:
-            res["id"] = id
+            res["id"] = self.id
         return res
 
 

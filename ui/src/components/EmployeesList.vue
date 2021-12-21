@@ -23,6 +23,14 @@
             </td>
             <td>{{ employee.name }}</td>
             <td>{{ employee.email }}</td>
+            <td>
+               <button
+                 class='btn btn-danger'
+                 v-on:click="onDelete(employee.id)"
+               >
+               Delete
+             </button>
+          </td>
           </tr>
         </tbody>
       </table>
@@ -44,13 +52,23 @@ export default {
       employees: []
     }
   },
-  async mounted () {
-    const client = new Client(this)
-    const json = await client.doRequest('/employees')
-    if (!json) {
-      return
+  methods: {
+    onDelete: async function (id) {
+      const client = new Client(this)
+      await client.doRequest('/employee/' + id, { method: 'DELETE' })
+      await this.refresh()
+    },
+    refresh: async function () {
+      const client = new Client(this)
+      const json = await client.doRequest('/employees')
+      if (!json) {
+        return
+      }
+      this.employees = json
     }
-    this.employees = json
+  },
+  async mounted () {
+    this.refresh()
   }
 }
 </script>

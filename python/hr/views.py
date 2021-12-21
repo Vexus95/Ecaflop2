@@ -32,6 +32,13 @@ def employee(request, pk):
         employee.update(payload)
         employee.save()
         return JsonResponse({"employee": employee.to_json()}, status=202)
+    elif request.method == "DELETE":
+        print("deleting ...")
+        employee.delete()
+        print("deleted")
+        return JsonResponse({"deleted": 1}, status=202)
+    else:
+        return JsonResponse({"error": "method not allowed"}, status=405)
 
 
 @csrf_exempt

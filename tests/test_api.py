@@ -2,7 +2,6 @@ import dataclasses
 
 import pytest
 import requests
-
 from conftest import new_fake_employee
 
 
@@ -54,6 +53,19 @@ def test_get_employee(client, saved_employee):
     response = client.call("get", f"/employee/{saved_employee.id}")
     actual = response["employee"]
     assert actual == saved_employee.to_json()
+
+
+def test_delete_single_employee(client, clean_db):
+    alice = new_fake_employee()
+    bob = new_fake_employee()
+    alice_id = put_employee(client, alice)
+    _ = put_employee(client, bob)
+
+    client.call("delete", f"/employee/{alice_id}")
+
+    response = client.call("get", "/employees")
+
+    assert len(response) == 1
 
 
 def test_list_employees(client, clean_db):

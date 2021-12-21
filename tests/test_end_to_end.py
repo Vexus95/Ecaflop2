@@ -1,4 +1,5 @@
 import pytest
+from conftest import new_fake_employee
 
 BASE_URL = "http://127.0.0.1:8080"
 
@@ -37,10 +38,7 @@ def clean_db(page):
     page.click("text=Proceed")
 
 
-@pytest.fixture
-def saved_employee(page, fake_employee):
-    page.goto(BASE_URL + "/reset-db")
-    page.click("text=Proceed")
+def save_employee(page, fake_employee):
     page.goto(BASE_URL)
     page.click("text=List employees")
     page.click("text=Add new employee")
@@ -50,6 +48,11 @@ def saved_employee(page, fake_employee):
 
     page.click('button[type="submit"]')
     return fake_employee
+
+
+@pytest.fixture
+def saved_employee(page, fake_employee):
+    return save_employee(page, fake_employee)
 
 
 def find_employee_row(page, employee_name):
@@ -104,10 +107,18 @@ def test_edit_employee(clean_db, saved_employee, page, key):
     assert input_element.input_value() == "new value"
 
 
-def test_delete_employee(clean_db, saved_employee, page):
-    row = find_employee_row(page, saved_employee.name)
-    link = row.locator("a")
-    url = link.get_attribute("href")
-    page.goto(BASE_URL + url)
-    page.wait_for_selector("text=Edit Employee")
-    page.click('button[text="Delete"]')
+def test_delete_single_employee(clean_db, page):
+    alice = new_fake_employee()
+    bob = new_fake_employee()
+    save_employee(page, alice)
+    save_employee(page, bob)
+
+    row = find_employee_row(page, alice.name)
+    delete_button = row.locator('text="Delete"')
+    delete_button.click()
+
+    # Making sure we make a round-trip through the db
+    page.goto(BASE_URL + "/employees")
+
+    assert not page.is_visible(f"text={alice.name}")
+    assert page.is_visible(f"text={bob.name}")
