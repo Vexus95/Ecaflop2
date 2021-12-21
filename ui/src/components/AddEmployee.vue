@@ -1,15 +1,9 @@
 <template>
 <div>
   <EmployeeForm
+    :initialData="initialData"
     :onSubmit="this.onSubmit"
-    :onMounted="this.onMounted"
     submitText="Add"
-    v-bind:name.sync="name"
-    v-bind:email.sync="email"
-    v-bind:address_line1.sync="address_line1"
-    v-bind:address_line2.sync="address_line2"
-    v-bind:city.sync="city"
-    v-bind:zip_code.sync="zip_code"
   />
 </div>
 </template>
@@ -25,16 +19,19 @@ export default {
     EmployeeForm
   },
   data () {
-    return { loading: true, error: '', success: false, ...Employee.initialData() }
+    return {
+      loading: true,
+      error: '',
+      success: false,
+      initialData: Employee.initialData()
+    }
   },
   methods: {
-    onSubmit: async function (event) {
-      event.preventDefault()
-      const body = Employee.updateBodyfromElement(this)
+    onSubmit: async function (payload) {
       const client = new Client(this)
       const json = await client.doRequest(
         '/employee',
-        { method: 'PUT', body: JSON.stringify(body) }
+        { method: 'PUT', body: JSON.stringify(payload) }
       )
       if (!json) {
         return

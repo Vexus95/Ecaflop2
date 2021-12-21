@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import Employee from '../Employee'
+
 export default {
   name: 'EmployeeForm',
   props: {
@@ -45,6 +47,7 @@ export default {
     onSubmit: Function
   },
   data: function () {
+    console.log(Employee.fields)
     return { name: this.initialData.name, email: this.initialData.email }
   },
   methods: {

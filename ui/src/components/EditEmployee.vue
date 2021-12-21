@@ -1,7 +1,6 @@
 <template>
 <div>
   <EmployeeForm
-    ref="form"
     v-if="initialData"
     :initialData="initialData"
     :onSubmit="this.onSubmit"
@@ -45,7 +44,6 @@ export default {
     },
     onSubmit: async function (payload) {
       this.status = 'Saving ...'
-      console.log('payload', payload)
       const client = new Client(this)
       const json = await client.doRequest(
         this.url(),
