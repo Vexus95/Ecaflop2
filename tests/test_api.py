@@ -1,8 +1,7 @@
 import dataclasses
 
-import requests
 import pytest
-from faker import Faker
+import requests
 
 from conftest import new_fake_employee
 
@@ -54,27 +53,36 @@ def test_create_employee(client, fake_employee):
 def test_get_employee(client, saved_employee):
     response = client.call("get", f"/employee/{saved_employee.id}")
     actual = response["employee"]
-    assert actual["name"] == saved_employee.name
-    assert actual["email"] == saved_employee.email
+    assert actual == saved_employee.to_json()
 
 
 def test_list_employees(client, clean_db):
     alice = new_fake_employee()
     bob = new_fake_employee()
-    put_employee(client, alice)
-    put_employee(client, bob)
+    alice_id = put_employee(client, alice)
+    bob_id = put_employee(client, bob)
 
-    returned_alice, returned_bob = client.call("get", f"/employees")
-    assert returned_alice["name"] == alice.name
-    assert returned_bob["name"] == bob.name
+    returned_alice, returned_bob = client.call("get", "/employees")
+    assert returned_alice == {**alice.to_json(), "id": alice_id}
+    assert returned_bob == {**bob.to_json(), "id": bob_id}
 
 
-def test_update_employee_name(client, saved_employee):
+@pytest.mark.parametrize(
+    "field",
+    [
+        "name",
+        "email",
+        "address_line1",
+        "address_line2",
+        "city",
+        "zip_code",
+    ],
+)
+def test_update_employee_name(client, saved_employee, field):
     body = dataclasses.asdict(saved_employee)
-    faker = Faker()
-    body["name"] = "New Name"
+    body[field] = "new value"
     client.call("put", f"/employee/{saved_employee.id}", json=body)
 
     response = client.call("get", f"/employee/{saved_employee.id}")
     actual = response["employee"]
-    assert actual["name"] == "New Name"
+    assert actual[field] == "new value"

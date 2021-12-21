@@ -1,8 +1,4 @@
 import pytest
-from dataclasses import dataclass
-from typing import Optional
-
-from conftest import Employee
 from faker import Faker
 
 BASE_URL = "http://127.0.0.1:8080"
@@ -65,7 +61,6 @@ def find_employee_row(page, employee_name):
     page.wait_for_selector("text=ID")
 
     tables_rows = page.locator("tr")
-    matching_row = None
     for i in range(0, tables_rows.count()):
         row = tables_rows.nth(i)
         if employee_name in row.inner_html():

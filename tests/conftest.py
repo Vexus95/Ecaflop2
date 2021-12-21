@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
-from faker import Faker
+
 import pytest
+from faker import Faker
 
 
 @dataclass
@@ -13,6 +14,17 @@ class Employee:
     address_line2: str
     city: str
     zip_code: str
+
+    def to_json(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "address_line1": self.address_line1,
+            "address_line2": self.address_line2,
+            "city": self.city,
+            "zip_code": self.zip_code,
+        }
 
 
 def new_fake_employee():
