@@ -37,6 +37,13 @@ router.put('/api/v1/employee/:id', async (ctx, next) => {
   next()
 })
 
+router.delete('/api/v1/employee/:id', async (ctx, next) => {
+  const { id } = ctx.params
+  await ctx.repository.deleteEmployee(id)
+  ctx.body = { status: 'deleted' }
+  next()
+})
+
 router.put('/api/v1/employee', async (ctx, next) => {
   const { name, email, address_line1, address_line2, city, zip_code } = ctx.request.body
   if (!name) {
