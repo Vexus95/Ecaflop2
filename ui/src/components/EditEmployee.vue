@@ -1,15 +1,11 @@
 <template>
 <div>
   <EmployeeForm
+    ref="form"
+    v-if="initialData"
+    :initialData="initialData"
     :onSubmit="this.onSubmit"
-    :onMounted="this.onMounted"
     submitText="Save"
-    v-bind:name.sync="name"
-    v-bind:email.sync="email"
-    v-bind:address_line1.sync="address_line1"
-    v-bind:address_line2.sync="address_line2"
-    v-bind:city.sync="city"
-    v-bind:zip_code.sync="zip_code"
   />
   <span>{{ status }}</span>
 </div>
@@ -18,7 +14,6 @@
 <script>
 import EmployeeForm from './EmployeeForm.vue'
 import Client from '../Client'
-import Employee from '../Employee'
 
 export default {
   name: 'EditEmployee',
@@ -32,35 +27,31 @@ export default {
       error: '',
       success: false,
       status: '',
-      ...Employee.initialData()
+      initialData: null
     }
+  },
+  mounted: async function () {
+    const client = new Client(this)
+    const json = await client.doRequest(this.url())
+    this.initialData = json.employee
   },
   methods: {
     url: function () {
       return '/employee/' + this.id
     },
-    onSubmit: async function (event) {
-      event.preventDefault()
+    onSubmit: async function (payload) {
       this.status = 'Saving ...'
-      const body = Employee.updateBodyfromElement(this)
+      console.log('payload', payload)
       const client = new Client(this)
       const json = await client.doRequest(
         this.url(),
-        { method: 'PUT', body: JSON.stringify(body) }
+        { method: 'PUT', body: JSON.stringify(payload) }
       )
       if (!json) {
         this.status = ''
         return
       }
       this.status = 'Saved'
-    },
-    onMounted: async function () {
-      const client = new Client(this)
-      const json = await client.doRequest(this.url())
-      if (!json) {
-        return
-      }
-      Employee.updateElementFromJson(this, json.employee)
     }
   }
 }
