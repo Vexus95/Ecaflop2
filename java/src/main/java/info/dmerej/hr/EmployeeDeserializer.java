@@ -21,10 +21,10 @@ public class EmployeeDeserializer extends StdDeserializer<Employee> {
     JsonNode node = p.getCodec().readTree(p);
     String name = node.get("name").asText();
     String email = node.get("email").asText();
-    String address_line1 = node.get("address_line1").asText();
-    String address_line2 = node.get("address_line2").asText();
+    String addressLine1 = node.get("address_line1").asText();
+    String addressLine2 = node.get("address_line2").asText();
     String city = node.get("city").asText();
-    String zip_code = node.get("zip_code").asText();
-    return new Employee(name, email, address_line1, address_line2, city, zip_code);
+    String zipCode = node.get("zip_code").asText();
+    return new Employee(name, email, addressLine1, addressLine2, city, zipCode);
   }
 }
