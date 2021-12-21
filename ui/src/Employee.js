@@ -22,11 +22,11 @@ export default class Employee {
     }
   }
 
-  static updateBodyfromElement (element) {
-    const body = {}
+  static getPayloadFromElement (element) {
+    const payload = {}
     for (const field of Employee.fields) {
-      body[field] = element[field]
+      payload[field] = element[field]
     }
-    return body
+    return payload
   }
 }

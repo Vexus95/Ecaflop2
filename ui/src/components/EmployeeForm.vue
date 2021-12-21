@@ -82,6 +82,8 @@
 </template>
 
 <script>
+import Employee from '../Employee'
+
 export default {
   name: 'EmployeeForm',
   props: {
@@ -90,22 +92,13 @@ export default {
     onSubmit: Function
   },
   data: function () {
-    const { name, email, address_line1, address_line2, city, zip_code } = this.initialData
-    return {
-      name, email, address_line1, address_line2, city, zip_code
-    }
+    return this.initialData
   },
   methods: {
     submitClicked: function (event) {
       event.preventDefault()
-      this.onSubmit({
-        name: this.name,
-        email: this.email,
-        address_line1: this.address_line1,
-        address_line2: this.address_line2,
-        city: this.city,
-        zip_code: this.zip_code
-      })
+      const body = Employee.getPayloadFromElement(this)
+      this.onSubmit(body)
     }
   }
 }
