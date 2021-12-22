@@ -48,7 +48,7 @@ class Repository {
     return response.id
   }
 
-  async getEmployeedById (id) {
+  async getEmployeeById (id) {
     const response = await this.db.get(`
         SELECT
           id, name, email, address_line1, address_line2, city, zip_code

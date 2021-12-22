@@ -18,7 +18,7 @@ describe('repository', () => {
     await repository.init()
     const id = await repository.insertEmployee({ name: 'John', email: 'john@corp.tld' })
 
-    const actual = await repository.getEmployeedById(id)
+    const actual = await repository.getEmployeeById(id)
 
     assert.deepEqual(actual, { name: 'John', email: 'john@corp.tld', id })
   })

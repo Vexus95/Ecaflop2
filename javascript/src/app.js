@@ -24,7 +24,7 @@ router.delete('/api/v1/employees', async (ctx, next) => {
 
 router.get('/api/v1/employee/:id', async (ctx, next) => {
   const { id } = ctx.params
-  const employee = await ctx.repository.getEmployeedById(id)
+  const employee = await ctx.repository.getEmployeeById(id)
   ctx.body = { employee }
   next()
 })

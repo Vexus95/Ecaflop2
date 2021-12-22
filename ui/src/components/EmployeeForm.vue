@@ -1,5 +1,5 @@
 <template>
-<div id="employee-fom">
+<div id="employee-form">
   <form @submit="submitClicked">
   <fieldset>
     <legend>

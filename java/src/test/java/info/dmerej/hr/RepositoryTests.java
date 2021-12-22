@@ -63,8 +63,8 @@ public class RepositoryTests {
     List<SavedEmployee> saved = repository.getEmployees();
     assertEquals(2, saved.size());
 
-    SavedEmployee savedlice = saved.get(0);
-    assertEquals(savedlice.employee(), alice);
+    SavedEmployee savedAlice = saved.get(0);
+    assertEquals(savedAlice.employee(), alice);
   }
 
   @Test
