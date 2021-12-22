@@ -1,0 +1,11 @@
+[Unit]
+Description=%i gunicorn socket
+
+[Socket]
+ListenStream=/srv/hr/run/%i.sock
+SocketUser=hr
+SocketMode=600
+
+[Install]
+WantedBy=sockets.target
+
