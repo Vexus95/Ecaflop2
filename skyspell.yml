@@ -3,116 +3,209 @@ lang: en_US
 provider: aspell
 ignore:
   global:
-    - dmerej
-    - fasterxml
-    - json
-    - deserialize
-    - util
-    - deserializer
-    - serializer
-    - boolean
-    - deserialization
-    - io
-    - codec
-    - autoconfigure
-    - args
-    - sqlite
-    - sql
-    - jdbc
-    - runtime
-    - rowid
-    - config
-    - cors
-    - mvc
-    - configurer
-    - api
-    - junit
-    - alice
-    - ville
-    - js
-    - dimitri
-    - merejkowsky
-    - koa
-    - bodyparser
-    - sequelize
-    - dev
-    - chai
-    - supertest
-    - env
-    - src
-    - init
-    - ok
-    - eslint
-    - camelcase
-    - ctx
-    - params
-    - ui
-    - vue
-    - cli
-    - url
-    - html
-    - lang
-    - charset
-    - utf
-    - http
-    - ua
-    - viewport
-    - stylesheet
-    - javascript
-    - fastcgi
-    - param
-    - uri
-    - https
-    - nginx
     - addr
+    - alice
+    - api
+    - args
+    - asgi
+    - asgiref
+    - auth
+    - autoconfigure
+    - backend
+    - backends
+    - bodyparser
+    - boolean
+    - camelcase
+    - cd
     - cgi
+    - chai
+    - charset
+    - cli
+    - clickjacking
+    - cmd
+    - codec
+    - conf
+    - config
+    - configurer
+    - contenttypes
+    - contrib
+    - cors
+    - corsheaders
+    - csrf
+    - ctx
+    - deserialization
+    - deserialize
+    - deserializer
+    - dev
+    - dimitri
+    - dirs
+    - django
+    - dmerej
+    - dotenv
+    - env
+    - eslint
+    - fastcgi
+    - fasterxml
+    - "f'input"
+    - fullchain
+    - gunicorn
+    - gzip
+    - href
+    - html
+    - http
+    - https
+    - hup
+    - init
+    - io
+    - isort
+    - javascript
+    - jdbc
+    - js
+    - json
+    - junit
+    - kata
+    - koa
+    - lang
+    - letsencrypt
+    - localhost
+    - mainpid
+    - md
+    - merejkowsky
+    - middleware
+    - mvc
+    - nginx
+    - nopush
+    - ok
+    - param
+    - params
+    - pem
+    - pid
+    - privkey
+    - proto
+    - py
+    - pypoetry
+    - pytest
+    - pythonpath
+    - readme
+    - rowid
+    - runserver
+    - runtime
+    - sendfile
+    - sequelize
+    - serializer
+    - sha
+    - sql
+    - sqlite
+    - src
+    - srv
+    - ssl
+    - staticfiles
+    - stylesheet
+    - supertest
+    - tcp
+    - tmp
+    - todo
+    - ua
+    - ui
+    - unix
+    - uri
+    - url
+    - urlconf
+    - urls
+    - utf
+    - util
+    - validator
+    - validators
+    - viewport
+    - ville
+    - virtualenvs
+    - vue
+    - wsgi
+    - zipcode
   extensions:
     html:
-      - doctype
-      - href
       - css
+      - doctype
       - favicon
+      - href
       - ico
       - noscript
     java:
-      - jackson
       - databind
-      - instanceof
       - deser
-      - vc
-      - springframework
+      - instanceof
+      - jackson
       - println
-      - servlet
       - ser
+      - servlet
+      - springframework
+      - vc
     js:
-      - const
       - async
+      - const
       - fs
+    py:
+      - argv
+      - asdict
+      - autouse
+      - conftest
+      - dataclass
+      - dataclasses
+      - elif
+      - environ
+      - exc
+      - getattr
+      - goto
+      - kwargs
+      - len
+      - os
+      - pathlib
+      - setattr
+      - setdefault
+      - str
+      - sys
+      - urlpatterns
     vue:
-      - thead
-      - th
+      - async
+      - br
+      - btn
+      - const
+      - fieldset
+      - li
+      - stringify
       - tbody
       - td
-      - btn
-      - async
-      - const
-      - stringify
-      - fieldset
-      - br
+      - th
+      - thead
       - ul
-      - li
   paths:
+    infra/nginx/nginx.conf:
+      - lv
+      - sv
+    infra/systemd/gunicorn@.service:
+      - py
+      - srl
+      - wj
     javascript/src/app.js:
       - kb
+    pre-push:
+      - cd
+      - fi
+    python/app/settings.py:
+      - tz
+    python/tasks.py:
+      - pre
     ui/package.json:
       - browserslist
 skip:
+  names:
+    - mvnw
+    - yarn.lock
+    - poetry.lock
   paths:
     - java/mvnw.cmd
     - java/pom.xml
     - ui/src/assets/logo.png
     - ui/public/favicon.ico
     - ui/public/bootstrap.min.css
-  names:
-    - mvnw
-    - yarn.lock
+    - infra/nginx/mime.types
