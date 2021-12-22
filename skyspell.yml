@@ -1,0 +1,118 @@
+---
+lang: en_US
+provider: aspell
+ignore:
+  global:
+    - dmerej
+    - fasterxml
+    - json
+    - deserialize
+    - util
+    - deserializer
+    - serializer
+    - boolean
+    - deserialization
+    - io
+    - codec
+    - autoconfigure
+    - args
+    - sqlite
+    - sql
+    - jdbc
+    - runtime
+    - rowid
+    - config
+    - cors
+    - mvc
+    - configurer
+    - api
+    - junit
+    - alice
+    - ville
+    - js
+    - dimitri
+    - merejkowsky
+    - koa
+    - bodyparser
+    - sequelize
+    - dev
+    - chai
+    - supertest
+    - env
+    - src
+    - init
+    - ok
+    - eslint
+    - camelcase
+    - ctx
+    - params
+    - ui
+    - vue
+    - cli
+    - url
+    - html
+    - lang
+    - charset
+    - utf
+    - http
+    - ua
+    - viewport
+    - stylesheet
+    - javascript
+    - fastcgi
+    - param
+    - uri
+    - https
+    - nginx
+    - addr
+    - cgi
+  extensions:
+    html:
+      - doctype
+      - href
+      - css
+      - favicon
+      - ico
+      - noscript
+    java:
+      - jackson
+      - databind
+      - instanceof
+      - deser
+      - vc
+      - springframework
+      - println
+      - servlet
+      - ser
+    js:
+      - const
+      - async
+      - fs
+    vue:
+      - thead
+      - th
+      - tbody
+      - td
+      - btn
+      - async
+      - const
+      - stringify
+      - fieldset
+      - br
+      - ul
+      - li
+  paths:
+    javascript/src/app.js:
+      - kb
+    ui/package.json:
+      - browserslist
+skip:
+  paths:
+    - java/mvnw.cmd
+    - java/pom.xml
+    - ui/src/assets/logo.png
+    - ui/public/favicon.ico
+    - ui/public/bootstrap.min.css
+  names:
+    - mvnw
+    - yarn.lock
