@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = os.environ.get("DJANGO_DEBUG", "true") == "true"
 
 if DEBUG:
-    SECRET_KEY = "s3cr3t"
+    SECRET_KEY = "insecure-secret"
 else:
     SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
