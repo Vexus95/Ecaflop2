@@ -1,7 +1,7 @@
 export default class Client {
   constructor (element) {
     if (process.env.NODE_ENV === 'production') {
-      this.baseUrl = 'https://hr.dmerej.info/api/v1'
+      this.baseUrl = process.env.VUE_APP_HR_API_URL
     } else {
       this.baseUrl = 'http://127.0.0.1:5678/api/v1'
     }
