@@ -148,6 +148,7 @@ ignore:
       - href
       - ico
       - noscript
+
     java:
       - databind
       - deser
@@ -158,10 +159,12 @@ ignore:
       - servlet
       - springframework
       - vc
+
     js:
       - async
       - const
       - fs
+
     py:
       - argv
       - asdict
@@ -189,6 +192,7 @@ ignore:
       - rc
       - returncode
       - subparsers
+
     rs:
       - reqwest
       - fn
@@ -200,8 +204,10 @@ ignore:
       - mut
       - eprintln
       - println
+
     sh:
       - cp
+
     vue:
       - async
       - br
@@ -219,27 +225,35 @@ ignore:
   paths:
     infra/automation.py:
       - dbs
+
     infra/nginx/nginx.conf:
       - lv
       - sv
+
     infra/systemd/gunicorn@.service:
       - py
       - srl
       - wj
+
     javascript/src/app.js:
       - kb
+
     pre-push:
       - cd
       - ci
       - fi
       - mvnw
       - skyspell
+
     python/app/settings.py:
       - tz
+
     python/tasks.py:
       - pre
+
     tests/tasks.py:
       - pre
+
     ui/package.json:
       - browserslist
 
