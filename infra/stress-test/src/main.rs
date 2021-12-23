@@ -34,7 +34,7 @@ async fn perf_test(num_employees: usize) -> Result<()> {
     }))
     .buffer_unordered(3)
     .map(|r| {
-        let res = r.unwrap(); // unwrap JoinHerror
+        let res = r.unwrap(); // unwrap JoinError
         if let Err(err) = res {
             eprintln!("{:?}", err);
             errors += 1;
@@ -72,7 +72,7 @@ async fn put_employee(client: &Client, instance: char, index: usize) -> Result<(
         ("zip_code", format!("75-{}", index)),
     ]);
     if index % 10 == 0 {
-        println!("instance {} employe {}", instance, index);
+        println!("instance {} employee {}", instance, index);
     }
     let url = format!("https://{}.hr.dmerej.info/api/v1/employee", instance);
     let response = client
