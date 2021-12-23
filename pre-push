@@ -37,6 +37,10 @@ do
       yarn
       yarn lint
     )
+    (
+      cd infra/stress-test/
+      cargo clippy
+    )
   fi
 done
 
