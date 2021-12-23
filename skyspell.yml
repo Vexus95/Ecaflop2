@@ -1,6 +1,8 @@
 ---
 lang: en_US
+
 provider: aspell
+
 ignore:
   global:
     - addr
