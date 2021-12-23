@@ -19,6 +19,12 @@ do
       poetry run pytest
     )
     (
+      cd tests
+      poetry install
+      poetry run invoke lint
+      poetry run pytest
+    )
+    (
       cd java
       ./mvnw test
     )

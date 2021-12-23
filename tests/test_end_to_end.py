@@ -1,4 +1,5 @@
 import pytest
+
 from conftest import new_fake_employee
 
 BASE_URL = "http://127.0.0.1:8080"
