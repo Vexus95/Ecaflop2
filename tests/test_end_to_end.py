@@ -2,8 +2,6 @@ import pytest
 
 from conftest import new_fake_employee
 
-BASE_URL = "http://127.0.0.1:8080"
-
 
 def on_console_message(message):
     if message.type == "error":
@@ -21,13 +19,13 @@ def set_timeout(page):
 
 
 def test_index(page):
-    page.goto(BASE_URL)
+    page.goto("/")
     assert page.is_visible("text=List employees")
     assert page.is_visible("text=Reset database")
 
 
 def test_reset_database(page):
-    page.goto(BASE_URL)
+    page.goto("/")
     page.click("text=Reset database")
     page.click("text=Proceed")
     assert page.text_content("text=Deleted")
@@ -35,12 +33,12 @@ def test_reset_database(page):
 
 @pytest.fixture
 def clean_db(page):
-    page.goto(BASE_URL + "/reset-db")
+    page.goto("/reset-db")
     page.click("text=Proceed")
 
 
 def save_employee(page, fake_employee):
-    page.goto(BASE_URL)
+    page.goto("/")
     page.click("text=List employees")
     page.click("text=Add new employee")
 
@@ -93,16 +91,16 @@ def test_edit_employee(clean_db, saved_employee, page, key):
     row = find_employee_row(page, saved_employee.name)
     link = row.locator("a")
     url = link.get_attribute("href")
-    page.goto(BASE_URL + url)
+    page.goto(url)
 
     page.wait_for_selector("text=Edit Employee")
     page.fill(f'input[name="{key}"]', "new value")
     page.click('button[type="submit"]')
 
     # Making sure we make a round-trip through the db
-    page.goto(BASE_URL + "/employees")
+    page.goto("/employees")
 
-    page.goto(BASE_URL + url)
+    page.goto(url)
     page.wait_for_selector("text=Edit Employee")
     input_element = page.locator(f'input[name="{key}"]')
     assert input_element.input_value() == "new value"
@@ -119,7 +117,7 @@ def test_delete_single_employee(clean_db, page):
     delete_button.click()
 
     # Making sure we make a round-trip through the db
-    page.goto(BASE_URL + "/employees")
+    page.goto("/employees")
 
     assert not page.is_visible(f"text={alice.name}")
     assert page.is_visible(f"text={bob.name}")
