@@ -6,6 +6,7 @@ import subprocess
 import sys
 
 SRC_PATH = Path(".").resolve().parent
+DJANGO_DB_PATH = SRC_PATH / "python/db.sqlite3"
 
 
 def run(cwd, cmd, **kwargs):
@@ -24,6 +25,11 @@ def rsync(src, url):
 
 def ssh(url, cmd):
     cmd = ["ssh", url, cmd]
+    run(Path.cwd(), cmd)
+
+
+def scp(src, url):
+    cmd = ["scp", src, url]
     run(Path.cwd(), cmd)
 
 
@@ -79,18 +85,27 @@ def deploy_nginx(args):
     ssh("root@hr.dmerej.info", "nginx -s reload")
 
 
-def migrate_db():
+def migrate_django_db():
     cwd = SRC_PATH / "python"
-    db = cwd / "db.sqlite3"
-    db.unlink(missing_ok=True)
+    DJANGO_DB_PATH.unlink(missing_ok=True)
     cmd = ["poetry", "run", "python", "manage.py", "migrate"]
     run(cwd, cmd)
-    run(cwd, ["scp", db, "hr@hr.dmerej.info:data/init.db"])
-    ssh("hr@hr.dmerej.info", "data/re-init.sh")
 
 
-def reset_db(args):
-    migrate_db()
+def re_init_remote_dbs():
+    # Copy the newly migrated db
+    scp(DJANGO_DB_PATH, "hr@hr.dmerej.info:/srv/hr/data/init.db")
+
+    # Copy the script and run it
+    local_script = SRC_PATH / "infra/re-init-dbs.sh"
+    remote_script = "/srv/hr/data/re-init-dbs.sh"
+    scp(local_script, f"hr@hr.dmerej.info:{remote_script}")
+    ssh("hr@hr.dmerej.info", remote_script)
+
+
+def reset_dbs(args):
+    migrate_django_db()
+    re_init_remote_dbs()
 
 
 def main():
@@ -107,7 +122,7 @@ def main():
     deploy_nginx_parser.set_defaults(action=deploy_nginx)
 
     reset_db_parser = actions.add_parser("reset-dbs")
-    reset_db_parser.set_defaults(action=reset_db)
+    reset_db_parser.set_defaults(action=reset_dbs)
 
     args = parser.parse_args()
     if not args.action:
