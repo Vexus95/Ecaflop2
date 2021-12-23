@@ -1,0 +1,3 @@
+upstream api-@letter@ {
+  server unix:/srv/hr/run/@letter@.sock;
+}
