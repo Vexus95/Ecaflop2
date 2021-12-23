@@ -16,7 +16,6 @@ do
       cd python
       poetry install
       poetry run invoke lint
-      poetry run pytest
     )
     (
       cd tests
