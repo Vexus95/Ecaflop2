@@ -7,9 +7,12 @@ ignore:
     - alice
     - api
     - args
+    - ascii
     - asgi
     - asgiref
+    - async
     - auth
+    - autocfg
     - autoconfigure
     - backend
     - backends
@@ -18,10 +21,10 @@ ignore:
     - camelcase
     - cd
     - cgi
-    - chai
     - charset
     - cli
     - clickjacking
+    - clippy
     - cmd
     - codec
     - conf
@@ -36,6 +39,7 @@ ignore:
     - deserialization
     - deserialize
     - deserializer
+    - dest
     - dev
     - dimitri
     - dirs
@@ -47,6 +51,7 @@ ignore:
     - fastcgi
     - fasterxml
     - "f'input"
+    - frontend
     - fullchain
     - gunicorn
     - gzip
@@ -58,6 +63,7 @@ ignore:
     - init
     - io
     - isort
+    - iter
     - javascript
     - jdbc
     - js
@@ -72,12 +78,14 @@ ignore:
     - md
     - merejkowsky
     - middleware
+    - mkdir
     - mvc
     - nginx
     - nopush
     - ok
     - param
     - params
+    - paris
     - pem
     - pid
     - privkey
@@ -87,9 +95,12 @@ ignore:
     - pytest
     - pythonpath
     - readme
+    - reqwest
     - rowid
+    - rsync
     - runserver
     - runtime
+    - scp
     - sendfile
     - sequelize
     - serializer
@@ -108,6 +119,8 @@ ignore:
     - ua
     - ui
     - unix
+    - unlink
+    - upstreams
     - uri
     - url
     - urlconf
@@ -119,9 +132,14 @@ ignore:
     - viewport
     - ville
     - virtualenvs
-    - vue
     - wsgi
+
+  project:
+    - chai
+    - tokio
+    - vue
     - zipcode
+
   extensions:
     html:
       - css
@@ -165,6 +183,25 @@ ignore:
       - str
       - sys
       - urlpatterns
+      - argparse
+      - subprocess
+      - cwd
+      - rc
+      - returncode
+      - subparsers
+    rs:
+      - reqwest
+      - fn
+      - tokio
+      - vec
+      - num
+      - usize
+      - perf
+      - mut
+      - eprintln
+      - println
+    sh:
+      - cp
     vue:
       - async
       - br
@@ -178,7 +215,10 @@ ignore:
       - th
       - thead
       - ul
+
   paths:
+    infra/automation.py:
+      - dbs
     infra/nginx/nginx.conf:
       - lv
       - sv
@@ -191,17 +231,17 @@ ignore:
     pre-push:
       - cd
       - fi
+      - mvnw
     python/app/settings.py:
       - tz
     python/tasks.py:
       - pre
+    tests/tasks.py:
+      - pre
     ui/package.json:
       - browserslist
+
 skip:
-  names:
-    - mvnw
-    - yarn.lock
-    - poetry.lock
   paths:
     - java/mvnw.cmd
     - java/pom.xml
@@ -209,3 +249,9 @@ skip:
     - ui/public/favicon.ico
     - ui/public/bootstrap.min.css
     - infra/nginx/mime.types
+
+  names:
+    - mvnw
+    - yarn.lock
+    - poetry.lock
+    - Cargo.lock
