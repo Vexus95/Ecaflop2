@@ -74,7 +74,7 @@ class Repository {
   }
 
   async deleteEmployee (id) {
-    const statement = await this.db.prepare(`DELETE FROM employee WHERE id = ?`)
+    const statement = await this.db.prepare('DELETE FROM employee WHERE id = ?')
     await statement.run([id])
   }
 
