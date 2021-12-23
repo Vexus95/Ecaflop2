@@ -79,15 +79,35 @@ def deploy_nginx(args):
     ssh("root@hr.dmerej.info", "nginx -s reload")
 
 
+def migrate_db():
+    cwd = SRC_PATH / "python"
+    db = cwd / "db.sqlite3"
+    db.unlink(missing_ok=True)
+    cmd = ["poetry", "run", "python", "manage.py", "migrate"]
+    run(cwd, cmd)
+    run(cwd, ["scp", db, "hr@hr.dmerej.info:data/init.db"])
+    ssh("hr@hr.dmerej.info", "data/re-init.sh")
+
+
+def reset_db(args):
+    migrate_db()
+
+
 def main():
     parser = ArgumentParser()
     actions = parser.add_subparsers(help="available actions", dest="action")
+
     build_frontend = actions.add_parser("build-frontend")
     build_frontend.set_defaults(action=build_frontend)
+
     deploy_frontend_parser = actions.add_parser("deploy-frontend")
     deploy_frontend_parser.set_defaults(action=deploy_frontend)
+
     deploy_nginx_parser = actions.add_parser("deploy-nginx")
     deploy_nginx_parser.set_defaults(action=deploy_nginx)
+
+    reset_db_parser = actions.add_parser("reset-dbs")
+    reset_db_parser.set_defaults(action=reset_db)
 
     args = parser.parse_args()
     if not args.action:
