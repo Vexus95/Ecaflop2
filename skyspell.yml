@@ -230,8 +230,10 @@ ignore:
       - kb
     pre-push:
       - cd
+      - ci
       - fi
       - mvnw
+      - skyspell
     python/app/settings.py:
       - tz
     python/tasks.py:
