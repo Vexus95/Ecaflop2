@@ -18,6 +18,21 @@ do
       poetry run invoke lint
       poetry run pytest
     )
+    (
+      cd java
+      ./mvnw test
+    )
+    (
+      cd javascript
+      yarn
+      yarn lint
+      yarn test
+    )
+    (
+      cd ui
+      yarn
+      yarn lint
+    )
   fi
 done
 
