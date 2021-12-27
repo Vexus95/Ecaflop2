@@ -43,6 +43,17 @@ def employee(request, pk):
 def new_employee(request):
     body = request.body.decode()
     payload = json.loads(body)
+    for key in [
+        "name",
+        "email",
+        "address_line1",
+        "address_line2",
+        "city",
+        "zip_code",
+    ]:
+        value = payload.get(key)
+        if not value:
+            return JsonResponse({"error": f"'{key}' is required"}, status=400)
     employee = Employee()
     employee.update(payload)
     employee.save()
