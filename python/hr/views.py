@@ -27,11 +27,7 @@ def employee(request, pk):
     if request.method == "GET":
         return JsonResponse({"employee": employee.to_json()})
     elif request.method in ("PUT", "PATCH"):
-        body = request.body.decode()
-        payload = json.loads(body)
-        employee.update(payload)
-        employee.save()
-        return JsonResponse({"employee": employee.to_json()}, status=200)
+        return patch_employee(employee, request)
     elif request.method == "DELETE":
         employee.delete()
         return JsonResponse({"deleted": 1}, status=200)
@@ -39,8 +35,7 @@ def employee(request, pk):
         return JsonResponse({"error": "method not allowed"}, status=405)
 
 
-@csrf_exempt
-def new_employee(request):
+def patch_employee(employee, request):
     body = request.body.decode()
     payload = json.loads(body)
     for key in [
@@ -52,10 +47,36 @@ def new_employee(request):
         "zip_code",
     ]:
         value = payload.get(key)
-        if not value:
+        if value is not None:
+            if value:
+                setattr(employee, key, value)
+            else:
+                return JsonResponse(
+                    {"error": f"key '{key}' cannot be blank"}, status=400
+                )
+    employee.save()
+    return JsonResponse({"employee": employee.to_json()}, status=200)
+
+
+@csrf_exempt
+def new_employee(request):
+    creation_params = {}
+    body = request.body.decode()
+    payload = json.loads(body)
+    for key in [
+        "name",
+        "email",
+        "address_line1",
+        "address_line2",
+        "city",
+        "zip_code",
+    ]:
+        value = payload.get(key)
+        if value:
+            creation_params[key] = value
+        else:
             return JsonResponse({"error": f"'{key}' is required"}, status=400)
-    employee = Employee()
-    employee.update(payload)
+    employee = Employee(**creation_params)
     employee.save()
     return JsonResponse({"employee": employee.to_json()}, status=201)
 
