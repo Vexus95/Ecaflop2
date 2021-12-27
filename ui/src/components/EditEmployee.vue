@@ -5,8 +5,7 @@
   <div v-if="employee">
     <h2>Edit Employee</h2>
     <p>
-     Name: {{ employee.name }} <br />
-     email: {{ employee.email }}
+     {{ employee.name }} - {{ employee.email }}
     </p>
     <ul>
       <li>

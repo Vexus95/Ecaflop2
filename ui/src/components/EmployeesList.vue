@@ -16,20 +16,18 @@
             <td>{{ employee.name }}</td>
             <td>{{ employee.email }}</td>
             <td>
-               <button
+              <router-link :to="`employee/${employee.id}`"
                  class='btn btn-primary'
-                 v-on:click="onEdit(employee)"
                >
                Edit
-             </button>
+             </router-link>
           </td>
             <td>
-               <button
+              <router-link :to="`employee/${employee.id}/delete`"
                  class='btn btn-danger'
-                 v-on:click="onDelete(employee.id)"
                >
                Delete
-             </button>
+             </router-link>
           </td>
           </tr>
         </tbody>
