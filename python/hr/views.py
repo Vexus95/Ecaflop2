@@ -18,7 +18,7 @@ def employees(request):
         return JsonResponse(as_json, safe=False)
     elif request.method == "DELETE":
         n, _ = Employee.objects.all().delete()
-        return JsonResponse({"deleted": n}, status=202)
+        return JsonResponse({"deleted": n}, status=200)
 
 
 @csrf_exempt
@@ -31,10 +31,10 @@ def employee(request, pk):
         payload = json.loads(body)
         employee.update(payload)
         employee.save()
-        return JsonResponse({"employee": employee.to_json()}, status=202)
+        return JsonResponse({"employee": employee.to_json()}, status=200)
     elif request.method == "DELETE":
         employee.delete()
-        return JsonResponse({"deleted": 1}, status=202)
+        return JsonResponse({"deleted": 1}, status=200)
     else:
         return JsonResponse({"error": "method not allowed"}, status=405)
 
@@ -52,4 +52,4 @@ def new_employee(request):
 @csrf_exempt
 def clean_db(request):
     Employee.objects.all().delete()
-    return JsonResponse({"message": "database reset"}, status=202)
+    return JsonResponse({"message": "database reset"}, status=200)
