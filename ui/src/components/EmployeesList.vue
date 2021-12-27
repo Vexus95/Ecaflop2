@@ -7,22 +7,22 @@
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>email</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="employee in employees" :key="employee.id">
-            <td>
-               <router-link
-                 :to="{path : 'employee/' + employee.id }"
-                >
-                {{ employee.id }}
-                </router-link>
-            </td>
             <td>{{ employee.name }}</td>
             <td>{{ employee.email }}</td>
+            <td>
+               <button
+                 class='btn btn-primary'
+                 v-on:click="onEdit(employee)"
+               >
+               Edit
+             </button>
+          </td>
             <td>
                <button
                  class='btn btn-danger'
@@ -54,9 +54,10 @@ export default {
   },
   methods: {
     onDelete: async function (id) {
-      const client = new Client(this)
-      await client.doRequest('/employee/' + id, { method: 'DELETE' })
-      await this.refresh()
+      this.$router.push('/employee/' + id + '/delete')
+    },
+    onEdit: function (employee) {
+      this.$router.push('/employee/' + employee.id)
     },
     refresh: async function () {
       const client = new Client(this)

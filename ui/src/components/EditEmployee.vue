@@ -1,60 +1,57 @@
 <template>
 <div>
-  <EmployeeForm
-    v-if="initialData"
-    :initialData="initialData"
-    :onSubmit="this.onSubmit"
-    submitText="Save"
-  />
   <span v-if="error">{{ error }}</span>
-  <span>{{ status }}</span>
+  <span v-if="loading">loading ...</span>
+  <div v-if="employee">
+    <h2>Edit Employee</h2>
+    <p>
+     Name: {{ employee.name }} <br />
+     email: {{ employee.email }}
+    </p>
+    <ul>
+      <li>
+        <router-link
+          :to="{name: 'EditBasic', params: { id }}"
+        >
+          Update basic info
+        </router-link>
+      </li>
+      <li>
+        <router-link
+          :to="{name: 'EditAddress', params: { id }}"
+          >
+           Update address
+        </router-link>
+     </li>
+    </ul>
+  </div>
 </div>
 </template>
 
 <script>
-import EmployeeForm from './EmployeeForm.vue'
 import Client from '../Client'
 
 export default {
   name: 'EditEmployee',
-  props: ['id'],
-  components: {
-    EmployeeForm
+  props: {
+    id: String
   },
-  data () {
+  data: function () {
     return {
       loading: true,
       error: '',
       success: false,
       status: '',
-      initialData: null
+      employee: null
     }
   },
   mounted: async function () {
     const client = new Client(this)
-    const json = await client.doRequest(this.url())
+    const json = await client.doRequest('/employee/' + this.id)
     if (!json) {
       return
     }
-    this.initialData = json.employee
-  },
-  methods: {
-    url: function () {
-      return '/employee/' + this.id
-    },
-    onSubmit: async function (payload) {
-      this.status = 'Saving ...'
-      const client = new Client(this)
-      const json = await client.doRequest(
-        this.url(),
-        { method: 'PUT', body: JSON.stringify(payload) }
-      )
-      if (!json) {
-        this.status = ''
-        return
-      }
-      this.status = 'Saved'
-    }
+    this.employee = json.employee
   }
 }
 </script>

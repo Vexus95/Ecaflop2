@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>Edit Employee</h2>
     <EditEmployee :id='$route.params.id'/>
   </div>
 </template>
@@ -12,6 +11,9 @@ export default {
   name: 'EditEmployeeView',
   components: {
     EditEmployee
+  },
+  props: {
+    id: String
   }
 }
 </script>

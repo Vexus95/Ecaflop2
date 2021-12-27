@@ -5,6 +5,9 @@ import AddEmployeeView from '../views/AddEmployeeView.vue'
 import EditEmployeeView from '../views/EditEmployeeView.vue'
 import ListEmployeesView from '../views/ListEmployeesView.vue'
 import ResetDatabaseView from '../views/ResetDatabaseView.vue'
+import EditAddressView from '../views/EditAddressView.vue'
+import EditBasicView from '../views/EditBasicView.vue'
+import DeleteEmployeeView from '../views/DeleteEmployeeView.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +26,21 @@ const routes = [
     path: '/employee/:id',
     name: 'EditEmployee',
     component: EditEmployeeView
+  },
+  {
+    path: '/employee/:id/basic',
+    name: 'EditBasic',
+    component: EditBasicView
+  },
+  {
+    path: '/employee/:id/address',
+    name: 'EditAddress',
+    component: EditAddressView
+  },
+  {
+    path: '/employee/:id/delete',
+    name: 'DeleteEmployee',
+    component: DeleteEmployeeView
   },
   {
     path: '/reset-db',
