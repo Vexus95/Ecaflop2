@@ -91,10 +91,9 @@ def test_list_employees(client, clean_db):
         "zip_code",
     ],
 )
-def test_update_employee_field(client, saved_employee, key):
-    body = saved_employee.to_json(with_id=True)
-    body[key] = "new value"
-    client.call("put", f"/employee/{saved_employee.id}", json=body)
+def test_patch_employee_field(client, saved_employee, key):
+    body = {key: "new value"}
+    client.call("patch", f"/employee/{saved_employee.id}", json=body)
 
     response = client.call("get", f"/employee/{saved_employee.id}")
     actual = response["employee"]
