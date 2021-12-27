@@ -33,18 +33,7 @@ export default class Client {
     try {
       const response = await fetch(url, fetchOptions)
       if (!response.ok) {
-        let details = null
-        try {
-          const json = await response.json()
-          details = json.error
-        } catch (e) {
-          console.err(e)
-          // nothing
-        }
-        let message = `Request failed with status ${response.status}`
-        if (details) {
-          message += '\n' + details
-        }
+        const message = await this.getErrorMessage(response)
         throw new Error(message)
       }
       this.onRequestSuccess()
@@ -52,6 +41,15 @@ export default class Client {
       return json
     } catch (error) {
       this.onRequestError(error)
+    }
+  }
+
+  async getErrorMessage (response) {
+    try {
+      const json = await response.json()
+      return json.error
+    } catch (e) {
+      return `Request failed with status ${response.status}`
     }
   }
 }
