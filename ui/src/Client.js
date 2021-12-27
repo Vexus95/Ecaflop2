@@ -33,7 +33,19 @@ export default class Client {
     try {
       const response = await fetch(url, fetchOptions)
       if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`)
+        let details = null
+        try {
+          const json = await response.json()
+          details = json.error
+        } catch (e) {
+          console.err(e)
+          // nothing
+        }
+        let message = `Request failed with status ${response.status}`
+        if (details) {
+          message += '\n' + details
+        }
+        throw new Error(message)
       }
       this.onRequestSuccess()
       const json = await response.json()
