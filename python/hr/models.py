@@ -19,12 +19,33 @@ class Employee(models.Model):
     ]
 
     def update(self, data):
-        for key in self.__json_fields:
-            value = data.get(key)
-            if value:
-                setattr(self, key, value)
+        name = data.get("name")
+        if name:
+            self.name = name
+        address_line1 = data.get("address_line1")
+        if address_line1:
+            self.address_line1 = address_line1
+        address_line2 = data.get("address_line2")
+        if address_line2:
+            self.address_line2 = address_line2
+        city = data.get("city")
+        if city:
+            self.city = city
+        zip_code = data.get("zip_code")
+        if zip_code:
+            self.zip_code = zip_code
+        email = data.get("email")
+        if email:
+            self.email = email
 
     def to_json(self):
-        res = {k: getattr(self, k) for k in self.__json_fields}
+        res = {
+            "name": self.name,
+            "address_line1": self.address_line1,
+            "address_line2": self.address_line2,
+            "city": self.city,
+            "zip_code": self.zip_code,
+            "email": self.email,
+        }
         res["id"] = self.pk
         return res
