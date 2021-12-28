@@ -9,6 +9,11 @@ class Employee(models.Model):
     zip_code = models.CharField(null=False, max_length=100)
     email = models.EmailField(null=True)
 
+    def __str__(self):
+        import json
+
+        return json.dumps(self.to_json())
+
     def to_json(self):
         res = {
             "name": self.name,

@@ -1,46 +1,93 @@
-import json
-
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-
-# TODO: figure out how to set the token when the view is *not*
-# served by django
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import Employee
 
 
-@csrf_exempt
+def index(request):
+    return render(request, "hr/index.html")
+
+
+def reset_db(request):
+    return render(request, "hr/reset_db.html")
+
+
 def employees(request):
-    if request.method == "GET":
-        rows = Employee.objects.all()
-        as_json = [x.to_json() for x in rows]
-        return JsonResponse(as_json, safe=False)
-    elif request.method == "DELETE":
-        n, _ = Employee.objects.all().delete()
-        return JsonResponse({"deleted": n}, status=200)
+    rows = Employee.objects.all()
+    context = {"employees": rows}
+    return render(request, "hr/employees.html", context=context)
 
 
-@csrf_exempt
-def employee(request, pk):
-    employee = get_object_or_404(Employee, pk=pk)
+def employee(request, id):
+    employee = get_object_or_404(Employee, pk=id)
+    context = {"employee": employee}
+    return render(request, "hr/employee.html", context=context)
+
+
+def delete_employee(request, id):
+    employee = get_object_or_404(Employee, pk=id)
     if request.method == "GET":
-        return JsonResponse({"employee": employee.to_json()})
-    elif request.method in ("PUT", "PATCH"):
-        return patch_employee(employee, request)
-    elif request.method == "DELETE":
-        employee.delete()
-        return JsonResponse({"deleted": 1}, status=200)
+        context = {"employee": employee}
+        return render(request, "hr/delete_employee.html", context=context)
     else:
-        return JsonResponse({"error": "method not allowed"}, status=405)
+        employee.delete()
+        return redirect("hr:employees")
 
 
-def patch_employee(employee, request):
-    body = request.body.decode()
-    payload = json.loads(body)
+def add_employee(request):
+    if request.method == "GET":
+        return render(request, "hr/add_employee.html")
+    else:
+        creation_params = {}
+        payload = request.POST
+        errors = False
+        for key in [
+            "name",
+            "email",
+            "address_line1",
+            "address_line2",
+            "city",
+            "zip_code",
+        ]:
+            value = payload.get(key)
+            if value is not None:
+                if value:
+                    creation_params[key] = value
+                else:
+                    messages.add_message(
+                        request, messages.ERROR, f"{key} cannot be blank"
+                    )
+                    errors = True
+        if errors:
+            context = {"employee": creation_params}
+            return render(request, "hr/add_employee.html", context)
+        else:
+            Employee.objects.create(**creation_params)
+            return redirect("hr:employees")
+
+
+def address(request, id):
+    employee = get_object_or_404(Employee, pk=id)
+    context = {"employee": employee}
+    if request.method == "POST":
+        return update_address(request, employee)
+    else:
+        return render(request, "hr/address.html", context=context)
+
+
+def basic(request, id):
+    employee = get_object_or_404(Employee, pk=id)
+    context = {"employee": employee}
+    if request.method == "POST":
+        return update_address(request, employee)
+    else:
+        return render(request, "hr/basic.html", context=context)
+
+
+def update_address(request, employee):
+    payload = request.POST
+    errors = False
     for key in [
-        "name",
-        "email",
         "address_line1",
         "address_line2",
         "city",
@@ -51,40 +98,33 @@ def patch_employee(employee, request):
             if value:
                 setattr(employee, key, value)
             else:
-                return JsonResponse(
-                    {"error": f"key '{key}' cannot be blank"}, status=400
-                )
-    employee.save()
-    response_body = {"employee": employee.to_json()}
-    print(response_body)
-    response = JsonResponse(response_body, status=200)
-    return response
+                messages.add_message(request, messages.ERROR, f"{key} cannot be blank")
+                errors = True
+    if errors:
+        context = {"employee": employee}
+        return render(request, "hr/basic.html", context=context)
+    else:
+        employee.save()
+        return redirect("hr:employees")
 
 
-@csrf_exempt
-def new_employee(request):
-    creation_params = {}
-    body = request.body.decode()
-    payload = json.loads(body)
+def update_basic(request, employee):
+    payload = request.POST
+    errors = False
     for key in [
         "name",
         "email",
-        "address_line1",
-        "address_line2",
-        "city",
-        "zip_code",
     ]:
         value = payload.get(key)
-        if value:
-            creation_params[key] = value
-        else:
-            return JsonResponse({"error": f"'{key}' is required"}, status=400)
-    employee = Employee(**creation_params)
-    employee.save()
-    return JsonResponse({"employee": employee.to_json()}, status=201)
-
-
-@csrf_exempt
-def clean_db(request):
-    Employee.objects.all().delete()
-    return JsonResponse({"message": "database reset"}, status=200)
+        if value is not None:
+            if value:
+                setattr(employee, key, value)
+            else:
+                messages.add_message(request, messages.ERROR, f"{key} cannot be blank")
+                errors = True
+    if errors:
+        context = {"employee": employee}
+        return render(request, "hr/basic.html", context=context)
+    else:
+        employee.save()
+        return redirect("hr:employees")

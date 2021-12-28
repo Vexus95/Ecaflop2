@@ -1,0 +1,37 @@
+{% extends 'hr/base.html' %}
+{% block title %}
+HR Manager - Edit basic Information
+{% endblock %}
+{% block content %}
+<h2>Edit Employee Basic Information</h2>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form action="{% url 'hr:basic' employee.id %}" method='post'>
+  {% csrf_token %}
+  <fieldset>
+    <legend>Basic Info</legend>
+    <div class="row">
+      <div class="col">
+        <label for="name" class="form-label">Name</label>
+      </div>
+      <div class="col col-10">
+        <input class="form-control" name="name" value="{{ employee.name }}" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="email" class="form-label">Email</label>
+      </div>
+      <div class="col col-10">
+        <input class="form-control" name="email" value="{{ employee.email }}" />
+      </div>
+    </div>
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Update</button>
+</form>
+{% endblock %}

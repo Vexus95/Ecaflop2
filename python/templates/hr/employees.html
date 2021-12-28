@@ -1,0 +1,36 @@
+{% extends 'hr/base.html' %}
+{% block title %}
+HR Manager - Employees
+{% endblock %}
+{% block content %}
+<h1 id='title'>Employee list</h1>
+<h2>Employees ({{ employees| length }})</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>email</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for employee in employees %}
+    <tr>
+      <td>{{ employee.name }}</td>
+      <td>{{ employee.email }}</td>
+      <td>
+        <a href="{% url 'hr:employee' employee.id %}" class="btn btn-primary">
+          Edit
+        </a>
+      </td>
+      <td>
+        <a href="{% url 'hr:delete_employee' employee.id %}" class="btn btn-danger"
+        >
+          Delete
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{% url 'hr:add_employee' %}">Add new employee</a>
+{% endblock %}

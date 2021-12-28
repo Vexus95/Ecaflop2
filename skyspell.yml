@@ -138,6 +138,7 @@ ignore:
 
   project:
     - chai
+    - pywatchman
     - tokio
     - vue
     - zipcode
@@ -150,6 +151,22 @@ ignore:
       - href
       - ico
       - noscript
+      - block
+      - endif
+      - endfor
+      - endblock
+      - br
+      - btn
+      - br
+      - btn
+      - const
+      - fieldset
+      - li
+      - tbody
+      - td
+      - th
+      - thead
+      - ul
 
     java:
       - databind
@@ -267,6 +284,7 @@ skip:
     - ui/public/favicon.ico
     - ui/public/bootstrap.min.css
     - infra/nginx/mime.types
+    - python/static/bootstrap.min.css
 
   names:
     - mvnw

@@ -1,0 +1,11 @@
+{% extends 'hr/base.html' %}
+{% block title %}
+HR Manager
+{% endblock %}
+{% block content %}
+<h1 id='title'>HR Manager</h1>
+<ul>
+  <li><a href="{% url 'hr:employees' %} ">List Employees</a></li>
+  <li><a href="{% url 'hr:reset_db' %}">Reset database</a></li>
+</ul>
+{% endblock %}

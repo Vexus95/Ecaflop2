@@ -1,0 +1,72 @@
+{% extends 'hr/base.html' %}
+{% block title %}
+HR Manager - Add Employee
+{% endblock %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<h2>Add new employee</h2>
+<form method="post" action="{% url 'hr:add_employee' %}">
+  {% csrf_token %}
+  <fieldset>
+    <legend>Basic Info</legend>
+    <div class="row">
+      <div class="col">
+        <label for="name" class="form-label">Name</label>
+      </div>
+      <div class="col col-10">
+        <input class="form-control" name="name" value="{{ employee.name }}" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="email" class="form-label">Email</label>
+      </div>
+      <div class="col col-10">
+        <input class="form-control" name="email" value="{{ employee.email }}" />
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Address</legend>
+    <div class="row">
+      <div class="col col-10">
+        <input
+          class="form-control"
+          name="address_line1"
+          value="{{ employee.address_line1 }}"
+        />
+      </div>
+      <div class="col col-10">
+        <input
+          class="form-control"
+          name="address_line2"
+          value="{{ employee.address_line2 }}"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-2">
+        <label for="city" class="form-label">City</label>
+      </div>
+      <div class="col col-8">
+        <input class="form-control" name="city" value="{{ employee.city }}" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-2">
+        <label for="zip_code" class="form-label">Zip code</label>
+      </div>
+      <div class="col col-3">
+        <input class="form-control" name="zip_code" value="{{ employee.zip_code }}" />
+      </div>
+    </div>
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Add</button>
+</form>
+{% endblock %}

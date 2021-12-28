@@ -1,0 +1,17 @@
+{% extends 'hr/base.html' %}
+{% block title %}
+HR Manager - Employees
+{% endblock %}
+{% block content %}
+<h2>Edit Employee</h2>
+<p>{{ employee.name }} - {{ employee.email }}</p>
+<ul>
+  <li>
+    <a href='{% url 'hr:basic' employee.id %}'> Update basic info </a>
+  </li>
+  <li>
+    <a href='{% url 'hr:address' employee.id %}'> Update address </a>
+  </li>
+</ul>
+
+{% endblock %}
