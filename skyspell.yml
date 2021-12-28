@@ -145,29 +145,27 @@ ignore:
 
   extensions:
     html:
+      - block
+      - br
+      - br
+      - btn
+      - btn
       - css
       - doctype
+      - endblock
+      - endfor
+      - endif
       - favicon
+      - fieldset
       - href
       - ico
-      - noscript
-      - block
-      - endif
-      - endfor
-      - endblock
-      - br
-      - btn
-      - br
-      - btn
-      - const
-      - fieldset
       - li
+      - noscript
       - tbody
       - td
       - th
       - thead
       - ul
-
     java:
       - databind
       - deser
@@ -185,10 +183,12 @@ ignore:
       - fs
 
     py:
+      - argparse
       - argv
       - asdict
       - autouse
       - conftest
+      - cwd
       - dataclass
       - dataclasses
       - elif
@@ -200,17 +200,16 @@ ignore:
       - len
       - os
       - pathlib
+      - pystr
+      - rc
+      - returncode
       - setattr
       - setdefault
       - str
+      - subparsers
+      - subprocess
       - sys
       - urlpatterns
-      - argparse
-      - subprocess
-      - cwd
-      - rc
-      - returncode
-      - subparsers
 
     rs:
       - reqwest
@@ -227,19 +226,6 @@ ignore:
     sh:
       - cp
 
-    vue:
-      - async
-      - br
-      - btn
-      - const
-      - fieldset
-      - li
-      - stringify
-      - tbody
-      - td
-      - th
-      - thead
-      - ul
 
   paths:
     infra/automation.py:
@@ -273,20 +259,16 @@ ignore:
     tests/tasks.py:
       - pre
 
-    ui/package.json:
-      - browserslist
 
 skip:
   paths:
     - java/mvnw.cmd
     - java/pom.xml
-    - ui/src/assets/logo.png
-    - ui/public/favicon.ico
-    - ui/public/bootstrap.min.css
     - infra/nginx/mime.types
     - python/static/bootstrap.min.css
 
   names:
+    - favicon.ico
     - mvnw
     - yarn.lock
     - poetry.lock
