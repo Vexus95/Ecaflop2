@@ -95,12 +95,29 @@ def reset_dbs(args):
     re_init_remote_dbs()
 
 
+def deploy_systemd(args):
+    socket = "gunicorn@.socket"
+    src_path = SRC_PATH / "infra" / "systemd" / socket
+    dest_path = f"root@hr.dmerej.info:/etc/systemd/system/{socket}"
+    scp(src_path, dest_path)
+
+    service = "gunicorn@.service"
+    src_path = SRC_PATH / "infra" / "systemd" / service
+    dest_path = f"root@hr.dmerej.info:/etc/systemd/system/{service}"
+    scp(src_path, dest_path)
+
+    ssh("root@hr.dmerej.info", "systemctl daemon-reload")
+
+
 def main():
     parser = ArgumentParser()
     actions = parser.add_subparsers(help="available actions", dest="action")
 
     deploy_backend_parser = actions.add_parser("deploy-backend")
     deploy_backend_parser.set_defaults(action=deploy_backend)
+
+    deploy_systemd_parser = actions.add_parser("deploy-systemd")
+    deploy_systemd_parser.set_defaults(action=deploy_systemd)
 
     deploy_nginx_parser = actions.add_parser("deploy-nginx")
     deploy_nginx_parser.set_defaults(action=deploy_nginx)
