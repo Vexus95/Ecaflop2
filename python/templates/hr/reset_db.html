@@ -1,0 +1,15 @@
+{% extends 'hr/base.html' %}
+{% block title %}
+HR Manager - Reset database
+{% endblock %}
+{% block content %}
+<h2> Reset Employee Database </h2>
+<p>
+  You are about to delete all employees from the database.
+</p>
+<p>This cannot be undone.</p>
+<form method="post" action="{% url 'hr:reset_db' %}" >
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Proceed</button>
+</form>
+{% endblock %}
