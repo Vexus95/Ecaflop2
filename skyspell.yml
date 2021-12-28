@@ -230,6 +230,9 @@ ignore:
   paths:
     infra/automation.py:
       - dbs
+      - rsyncexcludes
+      - systemctl
+      - systemd
 
     infra/nginx/nginx.conf:
       - lv
