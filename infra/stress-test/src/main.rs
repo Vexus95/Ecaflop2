@@ -74,10 +74,10 @@ async fn put_employee(client: &Client, instance: char, index: usize) -> Result<(
     if index % 10 == 0 {
         println!("instance {} employee {}", instance, index);
     }
-    let url = format!("https://{}.hr.dmerej.info/api/v1/employee", instance);
+    let url = format!("https://{}.hr.dmerej.info/add_employee", instance);
     let response = client
         .put(url)
-        .json(&body)
+        .form(&body)
         .send()
         .await
         .with_context(|| format!("instance : {} could not put employee {}", instance, index))?;
