@@ -6,6 +6,10 @@ server {
   root /srv/hr/static/@letter@ ;
   index index.html;
 
+  location /static {
+    root /srv/hr/src/kata-hr-manager/python ;
+  }
+
   location / {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
@@ -14,8 +18,5 @@ server {
     proxy_pass http://sock-@letter@;
   }
 
-  location /static {
-    root /srv/hr/src/kata-hr-manager/python/static/ ;
-  }
 
 }
