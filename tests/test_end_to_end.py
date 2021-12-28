@@ -4,27 +4,6 @@ from faker import Faker
 from conftest import new_fake_employee
 
 
-def on_console_message(message):
-    print(message.text)
-
-
-def on_request(request):
-    if "api" in request.url:
-        print("request started: ", request.method, request.url)
-
-
-def on_request_finished(request):
-    if "api" in request.url:
-        print("request finished: ", request.method, request.url)
-
-
-@pytest.fixture(autouse=True)
-def subscribe_to_page_events(page):
-    page.on("console", on_console_message)
-    page.on("request", on_request)
-    page.on("requestfinished", on_request_finished)
-
-
 @pytest.fixture(autouse=True)
 def set_timeout(page):
     page.set_default_timeout(2000)
