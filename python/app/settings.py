@@ -1,4 +1,5 @@
 import os
+import string
 from pathlib import Path
 
 import dotenv
@@ -17,6 +18,8 @@ else:
 
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "hr.dmerej.info"]
+for c in string.ascii_lowercase:
+    ALLOWED_HOSTS.append(c + ".hr.dmerej.info")
 
 INSTALLED_APPS = [
     "corsheaders",
