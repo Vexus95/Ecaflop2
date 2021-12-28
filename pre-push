@@ -34,11 +34,6 @@ do
       yarn test
     )
     (
-      cd ui
-      yarn
-      yarn lint
-    )
-    (
       cd infra/stress-test/
       cargo clippy
     )
