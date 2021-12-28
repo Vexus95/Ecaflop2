@@ -17,9 +17,12 @@ def run(cwd, cmd, **kwargs):
         sys.exit(rc)
 
 
-def rsync(src, url):
+def rsync(src, url, *, excludes=None):
     src = str(src) + "/"
-    cmd = ["rsync", "--recursive", "--itemize-changes", src, url]
+    cmd = ["rsync", "--recursive", "--itemize-changes"]
+    if excludes:
+        cmd.extend(["--exclude-from", excludes])
+    cmd.extend([src, url])
     run(Path.cwd(), cmd)
 
 
@@ -52,30 +55,6 @@ def generate_nginx_server_conf(c):
     generate_from_template(in_path, gen_path, c)
 
 
-def build_frontend_for(c):
-    src = SRC_PATH / "ui"
-    dest = src / "dist" / c
-    env = os.environ.copy()
-    env["VUE_APP_HR_API_URL"] = f"https://{c}.hr.dmerej.info/api/v1"
-    run(src, ["yarn", "build", "--dest", dest], env=env)
-
-
-def deploy_frontend_for(c):
-    src = SRC_PATH / "ui"
-    dest = src / "dist" / c
-    rsync(dest, f"hr@hr.dmerej.info:static/{c}")
-
-
-def build_frontend(args):
-    for c in string.ascii_lowercase:
-        build_frontend_for(c)
-
-
-def deploy_frontend(args):
-    for c in string.ascii_lowercase:
-        deploy_frontend_for(c)
-
-
 def deploy_nginx(args):
     for c in string.ascii_lowercase:
         generate_nginx_server_conf(c)
@@ -83,6 +62,14 @@ def deploy_nginx(args):
     rsync(src, "root@hr.dmerej.info:/etc/nginx")
     ssh("root@hr.dmerej.info", "nginx -t")
     ssh("root@hr.dmerej.info", "nginx -s reload")
+
+
+def deploy_backend(args):
+    src = SRC_PATH / "python"
+    excludes_file = src / ".rsyncexcludes"
+    rsync(src, "hr@hr.dmerej.info:src/kata-hr-manager/python", excludes=excludes_file)
+    to_restart = [f"gunicorn@{c}.service" for c in string.ascii_lowercase]
+    ssh("root@hr.dmerej.info", f"systemctl restart {' '.join(to_restart)}")
 
 
 def migrate_django_db():
@@ -112,11 +99,8 @@ def main():
     parser = ArgumentParser()
     actions = parser.add_subparsers(help="available actions", dest="action")
 
-    build_frontend = actions.add_parser("build-frontend")
-    build_frontend.set_defaults(action=build_frontend)
-
-    deploy_frontend_parser = actions.add_parser("deploy-frontend")
-    deploy_frontend_parser.set_defaults(action=deploy_frontend)
+    deploy_backend_parser = actions.add_parser("deploy-backend")
+    deploy_backend_parser.set_defaults(action=deploy_backend)
 
     deploy_nginx_parser = actions.add_parser("deploy-nginx")
     deploy_nginx_parser.set_defaults(action=deploy_nginx)
