@@ -9,7 +9,11 @@ def index(request):
 
 
 def reset_db(request):
-    return render(request, "hr/reset_db.html")
+    if request.method == "GET":
+        return render(request, "hr/reset_db.html")
+    else:
+        Employee.objects.all().delete()
+        return redirect("hr:employees")
 
 
 def employees(request):
@@ -79,7 +83,7 @@ def basic(request, id):
     employee = get_object_or_404(Employee, pk=id)
     context = {"employee": employee}
     if request.method == "POST":
-        return update_address(request, employee)
+        return update_basic(request, employee)
     else:
         return render(request, "hr/basic.html", context=context)
 
