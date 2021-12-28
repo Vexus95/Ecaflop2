@@ -1,9 +1,9 @@
-from argparse import ArgumentParser
 import os
-from pathlib import Path
 import string
 import subprocess
 import sys
+from argparse import ArgumentParser
+from pathlib import Path
 
 SRC_PATH = Path(".").resolve().parent
 DJANGO_DB_PATH = SRC_PATH / "python/db.sqlite3"
