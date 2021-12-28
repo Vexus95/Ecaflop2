@@ -5,13 +5,24 @@ from conftest import new_fake_employee
 
 
 def on_console_message(message):
-    if message.type == "error":
-        print(message.text)
+    print(message.text)
+
+
+def on_request(request):
+    if "api" in request.url:
+        print("request started: ", request.method, request.url)
+
+
+def on_request_finished(request):
+    if "api" in request.url:
+        print("request finished: ", request.method, request.url)
 
 
 @pytest.fixture(autouse=True)
-def fail_when_console_errors(page):
+def subscribe_to_page_events(page):
     page.on("console", on_console_message)
+    page.on("request", on_request)
+    page.on("requestfinished", on_request_finished)
 
 
 @pytest.fixture(autouse=True)
@@ -102,6 +113,14 @@ def test_edit_employee_basic_info(clean_db, saved_employee, page, key):
     assert new_value in page.content()
 
 
+def patch_api(request):
+    return "api/v1" in request.url and request.method == "PATCH"
+
+
+def get_api(request):
+    return "api/v1" in request.url and request.method == "GET"
+
+
 @pytest.mark.parametrize(
     "key",
     [
@@ -125,12 +144,13 @@ def test_edit_employee_address(clean_db, saved_employee, page, key):
     faker = Faker()
     new_value = faker.pystr()
     page.fill(f'input[name="{key}"]', new_value)
-    page.click('button[type="submit"]')
+    with page.expect_request_finished(patch_api):
+        page.click('button[type="submit"]')
 
-    # Making sure we make a round-trip through the db
-    page.goto("/")
+    with page.expect_request_finished(get_api):
+        page.goto(edit_address_url)
 
-    page.goto(edit_address_url)
+    page.wait_for_selector("text=loading...", state="detached")
     input_element = page.locator(f'input[name="{key}"]')
     assert input_element.input_value() == new_value
 

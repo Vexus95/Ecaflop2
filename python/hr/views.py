@@ -55,7 +55,10 @@ def patch_employee(employee, request):
                     {"error": f"key '{key}' cannot be blank"}, status=400
                 )
     employee.save()
-    return JsonResponse({"employee": employee.to_json()}, status=200)
+    response_body = {"employee": employee.to_json()}
+    print(response_body)
+    response = JsonResponse(response_body, status=200)
+    return response
 
 
 @csrf_exempt

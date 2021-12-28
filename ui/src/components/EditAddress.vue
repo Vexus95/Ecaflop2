@@ -1,7 +1,8 @@
 <template>
 <div>
   <h2>Edit  Employee Address</h2>
-  <form @submit="submitClicked">
+  <span v-if="loading">loading ...</span>
+  <form v-else @submit="submitClicked">
   <fieldset>
     <legend>Address</legend>
       <div class='row'>
@@ -48,7 +49,6 @@
   </form>
   <span>{{ status }}</span>
   <span v-if="error">{{ error }}</span>
-  <span v-if="loading">loading ...</span>
 </div>
 </template>
 
@@ -97,14 +97,15 @@ export default {
         zip_code: this.zip_code
       }
       const client = new Client(this)
+      console.log('starting patch request ...')
       const json = await client.doRequest(
         this.url(),
         { method: 'PATCH', body: JSON.stringify(payload) }
       )
       if (!json) {
         this.status = ''
-        return
       }
+      console.log('json', json)
       this.$router.push('/employees')
     }
   }

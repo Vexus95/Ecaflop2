@@ -32,12 +32,14 @@ export default class Client {
     this.onRequestStart()
     try {
       const response = await fetch(url, fetchOptions)
+      console.log('Client.js response', response)
       if (!response.ok) {
         const message = await this.getErrorMessage(response)
         throw new Error(message)
       }
       this.onRequestSuccess()
       const json = await response.json()
+      console.log('Client.js json', json)
       return json
     } catch (error) {
       this.onRequestError(error)
