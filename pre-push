@@ -19,11 +19,6 @@ do
       poetry run invoke lint
     )
     (
-      cd tests
-      poetry install
-      poetry run invoke lint
-    )
-    (
       cd java
       ./mvnw test
     )
