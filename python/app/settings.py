@@ -3,9 +3,11 @@ import string
 from pathlib import Path
 
 import dotenv
+from django import template
 
 dotenv.load_dotenv()
 
+register = template.Library()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,6 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_browser_reload",
+    "django_components",
     "hr",
 ]
 
@@ -55,6 +58,19 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+            ],
+            "loaders": [
+                (
+                    "django.template.loaders.cached.Loader",
+                    [
+                        "django.template.loaders.filesystem.Loader",
+                        "django.template.loaders.app_directories.Loader",
+                        "django_components.template_loader.Loader",
+                    ],
+                )
+            ],
+            "builtins": [
+                "django_components.templatetags.component_tags",
             ],
         },
     }

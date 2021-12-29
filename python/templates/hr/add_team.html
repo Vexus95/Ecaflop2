@@ -1,6 +1,6 @@
 {% extends 'hr/base.html' %}
 {% block title %}
-HR DB - Add Employee
+HR DB - Add Team
 {% endblock %}
 {% block content %}
 {% if messages %}
@@ -10,13 +10,19 @@ HR DB - Add Employee
     {% endfor %}
 </ul>
 {% endif %}
-<h2>Add new employee</h2>
-<form method="post" action="{% url 'hr:add_employee' %}">
+<h2>Create new team</h2>
+<form method="post" action="{% url 'hr:add_team' %}">
   {% csrf_token %}
 
-  {% component "basic_info" %}
-  {% component "address" %}
-  {% component "legal" %}
+  <div class="row">
+    <div class="col">
+      <label for="name" class="form-label">Name</label>
+    </div>
+    <div class="col col-10">
+      <input class="form-control" name="name" value="{{ team.name }}" />
+    </div>
+  </div>
+
 
   <button type="submit" class="btn btn-primary">Add</button>
 </form>

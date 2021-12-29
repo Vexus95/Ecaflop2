@@ -1,7 +1,7 @@
 # type: ignore
 from invoke import call, task
 
-SOURCES = "hr app"
+SOURCES = "hr app tests"
 
 
 @task

@@ -1,0 +1,27 @@
+{% extends 'hr/base.html' %}
+{% block title %}
+HR DB - Team members
+{% endblock %}
+{% block content %}
+<h2>Team Members</h2>
+<p>
+Name: {{ team.name }}
+</p>
+
+<p>
+<ul>
+{% for member in members %}
+  <li>{{ member.basic_info.name }}
+  {% if member.is_manager %}
+  <strong>(manager)</strong>
+  {% endif %}
+  </li>
+
+{% empty %}
+</u>
+This team has no members
+{% endfor %}
+</p>
+
+{% endblock %}
+

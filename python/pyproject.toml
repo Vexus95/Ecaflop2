@@ -2,9 +2,9 @@
 profile = "black"
 
 [tool.poetry]
-name = "hr-db-manager"
+name = "hr-db"
 version = "0.0.1"
-description = "HR Database Manager"
+description = "HR DB"
 authors = ["Dimitri Merejkowsky <dimitri@dmerej.info>"]
 readme = "README.md"
 license = "BSD-3-Clause"
@@ -12,7 +12,7 @@ repository = ""
 
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
 
 django = "^3.2.10"
 django-browser-reload = "^1.0.0"
@@ -20,6 +20,7 @@ django-cors-headers = "^3.10.1"
 django-mustache = "^1.1.2"
 python-dotenv = "^0.19.2"
 gunicorn = "^20.1"
+django-components = "^0.17"
 
 [tool.poetry.dev-dependencies]
 invoke = "^1.5.0"
@@ -29,6 +30,12 @@ black = "21.10b0"
 isort = "^5.7.0"
 pytest-django = "^4.4.0"
 flake8 = "^4.0.1"
+
+pytest = "^6.2"
+Faker = "^10.0.0"
+playwright = "^1.17.2"
+pytest-playwright = "^0.2.2"
+pytest-xdist = "^2.5.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

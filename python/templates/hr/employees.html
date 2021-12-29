@@ -1,30 +1,38 @@
 {% extends 'hr/base.html' %}
 {% block title %}
-HR Manager - Employees
+HR DB - Employees
 {% endblock %}
 {% block content %}
-<h1 id='title'>Employee list</h1>
 <h2>Employees ({{ employees| length }})</h2>
+{% if employees %}
 <table class="table">
   <thead>
     <tr>
-      <th>Name</th>
+      <th>name</th>
       <th>email</th>
+      <th>manager?<th/>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     {% for employee in employees %}
     <tr>
-      <td>{{ employee.name }}</td>
-      <td>{{ employee.email }}</td>
+      <td>{{ employee.basic_info.name }}</td>
+      <td>{{ employee.basic_info.email }}</td>
+      <td>
+        {% if employee.is_manager %}
+        <strong>yes</strong>
+        {%  else %}
+        no
+        {% endif %}
+        </td>
       <td>
         <a href="{% url 'hr:employee' employee.id %}" class="btn btn-primary">
           Edit
         </a>
       </td>
       <td>
-        <a href="{% url 'hr:delete_employee' employee.id %}" class="btn btn-danger"
-        >
+        <a href="{% url 'hr:delete_employee' employee.id %}" class="btn btn-danger">
           Delete
         </a>
       </td>
@@ -32,5 +40,7 @@ HR Manager - Employees
     {% endfor %}
   </tbody>
 </table>
-<a href="{% url 'hr:add_employee' %}">Add new employee</a>
+{% else %}
+No employees yet
+{% endif %}
 {% endblock %}

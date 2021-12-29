@@ -1,8 +1,9 @@
 {% extends 'hr/base.html' %}
 {% block title %}
-HR DB - Add Employee
+HR DB - Edit Legal Information
 {% endblock %}
 {% block content %}
+<h2>Edit Employee Legal Information</h2>
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -10,14 +11,9 @@ HR DB - Add Employee
     {% endfor %}
 </ul>
 {% endif %}
-<h2>Add new employee</h2>
-<form method="post" action="{% url 'hr:add_employee' %}">
+<form action="{% url 'hr:legal' employee.id %}" method='post'>
   {% csrf_token %}
-
-  {% component "basic_info" %}
-  {% component "address" %}
-  {% component "legal" %}
-
-  <button type="submit" class="btn btn-primary">Add</button>
+  {% component "legal" employee=employee %}
+  <button type="submit" class="btn btn-primary">Update</button>
 </form>
 {% endblock %}

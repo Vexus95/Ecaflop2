@@ -1,0 +1,31 @@
+{% extends 'hr/base.html' %}
+{% block title %}
+HR DB - Add Team
+{% endblock %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<h2>Add new member to existing team</h2>
+Name: {{ employee.basic_info.name }}
+<form method="post" action="{% url 'hr:add_to_team' employee.id %}">
+  {% csrf_token %}
+
+    <div class="form-group col-md-4">
+      <label for="inputState">Team</label>
+      <select name="team_id" class="form-control">
+        {% for team in teams %}
+        <option selected>Choose ...</option>
+        <option value="{{ team.id }}">{{ team.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+  <button type="submit" class="btn btn-primary">Add</button>
+</form>
+{% endblock %}
+

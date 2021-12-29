@@ -13,25 +13,7 @@ HR Manager - Edit basic Information
 {% endif %}
 <form action="{% url 'hr:basic' employee.id %}" method='post'>
   {% csrf_token %}
-  <fieldset>
-    <legend>Basic Info</legend>
-    <div class="row">
-      <div class="col">
-        <label for="name" class="form-label">Name</label>
-      </div>
-      <div class="col col-10">
-        <input class="form-control" name="name" value="{{ employee.name }}" />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <label for="email" class="form-label">Email</label>
-      </div>
-      <div class="col col-10">
-        <input class="form-control" name="email" value="{{ employee.email }}" />
-      </div>
-    </div>
-  </fieldset>
+  {% component "basic_info" employee.basic_info %}
   <button type="submit" class="btn btn-primary">Update</button>
 </form>
 {% endblock %}
