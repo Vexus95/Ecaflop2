@@ -52,6 +52,8 @@ def add_employee(request):
             "address_line2",
             "city",
             "zip_code",
+            "job_title",
+            "hiring_date",
         ]:
             value = payload.get(key)
             if value is not None:

@@ -67,6 +67,34 @@ HR Manager - Add Employee
       </div>
     </div>
   </fieldset>
+  <fieldset>
+    <legend>Legal</legend>
+    <div class="row">
+      <div class="col col-3">
+        <label for="hiring_date" class="form-label">Hiring date</label>
+      </div>
+      <div class="col col-7">
+        <input
+          class="form-control"
+          type="date"
+          name="hiring_date"
+          value="{{ employee.hiring_date }}"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-3">
+        <label for="hiring_date" class="form-label">Job Title</label>
+      </div>
+      <div class="col col-7">
+        <input
+          class="form-control"
+          name="job_title"
+          value="{{ employee.job_title }}"
+        />
+      </div>
+    </div>
+  </fieldset>
   <button type="submit" class="btn btn-primary">Add</button>
 </form>
 {% endblock %}
