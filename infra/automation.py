@@ -68,6 +68,11 @@ def deploy_backend(args):
     src = SRC_PATH / "python"
     excludes_file = src / ".rsyncexcludes"
     rsync(src, "hr@hr.dmerej.info:src/kata-hr-manager/python", excludes=excludes_file)
+
+    restart_backend(args)
+
+
+def restart_backend(args):
     to_restart = [f"gunicorn@{c}.service" for c in string.ascii_lowercase]
     ssh("root@hr.dmerej.info", f"systemctl restart {' '.join(to_restart)}")
 
@@ -107,6 +112,7 @@ def deploy_systemd(args):
     scp(src_path, dest_path)
 
     ssh("root@hr.dmerej.info", "systemctl daemon-reload")
+    restart_backend(args)
 
 
 def main():
@@ -124,6 +130,9 @@ def main():
 
     reset_db_parser = actions.add_parser("reset-dbs")
     reset_db_parser.set_defaults(action=reset_dbs)
+
+    restart_backend_parsed = actions.add_parser("restart-backend")
+    restart_backend_parsed.set_defaults(action=restart_backend)
 
     args = parser.parse_args()
     if not args.action:
