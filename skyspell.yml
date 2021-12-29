@@ -54,6 +54,7 @@ ignore:
     - fasterxml
     - "f'input"
     - frontend
+    - filesystem
     - fullchain
     - gunicorn
     - gzip
@@ -96,6 +97,7 @@ ignore:
     - pypoetry
     - pytest
     - pythonpath
+    - readonly
     - readme
     - reqwest
     - rowid
@@ -137,10 +139,12 @@ ignore:
     - wsgi
 
   project:
+    - basicinfo
     - chai
     - pywatchman
     - tokio
     - vue
+    - xdist
     - zipcode
 
   extensions:
@@ -160,6 +164,7 @@ ignore:
       - href
       - ico
       - li
+      - nav
       - noscript
       - tbody
       - td
@@ -187,6 +192,7 @@ ignore:
       - argv
       - asdict
       - autouse
+      - builtins
       - conftest
       - cwd
       - dataclass
@@ -206,9 +212,11 @@ ignore:
       - setattr
       - setdefault
       - str
+      - strftime
       - subparsers
       - subprocess
       - sys
+      - templatetags
       - urlpatterns
 
     rs:
@@ -259,8 +267,8 @@ ignore:
     python/tasks.py:
       - pre
 
-    tests/tasks.py:
-      - pre
+    python/pytest.ini:
+      - testpaths
 
 
 skip:
