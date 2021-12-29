@@ -277,7 +277,6 @@ def add_to_team(request, id):
     if request.method == "GET":
         return render(request, "hr/add_to_team.html", context=context)
     else:
-        errors = False
         team_id = request.POST.get("team_id")
         if not team_id:
             messages.add_message(request, messages.ERROR, "Please select a team")
