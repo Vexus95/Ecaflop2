@@ -14,7 +14,7 @@ repository = ""
 [tool.poetry.dependencies]
 python = "^3.6.2"
 
-django = "^3.2.9"
+django = "^3.2.10"
 django-browser-reload = "^1.0.0"
 django-cors-headers = "^3.10.1"
 django-mustache = "^1.1.2"
