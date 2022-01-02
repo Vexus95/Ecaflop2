@@ -47,42 +47,86 @@ def add_employee(request):
     if request.method == "GET":
         return render(request, "hr/add_employee.html")
     else:
-        creation_params = {}
         payload = request.POST
         errors = False
+
+        # Basic
         basic_keys = [
             "name",
             "email",
-            "address_line1",
-            "address_line2",
-            "city",
-            "zip_code",
         ]
-        contract_keys = ["job_title", "hiring_date"]
-        for key in basic_keys + contract_keys:
+        basic_params = {}
+        for key in basic_keys:
             value = payload.get(key)
             if value is not None:
                 if value:
-                    creation_params[key] = value
+                    basic_params[key] = value
                 else:
                     messages.add_message(
                         request, messages.ERROR, f"{key} cannot be blank"
                     )
                     errors = True
+
+        # Address
+        address_keys = [
+            "address_line1",
+            "address_line2",
+            "city",
+            "zip_code",
+        ]
+        address_params = {}
+        for key in address_keys:
+            value = payload.get(key)
+            if value is not None:
+                if value:
+                    address_params[key] = value
+                    print(key, value)
+                    if key == "zip_code":
+                        try:
+                            int(value)
+                        except ValueError:
+                            messages.add_message(
+                                request, messages.ERROR, "zip_code must be an int"
+                            )
+                            errors = True
+                else:
+                    messages.add_message(
+                        request, messages.ERROR, f"{key} cannot be blank"
+                    )
+                    errors = True
+
+        # Legal
+        contract_keys = [
+            "hiring_date",
+            "job_title",
+        ]
+        contract_params = {}
+        for key in contract_keys:
+            value = payload.get(key)
+            if value is not None:
+                if value:
+                    contract_params[key] = value
+                else:
+                    messages.add_message(
+                        request, messages.ERROR, f"{key} cannot be blank"
+                    )
+                    errors = True
+
         if errors:
-            context = {"employee": creation_params}
+            employee = {
+                "name": basic_params.get("name", ""),
+                "email": basic_params.get("email", ""),
+                "basic_info": address_params,
+                "contract": contract_params,
+            }
+            context = {"employee": employee}
+            print(context)
             return render(request, "hr/add_employee.html", context)
         else:
-            basic_params = {
-                k: v for (k, v) in creation_params.items() if k in basic_keys
-            }
-            basic_info = BasicInfo.objects.create(**basic_params)
-            contract_params = {
-                k: v for (k, v) in creation_params.items() if k in contract_keys
-            }
+            basic_info = BasicInfo.objects.create(**basic_params, **address_params)
             contract = Contract.objects.create(**contract_params)
             Employee.objects.create(basic_info=basic_info, contract=contract)
-            return redirect("hr:employees")
+        return redirect("hr:employees")
 
 
 def address(request, id):

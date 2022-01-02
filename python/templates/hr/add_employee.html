@@ -4,6 +4,7 @@ HR DB - Add Employee
 {% endblock %}
 {% block content %}
 {% if messages %}
+<strong>Error<strong>
 <ul class="messages">
     {% for message in messages %}
     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -14,9 +15,9 @@ HR DB - Add Employee
 <form method="post" action="{% url 'hr:add_employee' %}">
   {% csrf_token %}
 
-  {% component "basic_info" %}
-  {% component "address" %}
-  {% component "legal" %}
+  {% component "basic_info" employee %}
+  {% component "address"  employee %}
+  {% component "legal" employee %}
 
   <button type="submit" class="btn btn-primary">Add</button>
 </form>

@@ -25,7 +25,8 @@ def save_employee(page, fake_employee):
         page.fill(f'input[name="{key}"]', value)
 
     page.click('button[type="submit"]')
-    return fake_employee
+    if not page.is_visible("strong:has-text('Error')"):
+        return fake_employee
 
 
 def on_response(response):
@@ -125,7 +126,10 @@ def edit_employee_address(page, employee_name, key, value):
 )
 def test_edit_employee_address(page, saved_employee, key):
     faker = Faker()
-    new_value = faker.pystr()
+    if key == "zip_code":
+        new_value = str(faker.pyint())
+    else:
+        new_value = faker.pystr()
     edit_url = edit_employee_address(page, saved_employee.name, key, new_value)
 
     page.goto(edit_url)
@@ -146,6 +150,27 @@ def test_BUG_edit_employee_address_line2(page, saved_employee):
 
     input_element = page.locator('input[name="address_line2"]')
     assert input_element.input_value() == old_value
+
+
+def test_cannot_create_with_zip_non_int(page):
+    faker = Faker()
+    not_an_int = faker.pystr()
+    fake_employee = new_fake_employee()
+    fake_employee.zip_code = not_an_int
+
+    actual = save_employee(page, fake_employee)
+    assert actual is None
+
+
+def test_BUG_can_edit_zip_code_to_non_int(page, saved_employee):
+    faker = Faker()
+    not_an_int = faker.pystr()
+    edit_url = edit_employee_address(page, saved_employee.name, "zip_code", not_an_int)
+
+    page.goto(edit_url)
+
+    input_element = page.locator('input[name="zip_code"]')
+    assert input_element.input_value() == not_an_int
 
 
 def test_edit_employee_job_title(saved_employee, page):
