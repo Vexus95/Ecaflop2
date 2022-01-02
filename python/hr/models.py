@@ -14,7 +14,7 @@ class BasicInfo(models.Model):
 
 
 class Contract(models.Model):
-    hiring_date = models.DateField(null=False)
+    hiring_date = models.CharField(null=False, max_length=30)
     job_title = models.CharField(null=False, max_length=100)
 
     def __str__(self):

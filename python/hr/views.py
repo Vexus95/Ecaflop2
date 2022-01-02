@@ -80,7 +80,6 @@ def add_employee(request):
             if value is not None:
                 if value:
                     address_params[key] = value
-                    print(key, value)
                     if key == "zip_code":
                         try:
                             int(value)
