@@ -28,6 +28,18 @@ def save_employee(page, fake_employee):
     return fake_employee
 
 
+def on_response(response):
+    status = response.status
+    url = response.url
+    if status >= 400:
+        print("ERROR: ", status, url)
+
+
+@pytest.fixture(autouse=True)
+def subscribe_to_page_events(page):
+    page.on("response", on_response)
+
+
 @pytest.fixture
 def saved_employee(page, fake_employee):
     return save_employee(page, fake_employee)
