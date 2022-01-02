@@ -216,7 +216,9 @@ ignore:
       - subparsers
       - subprocess
       - sys
+      - td
       - templatetags
+      - ul
       - urlpatterns
 
     rs:
