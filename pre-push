@@ -18,20 +18,6 @@ do
       poetry install
       poetry run invoke lint
     )
-    (
-      cd java
-      ./mvnw test
-    )
-    (
-      cd javascript
-      yarn
-      yarn lint
-      yarn test
-    )
-    (
-      cd infra/stress-test/
-      cargo clippy
-    )
   fi
 done
 
