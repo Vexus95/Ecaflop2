@@ -18,8 +18,8 @@ Name: {{ employee.basic_info.name }}
     <div class="form-group col-md-4">
       <label for="inputState">Team</label>
       <select name="team_id" class="form-control">
-        {% for team in teams %}
         <option selected>Choose ...</option>
+        {% for team in teams %}
         <option value="{{ team.id }}">{{ team.name }}</option>
         {% endfor %}
       </select>
