@@ -166,12 +166,9 @@ def test_create_team(page):
     assert page.is_visible(f"td:has-text('{team_name}')")
 
 
-def test_add_member_to_team(page):
-    team_name = create_team(page)
-
-    employee = new_fake_employee()
-    employee = save_employee(page, employee)
-    row = find_employee_row(page, employee.name)
+def add_member_to_team(page, team_name, employee_name):
+    page.goto("/employees")
+    row = find_employee_row(page, employee_name)
     edit_button = row.locator("text=Edit")
     edit_button.click()
 
@@ -180,6 +177,13 @@ def test_add_member_to_team(page):
     select = page.locator("select[name='team_id']")
     select.select_option(label=team_name)
     page.click("text='Add'")
+
+
+def test_add_member_to_team(page):
+    employee = new_fake_employee()
+    employee = save_employee(page, employee)
+    team_name = create_team(page)
+    add_member_to_team(page, team_name, employee.name)
 
     row = find_team_row(page, team_name)
     link = row.locator("text='View members'")
@@ -222,16 +226,20 @@ def test_delete_single_employee(page):
     assert page.is_visible(f"text={bob.name}")
 
 
-def test_delete_team(page):
-    team_one = create_team(page)
-    team_two = create_team(page)
-
-    row = find_team_row(page, team_two)
+def delete_team(page, team_name):
+    page.goto("/teams")
+    row = find_team_row(page, team_name)
     link = row.locator("text='Delete'")
     url = link.get_attribute("href")
     page.goto(url)
-
     page.click("text='Proceed'")
+
+
+def test_delete_empty_team(page):
+    team_one = create_team(page)
+    team_two = create_team(page)
+
+    delete_team(page, team_two)
 
     assert page.is_visible(f"td:has-text('{team_one}')")
     assert not page.is_visible(f"td:has-text('{team_two}')")
