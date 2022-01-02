@@ -7,7 +7,7 @@ HR DB - Promote Employee
 <p>{{ employee.basic_info.name }} is going to be promoted as a manager</p>
 <form action="{% url 'hr:promote' employee.id %}" method='post'>
   {% csrf_token %}
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary">Proceed</button>
 </form>
 {% endblock %}
 
