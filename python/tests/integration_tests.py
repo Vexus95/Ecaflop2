@@ -99,6 +99,22 @@ def test_edit_employee_basic_info(saved_employee, page, key):
     assert new_value in page.content()
 
 
+def edit_employee_address(page, employee_name, key, value):
+    row = find_employee_row(page, employee_name)
+    edit_button = row.locator("text=Edit")
+    edit_button.get_attribute("href")
+    edit_button.click()
+
+    link = page.locator("text='Update address'")
+    edit_address_url = link.get_attribute("href")
+    link.click()
+
+    page.fill(f'input[name="{key}"]', value)
+    page.click('button[type="submit"]')
+
+    return edit_address_url
+
+
 @pytest.mark.parametrize(
     "key",
     [
@@ -108,22 +124,12 @@ def test_edit_employee_basic_info(saved_employee, page, key):
         "zip_code",
     ],
 )
-def test_edit_employee_address(saved_employee, page, key):
-    row = find_employee_row(page, saved_employee.name)
-    edit_button = row.locator("text=Edit")
-    edit_button.get_attribute("href")
-    edit_button.click()
-
-    link = page.locator("text='Update address'")
-    edit_address_url = link.get_attribute("href")
-    link.click()
-
+def test_edit_employee_address(page, saved_employee, key):
     faker = Faker()
     new_value = faker.pystr()
-    page.fill(f'input[name="{key}"]', new_value)
-    page.click('button[type="submit"]')
+    edit_url = edit_employee_address(page, saved_employee.name, key, new_value)
 
-    page.goto(edit_address_url)
+    page.goto(edit_url)
 
     input_element = page.locator(f'input[name="{key}"]')
     assert input_element.input_value() == new_value
