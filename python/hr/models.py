@@ -33,7 +33,8 @@ class Employee(models.Model):
     contract = models.OneToOneField(Contract, null=False, on_delete=models.CASCADE)
     manager = models.ForeignKey("self", on_delete=models.SET_NULL, null=True)
     is_manager = models.BooleanField(default=False)
-    team = models.ForeignKey(Team, null=True, on_delete=models.SET_NULL)
+    # BUG
+    team = models.ForeignKey(Team, null=True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         res = self.basic_info.name
