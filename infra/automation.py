@@ -11,7 +11,7 @@ LETTERS = {
     1: list("klmnopqrs"),
     2: list("abcdefghi"),
 }
-ALL_LETTERS = LETTERS[1] + LETTERS[2]
+ALL_LETTERS = LETTERS[2] + LETTERS[1]
 
 
 def get_letters(group):

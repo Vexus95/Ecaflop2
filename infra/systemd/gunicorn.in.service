@@ -7,7 +7,7 @@ After=network.target
 Type=notify
 User=hr
 Group=hr
-WorkingDirectory=/srv/hr/src/kata-hr-manager/python/
+WorkingDirectory=/srv/hr/src/group@group@
 ExecStart=/srv/hr/src/group@group@/.venv/bin/gunicorn app.wsgi --capture-output --log-file /var/log/hr/gunicorn-@letter@.log
 
 ExecReload=/bin/kill -s HUP $MAINPID
