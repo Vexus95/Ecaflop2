@@ -12,7 +12,6 @@ do
   if [[ "${local_sha}" = $z40 ]]; then
     echo "Deleting stuff, nothing to do"
   else
-    skyspell-ci run
     (
       cd python
       poetry install
