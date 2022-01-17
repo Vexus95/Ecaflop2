@@ -1,5 +1,4 @@
 import os
-import string
 import subprocess
 import sys
 from argparse import ArgumentParser
@@ -7,6 +6,26 @@ from pathlib import Path
 
 SRC_PATH = Path(".").resolve().parent
 DJANGO_DB_PATH = SRC_PATH / "python/db.sqlite3"
+
+LETTERS = {
+    1: list("klmnopqrs"),
+    2: list("abcdefghi"),
+}
+ALL_LETTERS = LETTERS[1] + LETTERS[2]
+
+
+def get_letters(group):
+    res = LETTERS[group]
+    assert len(res) == 9
+    return res
+
+
+def group_from_letter(letter):
+    if letter in LETTERS[1]:
+        return 1
+    if letter in LETTERS[2]:
+        return 2
+    assert False, f"letter {letter} not found"
 
 
 def run(cwd, cmd, **kwargs):
@@ -36,27 +55,34 @@ def scp(src, url):
     run(Path.cwd(), cmd)
 
 
+def scp_multi(sources, url):
+    cmd = ["scp", *sources, url]
+    run(Path.cwd(), cmd)
+
+
 def generate_from_template(in_path, gen_path, letter):
     in_text = in_path.read_text()
     out_text = in_text.replace("@letter@", letter)
-    gen_path.mkdir(exist_ok=True)
-    out_path = gen_path / f"{letter}.conf"
-    out_path.write_text(out_text)
-    print("Generated", out_path)
+    group = group_from_letter(letter)
+    out_text = out_text.replace("@group@", str(group))
+    gen_parent_path = gen_path.parent
+    gen_parent_path.mkdir(exist_ok=True)
+    gen_path.write_text(out_text)
+    print("Generated", gen_path)
 
 
 def generate_nginx_server_conf(c):
     in_path = SRC_PATH / "infra/nginx/servers/sub.conf.in"
-    gen_path = SRC_PATH / "infra/nginx/servers/gen/"
+    gen_path = SRC_PATH / f"infra/nginx/servers/gen/{c}.conf"
     generate_from_template(in_path, gen_path, c)
 
     in_path = SRC_PATH / "infra/nginx/upstreams/conf.in"
-    gen_path = SRC_PATH / "infra/nginx/upstreams/gen/"
+    gen_path = SRC_PATH / f"infra/nginx/upstreams/gen/{c}.conf"
     generate_from_template(in_path, gen_path, c)
 
 
 def deploy_nginx(args):
-    for c in string.ascii_lowercase:
+    for c in ALL_LETTERS:
         generate_nginx_server_conf(c)
     src = SRC_PATH / "infra/nginx"
     rsync(src, "root@hr.dmerej.info:/etc/nginx")
@@ -67,13 +93,14 @@ def deploy_nginx(args):
 def deploy_backend(args):
     src = SRC_PATH / "python"
     excludes_file = src / ".rsyncexcludes"
-    rsync(src, "hr@hr.dmerej.info:src/kata-hr-manager/python", excludes=excludes_file)
+    group = args.group
+    rsync(src, f"hr@hr.dmerej.info:src/group{group}", excludes=excludes_file)
 
     restart_backend(args)
 
 
 def restart_backend(args):
-    to_restart = [f"gunicorn@{c}.service" for c in string.ascii_lowercase]
+    to_restart = [f"gunicorn-{c}.service" for c in ALL_LETTERS]
     ssh("root@hr.dmerej.info", f"systemctl restart {' '.join(to_restart)}")
 
 
@@ -101,15 +128,20 @@ def reset_dbs(args):
 
 
 def deploy_systemd(args):
-    socket = "gunicorn@.socket"
-    src_path = SRC_PATH / "infra" / "systemd" / socket
-    dest_path = f"root@hr.dmerej.info:/etc/systemd/system/{socket}"
-    scp(src_path, dest_path)
+    to_copy = []
+    for letter in ALL_LETTERS:
+        src_path = SRC_PATH / "infra/systemd/gunicorn.in.socket"
+        gen_path = SRC_PATH / f"infra/systemd/gen/gunicorn-{letter}.socket"
+        generate_from_template(src_path, gen_path, letter)
+        to_copy.append(gen_path)
 
-    service = "gunicorn@.service"
-    src_path = SRC_PATH / "infra" / "systemd" / service
-    dest_path = f"root@hr.dmerej.info:/etc/systemd/system/{service}"
-    scp(src_path, dest_path)
+        src_path = SRC_PATH / "infra/systemd/gunicorn.in.service"
+        gen_path = SRC_PATH / f"infra/systemd/gen/gunicorn-{letter}.service"
+        generate_from_template(src_path, gen_path, letter)
+        to_copy.append(gen_path)
+
+    dest_path = f"root@hr.dmerej.info:/etc/systemd/system"
+    scp_multi(to_copy, dest_path)
 
     ssh("root@hr.dmerej.info", "systemctl daemon-reload")
     restart_backend(args)
@@ -120,6 +152,9 @@ def main():
     actions = parser.add_subparsers(help="available actions", dest="action")
 
     deploy_backend_parser = actions.add_parser("deploy-backend")
+    deploy_backend_parser.add_argument(
+        "--group", required=True, choices=[1, 2], type=int
+    )
     deploy_backend_parser.set_defaults(action=deploy_backend)
 
     deploy_systemd_parser = actions.add_parser("deploy-systemd")
