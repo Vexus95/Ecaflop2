@@ -336,7 +336,7 @@ def add_to_team(request, id):
             return render(request, "hr/add_to_team.html", context=context)
         try:
             team = Team.objects.get(pk=team_id)
-        except Team.DoesNotExist:
+        except (Team.DoesNotExist, ValueError):
             messages.add_message(request, messages.ERROR, "No such team")
             return render(request, "hr/add_to_team.html", context=context)
 
