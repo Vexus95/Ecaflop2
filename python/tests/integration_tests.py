@@ -149,7 +149,7 @@ def test_cannot_create_with_zip_non_int(page):
     assert actual is None
 
 
-def test_BUG_can_edit_zip_code_to_non_int(page, saved_employee):
+def test_cannot_edit_zip_code_to_int(page, saved_employee):
     faker = Faker()
     not_an_int = faker.pystr()
     edit_url = edit_employee_address(page, saved_employee.name, "zip_code", not_an_int)
@@ -157,7 +157,7 @@ def test_BUG_can_edit_zip_code_to_non_int(page, saved_employee):
     page.goto(edit_url)
 
     input_element = page.locator('input[name="zip_code"]')
-    assert input_element.input_value() == not_an_int
+    assert input_element.input_value() == saved_employee.zip_code
 
 
 def test_edit_employee_job_title(saved_employee, page):

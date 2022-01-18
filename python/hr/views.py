@@ -168,7 +168,17 @@ def update_address(request, employee):
         value = payload.get(key)
         if value is not None:
             if value:
-                setattr(basic_info, key, value)
+                if key == "zip_code":
+                    try:
+                        int(value)
+                        setattr(basic_info, key, value)
+                    except ValueError:
+                        messages.add_message(
+                            request, messages.ERROR, "zip_code must be an int"
+                        )
+                        errors = True
+                else:
+                    setattr(basic_info, key, value)
             else:
                 messages.add_message(request, messages.ERROR, f"{key} cannot be blank")
                 errors = True
