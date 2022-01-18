@@ -120,6 +120,7 @@ def edit_employee_address(page, employee_name, key, value):
     "key",
     [
         "address_line1",
+        "address_line2",
         "city",
         "zip_code",
     ],
@@ -136,20 +137,6 @@ def test_edit_employee_address(page, saved_employee, key):
 
     input_element = page.locator(f'input[name="{key}"]')
     assert input_element.input_value() == new_value
-
-
-def test_BUG_edit_employee_address_line2(page, saved_employee):
-    faker = Faker()
-    new_value = faker.pystr()
-    old_value = saved_employee.address_line2
-    edit_url = edit_employee_address(
-        page, saved_employee.name, "address_line2", new_value
-    )
-
-    page.goto(edit_url)
-
-    input_element = page.locator('input[name="address_line2"]')
-    assert input_element.input_value() == old_value
 
 
 def test_cannot_create_with_zip_non_int(page):

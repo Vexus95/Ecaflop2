@@ -161,8 +161,7 @@ def update_address(request, employee):
     basic_info = employee.basic_info
     for key in [
         "address_line1",
-        # BUG
-        "address_line1",
+        "address_line2",
         "city",
         "zip_code",
     ]:
