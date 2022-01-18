@@ -276,7 +276,7 @@ def test_delete_empty_team(page):
     assert not page.is_visible(f"td:has-text('{team_two}')")
 
 
-def test_BUG_delete_non_empty_team(page):
+def test_delete_non_empty_team(page):
     employee = new_fake_employee()
     employee = save_employee(page, employee)
     team_name = create_team(page)
@@ -285,4 +285,4 @@ def test_BUG_delete_non_empty_team(page):
     delete_team(page, team_name)
 
     page.goto("/teams")
-    assert page.is_visible(f"td:has-text('{team_name}')")
+    assert not page.is_visible(f"td:has-text('{team_name}')")
