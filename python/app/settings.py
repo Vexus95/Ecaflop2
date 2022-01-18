@@ -11,7 +11,7 @@ register = template.Library()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = os.environ.get("DJANGO_DEBUG", "true") == "true"
+DEBUG = os.environ.get("DJANGO_DEBUG") == "true"
 
 if DEBUG:
     SECRET_KEY = "insecure-secret"
