@@ -60,6 +60,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
             ],
             "loaders": [
+                "hamlpy.template.loaders.HamlPyFilesystemLoader",
+                "hamlpy.template.loaders.HamlPyAppDirectoriesLoader",
                 (
                     "django.template.loaders.cached.Loader",
                     [
@@ -67,7 +69,7 @@ TEMPLATES = [
                         "django.template.loaders.app_directories.Loader",
                         "django_components.template_loader.Loader",
                     ],
-                )
+                ),
             ],
             "builtins": [
                 "django_components.templatetags.component_tags",

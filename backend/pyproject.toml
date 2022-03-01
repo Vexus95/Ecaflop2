@@ -21,6 +21,7 @@ python-dotenv = "^0.19.2"
 gunicorn = "^20.1"
 django-components = "^0.17"
 django-hamlpy = "^1.4.4"
+django-bootstrap5 = "^21.3"
 
 [tool.poetry.dev-dependencies]
 invoke = "^1.5.0"
