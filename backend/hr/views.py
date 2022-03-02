@@ -126,15 +126,11 @@ def promote(request, id):
     employee = get_object_or_404(Employee, pk=id)
     context = {"employee": employee}
     if request.method == "POST":
-        return promote_employee(request, employee)
+        employee.is_manager = True
+        employee.save()
+        return redirect("hr:employees")
     else:
         return render(request, "hr/promote.haml", context=context)
-
-
-def promote_employee(request, employee):
-    employee.is_manager = True
-    employee.save()
-    return redirect("hr:employees")
 
 
 def teams(request):
@@ -196,8 +192,7 @@ def add_to_team(request, id):
     else:
         form = AddToTeamForm(request.POST)
         if form.is_valid():
-            team = form.cleaned_data["team"]
-            employee.team = team
+            employee.team = form.cleaned_data["team"]
             employee.save()
             return redirect("hr:employee", id=id)
     return render(
