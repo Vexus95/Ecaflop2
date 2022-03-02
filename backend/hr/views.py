@@ -1,5 +1,3 @@
-from django import forms
-from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import (
@@ -70,7 +68,7 @@ def add_employee(request):
             address = address_form.save()
             basic_info = basic_info_form.save()
             contract = contract_form.save()
-            employee = Employee.objects.create(
+            Employee.objects.create(
                 address=address, basic_info=basic_info, contract=contract
             )
             return redirect("hr:employees")
