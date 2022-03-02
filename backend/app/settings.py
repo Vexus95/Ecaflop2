@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_browser_reload",
     "django_components",
+    "django_bootstrap5",
     "hr",
 ]
 

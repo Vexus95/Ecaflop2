@@ -166,8 +166,8 @@ def test_edit_employee_job_title(saved_employee, page):
     edit_button.get_attribute("href")
     edit_button.click()
 
-    link = page.locator("text='Update legal info'")
-    edit_legal_url = link.get_attribute("href")
+    link = page.locator("text='Update contract'")
+    edit_contract_url = link.get_attribute("href")
     link.click()
 
     faker = Faker()
@@ -175,7 +175,7 @@ def test_edit_employee_job_title(saved_employee, page):
     page.fill('input[name="job_title"]', new_value)
     page.click('button[type="submit"]')
 
-    page.goto(edit_legal_url)
+    page.goto(edit_contract_url)
 
     input_element = page.locator('input[name="job_title"]')
     assert input_element.input_value() == new_value

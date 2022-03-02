@@ -1,4 +1,4 @@
-{% extends 'hr/base.html' %}
+{% extends 'hr/base.haml' %}
 {% block title %}
 HR DB - Employees
 {% endblock %}
@@ -9,13 +9,13 @@ HR DB - Employees
 <p>Hired on {{ employee.contract.hiring_date }}</p>
 <ul>
   <li>
-    <a href='{% url 'hr:basic' employee.id %}'> Update basic info </a>
+    <a href='{% url 'hr:basic_info' employee.id %}'> Update basic info </a>
   </li>
   <li>
     <a href='{% url 'hr:address' employee.id %}'> Update address </a>
   </li>
   <li>
-    <a href='{% url 'hr:legal' employee.id %}'> Update legal info </a>
+    <a href='{% url 'hr:contract' employee.id %}'> Update contract </a>
   </li>
   <li>
     <a href='{% url 'hr:promote' employee.id %}'>Promote as manager</a>
