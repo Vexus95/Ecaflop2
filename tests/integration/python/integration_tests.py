@@ -13,7 +13,9 @@ def test_add_team():
     url = "http://127.0.0.1:8000/add_team"
     response = httpx.post(url, follow_redirects=True, data={"name": "devs"})
     response.raise_for_status()
-    db = sqlite3.connect("../backend/db.sqlite3")
+    db = sqlite3.connect("../../../backend/db.sqlite3")
+    db.row_factory = sqlite3.Row
     cursor = db.cursor()
     rows = cursor.execute("SELECT name FROM hr_team").fetchall()
-    print(rows)
+    teams_names = [x["name"] for x in rows]
+    assert teams_names == ["devs"]
