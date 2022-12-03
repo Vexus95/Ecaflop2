@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 SRC_PATH = Path(".").resolve().parent
-DJANGO_DB_PATH = SRC_PATH / "python/db.sqlite3"
+DJANGO_DB_PATH = SRC_PATH / "backend/db.sqlite3"
 
 LETTERS = {
     1: list("klmnopqrs"),
@@ -91,7 +91,7 @@ def deploy_nginx(args):
 
 
 def deploy_backend(args):
-    src = SRC_PATH / "python"
+    src = SRC_PATH / "backend"
     excludes_file = src / ".rsyncexcludes"
     group = args.group
     rsync(src, f"hr@hr.dmerej.info:src/group{group}", excludes=excludes_file)
@@ -105,7 +105,7 @@ def restart_backend(args):
 
 
 def migrate_django_db():
-    cwd = SRC_PATH / "python"
+    cwd = SRC_PATH / "backend"
     DJANGO_DB_PATH.unlink(missing_ok=True)
     cmd = ["poetry", "run", "python", "manage.py", "migrate"]
     run(cwd, cmd)
