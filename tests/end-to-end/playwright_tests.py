@@ -3,7 +3,7 @@ import dataclasses
 import pytest
 from faker import Faker
 
-from tests.conftest import new_fake_employee
+from conftest import new_fake_employee
 
 
 @pytest.fixture(autouse=True)
@@ -18,6 +18,7 @@ def test_index(page):
 
 
 def save_employee(page, fake_employee):
+    breakpoint()
     page.goto("/add_employee")
 
     as_dict = dataclasses.asdict(fake_employee)
