@@ -48,7 +48,6 @@ class TeamForm(forms.ModelForm):
         with_same_name = Team.objects.filter(name=name)
         if with_same_name:
             self.add_error("name", "a team with the same name already exists")
-        print(name)
 
 
 class AddToTeamForm(forms.Form):
