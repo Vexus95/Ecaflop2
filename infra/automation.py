@@ -8,15 +8,15 @@ SRC_PATH = Path(".").resolve().parent
 DJANGO_DB_PATH = SRC_PATH / "backend/db.sqlite3"
 
 LETTERS = {
-    1: list("klmnopqrs"),
-    2: list("abcdefghi"),
+    1: list("abcdefghijklm"),
+    2: list("nopqrstuvwyyz"),
 }
-ALL_LETTERS = LETTERS[2] + LETTERS[1]
+ALL_LETTERS = LETTERS[1] + LETTERS[2]
 
 
 def get_letters(group):
     res = LETTERS[group]
-    assert len(res) == 9
+    assert len(res) == 13
     return res
 
 
