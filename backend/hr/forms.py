@@ -6,10 +6,10 @@ from .models import Address, BasicInfo, Contract, Team
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields = ["line1", "line2", "city", "zip_code"]
+        fields = ["address_line1", "address_line2", "city", "zip_code"]
         labels = {
-            "line1": "",
-            "line2": "",
+            "address_line1": "",
+            "address_line2": "",
         }
 
 

@@ -10,8 +10,8 @@ class BasicInfo(models.Model):
 
 
 class Address(models.Model):
-    line1 = models.CharField(null=False, max_length=100)
-    line2 = models.CharField(null=True, blank=True, max_length=100)
+    address_line1 = models.CharField(null=False, max_length=100)
+    address_line2 = models.CharField(null=True, blank=True, max_length=100)
     city = models.CharField(null=False, max_length=100)
     zip_code = models.IntegerField(null=False)
 
