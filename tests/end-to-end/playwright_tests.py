@@ -18,7 +18,6 @@ def test_index(page):
 
 
 def save_employee(page, fake_employee):
-    breakpoint()
     page.goto("/add_employee")
 
     as_dict = dataclasses.asdict(fake_employee)
@@ -58,6 +57,7 @@ def find_employee_row(page, employee_name):
 
 
 def find_team_row(page, team_name):
+    page.goto("/teams")
     tables_rows = page.locator("tr")
     for i in range(0, tables_rows.count()):
         row = tables_rows.nth(i)
@@ -91,7 +91,10 @@ def test_edit_employee_basic_info(saved_employee, page, key):
     link.click()
 
     faker = Faker()
-    new_value = faker.pystr()
+    if key == "name":
+        new_value = faker.name()
+    else:
+        new_value = faker.email()
     page.fill(f'input[name="{key}"]', new_value)
     page.click('button[type="submit"]')
 
@@ -140,27 +143,6 @@ def test_edit_employee_address(page, saved_employee, key):
     assert input_element.input_value() == new_value
 
 
-def test_cannot_create_with_zip_non_int(page):
-    faker = Faker()
-    not_an_int = faker.pystr()
-    fake_employee = new_fake_employee()
-    fake_employee.zip_code = not_an_int
-
-    actual = save_employee(page, fake_employee)
-    assert actual is None
-
-
-def test_cannot_edit_zip_code_to_int(page, saved_employee):
-    faker = Faker()
-    not_an_int = faker.pystr()
-    edit_url = edit_employee_address(page, saved_employee.name, "zip_code", not_an_int)
-
-    page.goto(edit_url)
-
-    input_element = page.locator('input[name="zip_code"]')
-    assert input_element.input_value() == saved_employee.zip_code
-
-
 def test_edit_employee_job_title(saved_employee, page):
     row = find_employee_row(page, saved_employee.name)
     edit_button = row.locator("text=Edit")
@@ -206,8 +188,8 @@ def add_member_to_team(page, team_name, employee_name):
 
     page.click("text='Add to team'")
 
-    select = page.locator("select[name='team_id']")
-    select.select_option(label=team_name)
+    select = page.locator("select[name='team']")
+    select.select_option(label=team_name + " team")
     page.click("text='Add'")
 
 
