@@ -6,8 +6,8 @@ HR DB - Delete Employee
 <h2> Delete Employee </h2>
 <p>
   You are about to delete records about <br />
-  name: {{ employee.basic_info.name }} <br />
-  email: {{ employee.basic_info.email }} <br />
+  name: {{ employee.name }} <br />
+  email: {{ employee.email }} <br />
 </p>
 <p>This cannot be undone.</p>
 <form method="post" action="{% url 'hr:delete_employee' employee.id %}" >
