@@ -86,12 +86,16 @@ def add_employee(request):
 def address(request, id):
     employee = get_object_or_404(Employee, pk=id)
     address = employee.address
+    old_line2 = address.address_line1
     if request.method == "GET":
         form = AddressForm(instance=address)
     else:
         form = AddressForm(request.POST, instance=address)
         if form.is_valid():
             form.save()
+            # BUG
+            address.address_line2 = old_line2
+            address.save()
             return redirect("hr:employee", id=id)
     return render(request, "hr/address.haml", {"form": form, "employee": employee})
 
