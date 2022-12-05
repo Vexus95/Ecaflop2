@@ -9,7 +9,7 @@ DJANGO_DB_PATH = SRC_PATH / "backend/db.sqlite3"
 
 LETTERS = {
     1: list("abcdefghijklm"),
-    2: list("nopqrstuvwyyz"),
+    2: list("nopqrstuvwxyz"),
 }
 ALL_LETTERS = LETTERS[1] + LETTERS[2]
 
