@@ -7,7 +7,6 @@
   %h2 Add new employee
 
   %form.form(method="post" action="{% url 'hr:add_employee' %}")
-    - csrf_token
     %fieldset
       %legend Basic Info
       - bootstrap_form basic_info_form

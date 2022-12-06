@@ -7,6 +7,5 @@
   %h2 Create new team
 
   %form.form(action='{% url "hr:add_team" %}' method="post")
-    - csrf_token
     - bootstrap_form form
     - bootstrap_button button_type="submit" content="Add"

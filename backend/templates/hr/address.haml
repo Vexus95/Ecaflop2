@@ -9,6 +9,5 @@
   Editing address of #{employee.basic_info.name}
 
   %form.form(action="{% url 'hr:address'  employee.id %}" method="post")
-   - csrf_token
    - bootstrap_form form
    - bootstrap_button type="submit" content="Update"
