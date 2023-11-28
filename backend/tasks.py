@@ -28,11 +28,6 @@ def flake8(c):
     c.run(f"flake8 {SOURCES}")
 
 
-@task
-def test(c):
-    print("Running pytest")
-    c.run("pytest")
-
 
 @task(
     pre=[
