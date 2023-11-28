@@ -13,6 +13,7 @@ do
     echo "Deleting stuff, nothing to do"
   else
     (
+      set -x
       cd backend
       poetry install
       poetry run invoke lint
