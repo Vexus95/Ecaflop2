@@ -254,20 +254,6 @@ asgiref = ">=3.6"
 Django = ">=3.2"
 
 [[package]]
-name = "django-components"
-version = "0.29"
-description = "A way to create simple reusable template components in Django."
-optional = false
-python-versions = "*"
-files = [
-    {file = "django_components-0.29-py3-none-any.whl", hash = "sha256:42d98ebe72f9e7cab4b3a5a6d72a17f1065716e1967ef0dff0dfd9c59bfbbca0"},
-    {file = "django_components-0.29.tar.gz", hash = "sha256:5a7220e65a75632eb6deb842f36ce690a115b6c4c5cd7ab5ffa62ee8fda46908"},
-]
-
-[package.dependencies]
-Django = ">=3.2"
-
-[[package]]
 name = "django-cors-headers"
 version = "4.3.1"
 description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
@@ -1010,4 +996,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "59ade749b8b8d425c3d311627e7692cc96192b331344e14c81d8d659c02cceee"
+content-hash = "f4ec250c4957dbd2dec284a96ba549ef2aa24c64475f37a966d30d50c57f0108"
