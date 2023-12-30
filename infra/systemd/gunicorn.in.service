@@ -14,6 +14,8 @@ ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5
 Environment=DJANGO_DB_PATH=/srv/hr/data/@letter@.db
+Environment=DJANGO_DEBUG=false
+Environment=DJANGO_SECRET_KEY=brvn8Ilw2g4OMWitoNJjBx2nDd1OJT6uF_EogIQ5DIw
 PrivateTmp=true
 
 [Install]
