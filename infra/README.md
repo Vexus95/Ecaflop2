@@ -55,6 +55,7 @@ certbot certonly -d a.hr.dmerej.info --standalone
 
 Create poetry virtual envs for both groups
 ```bash
+scp ~/.tmux.conf hr@hr.dmerej.info:
 ssh hr@hr.dmerej.info
 cd /srv/hr/src/group1
 python -m venv .venv
@@ -74,5 +75,3 @@ python automation.py deploy-systemd
 python automation.py deploy-nginx
 python automation.py reset-dbs
 ```
-
-
