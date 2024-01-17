@@ -1,27 +1,17 @@
-{% extends 'hr/base.haml' %}
-{% block title %}
-Team members
-{% endblock %}
-{% block content %}
-<h2>Team Members</h2>
-<p>
-Name: {{ team.name }}
-</p>
+- extends 'hr/base.haml'
+- block title
+  Team members
 
-<p>
-<ul>
-{% for member in members %}
-  <li>{{ member.basic_info.name }}
-  {% if member.is_manager %}
-  <strong>(manager)</strong>
-  {% endif %}
-  </li>
+- block content
+  %h2 Team Members
 
-{% empty %}
-</u>
-This team has no members
-{% endfor %}
-</p>
-
-{% endblock %}
-
+  %p
+    Name: {{ team.name }}
+ 
+  %ul
+    - for member in members
+      %li {{ member.basic_info.name }}
+        - if member.is_manager
+          %strong manager
+    - empty
+      This team has no members
