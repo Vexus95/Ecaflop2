@@ -1,4 +1,0 @@
-faker
-playwright
-pytest-playwright
-pytest
