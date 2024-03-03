@@ -1,0 +1,5 @@
+httpx
+pytest
+psycopg[binary]
+playwright
+pytest-playwright
