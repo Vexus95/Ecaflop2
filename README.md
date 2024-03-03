@@ -1,6 +1,6 @@
 # HR Manager Web Application
 
-I'm a Web application with no tests.
+I'm a Web application with (almost) no tests.
 
 Test me!
 
@@ -25,19 +25,18 @@ Do some manual, exploratory testing first
 
 ### Step 2
 
-Write some end-to-end tests using `playwright` or `selenium` - try to reproduce
-bugs fond in step 1.
+* Open the folder corresponding to your prefer programming language,
+* Install and configure `playwright`
+* Make sure you can run the end-to-end tests
+
+Once it's running, add tests for the bugs found during step 1.
 
 Make sure to use the "Page Object Model" design pattern.
 
 ### Step 3
 
-Open the folder corresponding to your prefer programming language,
-make sure you can run the existinng tests.
 
-Rewrite tests from the step 2, but this time without the need
-for a running web browser.
-
-What do you think?
-
-
+* Make sure you can run the integration tests
+ 
+Once they're running, rewrite the tests from step 2 using raw http request
+and SQL queries.
