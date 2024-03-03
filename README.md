@@ -11,7 +11,6 @@ Test me!
 * Run:
 
 ```
-$ cd backend/
 $ docker compose up --build
 ```
 
