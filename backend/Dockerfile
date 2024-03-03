@@ -22,16 +22,28 @@ USER app
 WORKDIR /app
 RUN chown app:app .
 USER app
+RUN mkdir src
+RUN mkdir data
 
 RUN pip install poetry
 
-COPY --chown=app:app . /app
+WORKDIR /app/src
 
+COPY --chown=app:app pyproject.toml /app/src
+COPY --chown=app:app poetry.lock /app/src
 
 RUN python -m poetry install --only main --no-root
 
+COPY --chown=app:app manage.py /app/src
+COPY --chown=app:app app /app/src/app
+COPY --chown=app:app static /app/src/static
+COPY --chown=app:app templates /app/src/templates
+COPY --chown=app:app hr /app/src/hr
+COPY --chown=app:app start.sh /app/src/start.sh
+
 ENV DJANGO_SECRET_KEY=s3cr3t
 ENV PYTHONUNBUFFERED=true
+ENV DJANGO_DB_PATH=/app/data/db.sqlite
 
 EXPOSE 8000
-CMD ["python", "-m", "poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD /app/src/start.sh

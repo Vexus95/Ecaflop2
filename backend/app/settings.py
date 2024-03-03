@@ -4,6 +4,7 @@ from pathlib import Path
 
 import dotenv
 from django import template
+import dj_database_url
 
 dotenv.load_dotenv()
 
@@ -76,14 +77,14 @@ TEMPLATES = [
 WSGI_APPLICATION = "app.wsgi.application"
 
 
-DB_PATH = os.environ.get("DJANGO_DB_PATH", "db.sqlite3")
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3")
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": DB_PATH,
-    }
+    "default":  dj_database_url.parse(DATABASE_URL)
 }
+
+# NOTE: don't do this in real life, it will leak the database password :)
+print(DATABASES)
 
 
 AUTH_PASSWORD_VALIDATORS = [

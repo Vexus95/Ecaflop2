@@ -4,13 +4,14 @@ I'm a Web application with no tests.
 
 Test me!
 
+## Running manual, exploratory tests
+
+See `https://hr.dmerej.info`
+
+(This URL may be down, ping me if this is the case)
+
 ## Running the backend
 
-See instructions in either
-
-* `python`
-* `java`
-* `javascript`
 
 
 ## Running the front-end
