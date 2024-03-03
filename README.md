@@ -4,30 +4,40 @@ I'm a Web application with no tests.
 
 Test me!
 
-## Running manual, exploratory tests
-
-See `https://hr.dmerej.info`
-
-(This URL may be down, ping me if this is the case)
-
 ## Running the backend
 
-
-
-## Running the front-end
-
-The front-end is written using Vue.js and does not depend on the programming
-language used for the backend.
-
-You do need to start one the backends (see above) before running the UI, though.
-
-Once the backend is running, start the front-end with:
+* Install docker and docker-compose
+* Make sure port 5433 and 8000 are free
+* Run:
 
 ```
-$ cd ui
-$ yarn
-$ yarn serve
+$ cd backend/
+$ docker compose up --build
 ```
 
-open `http://127.0.0.1:8080` in a web browser (note: use **127.0.0.1**,
-not *localhost*, or you'll get CORS errors)
+## Instructions
+
+Do _not_ look inside the `backend/` folder yet - you're doing black-box testing at this point.
+
+### Step 1
+
+Do some manual, exploratory testing first
+
+### Step 2
+
+Write some end-to-end tests using `playwright` or `selenium` - try to reproduce
+bugs fond in step 1.
+
+Make sure to use the "Page Object Model" design pattern.
+
+### Step 3
+
+Open the folder corresponding to your prefer programming language,
+make sure you can run the existinng tests.
+
+Rewrite tests from the step 2, but this time without the need
+for a running web browser.
+
+What do you think?
+
+
