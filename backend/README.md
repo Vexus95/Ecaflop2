@@ -1,9 +1,5 @@
-# Python backend
+# Backend Code
 
-Install Python (>=3.6)  and [Poetry](https://python-poetry.org/) then run:
+Spoiler! Don't read me!
 
-```
-$ python -m poetry install
-$ python -m poetry run python manage.py migrate
-$ python -m poetry run python manage.py runserver 5678
-```
+

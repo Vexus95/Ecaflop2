@@ -1,4 +1,7 @@
-# Infra for hr.dmerej.info
+# Infra for hr db
+
+This is used to deploy the web application on 26 URLs
+(from a.hr.dmerej.info to z.hr.dmerej.info)
 
 Steps:
 
