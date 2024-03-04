@@ -32,6 +32,9 @@ Once it's running, add tests for the bugs found during step 1.
 
 Make sure to use the "Page Object Model" design pattern.
 
+Also, do _not_ issue POST or GET requests outside the browser
+(you'll do that in step 3)
+
 ### Step 3
 
 
