@@ -42,3 +42,12 @@ Also, do _not_ issue POST or GET requests outside the browser
  
 Once they're running, rewrite the tests from step 2 using raw http request
 and SQL queries.
+
+<details>
+<summary>Some clues</summary>
+<ul>
+<li>You'll see the PostgreQSL credentials in the docker logs - you can use DBeaver to go look at the database</li>
+<li>You can use your browser dev extensions to look at the payload of the POST requests</li>
+<li>And you can also look at the backend code to see the routes (in `hr/urls.py`)</li>
+</ul>
+</details>
