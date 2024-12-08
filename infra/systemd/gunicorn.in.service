@@ -13,8 +13,8 @@ ExecStart=/srv/hr/src/@group@/.venv/bin/gunicorn app.wsgi --capture-output --log
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5
-Environment=DJANGO_DB_PATH=/srv/hr/data/@group@/@team@.db
-Environment=DJANGO_DEBUG=false
+Environment=DATABASE_URL=sqlite:////srv/hr/data/@group@/@team@.db
+Environment=DJANGO_DEBUG=true
 Environment=DJANGO_SECRET_KEY=brvn8Ilw2g4OMWitoNJjBx2nDd1OJT6uF_EogIQ5DIw
 PrivateTmp=true
 
