@@ -84,7 +84,7 @@ def deploy_backend(args):
 def restart_backend(args):
     group = args.group
     teams = get_teams(args.num_teams)
-    to_restart = [f"gunicorn-{group}-{team}.socket" for team in teams]
+    to_restart = [f"gunicorn-{group}-{team}.service" for team in teams]
     ssh("root@hr.dmerej.info", f"systemctl restart {' '.join(to_restart)}")
 
 
