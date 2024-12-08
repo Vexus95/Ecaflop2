@@ -20,9 +20,7 @@ else:
     SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "hr.dmerej.info"]
-for c in string.ascii_lowercase:
-    ALLOWED_HOSTS.append(c + ".hr.dmerej.info")
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "corsheaders",

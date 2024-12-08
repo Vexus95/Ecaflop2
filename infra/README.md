@@ -6,9 +6,10 @@ This is used to deploy the web application on 26 URLs
 Steps:
 
  * Create a new droplet on Digital Ocean
+   (2 GB Memory / 60 GB Disk / AMS3 - Debian 12 x64)
  * Add authentification with your public key
  * Add `A` record form hr.dmerej.info with the public IPv4 address of the droplet
- * Add the same `A` record for `*.hr`
+ * Add the same `A` record for `<group>.hr.dmerej.info`
 
 
 * Copy tmux config
@@ -31,50 +32,64 @@ apt install \
   python3-venv \
   rsync \
   tmux \
+  tree \
 # Create hr system user in `/srv/hr`
 addgroup --system hr
-adduser --system --home /srv/hr hr --group hr
+adduser --system --home /srv/hr hr --ingroup hr
 
 mkdir /srv/hr/.ssh
 cp .ssh/authorized_keys /srv/hr/.ssh/
-mkdir /srv/hr/src
-mkdir /srv/hr/data
-mkdir /var/log/hr
 chown -Rc hr:hr /srv/hr
-chown -Rc hr:hr /var/log/hr
 chsh -s /bin/bash hr
 ```
 
-Make sure `curl hr.dmerej.info` and `curl a.hr.dmerej.info` both work -
+Make sure `curl <group>hr.dmerej.info` and `curl a.<grup>.hr.dmerej.info` both work -
 and then *stop* nginx so that certbot can run in "standalone" mode:
 
 ```
 ssh root@hr.dmerej.info
+systemctl stop nginx
 # For the top-level:
 certbot certonly -d hr.dmerej.info --standalone
-# For all letters:
-certbot certonly -d a.hr.dmerej.info --standalone
+# For the group:
+certbot certonly -d <group>.hr.dmerej.info --standalone
+# For all teams:
+certbot certonly -d a.<group>.hr.dmerej.info --standalone
 ```
 
-Create poetry virtual envs for both groups
+Create folders for the group:
+
+```
+ssh hr@hr.dmerej.info
+group=<group>
+mkdir -p /var/log/hr/$group
+mkdir -p /srv/hr/src/$group
+mkdir -p /srv/hr/data/$group
+mkdir -p /srv/hr/run/$group
+```
+
+Deploy sources for the backend:
+
+```
+python automation.py --group <group> deploy-backend --no-restart
+```
+
+Create poetry virtual envs for the group:
+
 ```bash
 scp ~/.tmux.conf hr@hr.dmerej.info:
-ssh hr@hr.dmerej.info
-cd /srv/hr/src/group1
+cd /srv/hr/src/<group>
 python -m venv .venv
 source .venv/bin/activate
+export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
+poetry install --sync --only main
 poetry install --sync --only main
 deactivate
-cd /srv/hr/src/group2
-python -m venv .venv
-source .venv/bin/activate
-poetry install --sync --only main
 ```
 
 ```bash
-python automation.py deploy-backend --group 1
-python automation.py deploy-backend --group 2
-python automation.py deploy-systemd
-python automation.py deploy-nginx
-python automation.py reset-dbs
+python automation.py --group <group> reset-dbs
+python automation.py --group <group> deploy-systemd
+python automation.py --group <group> deploy-nginx
+python automation.py --group <group> restart-backend
 ```

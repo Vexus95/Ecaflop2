@@ -1,8 +1,8 @@
 [Unit]
-Description=@letter@ gunicorn socket
+Description=gunicorn socket - @group@ - @team@
 
 [Socket]
-ListenStream=/srv/hr/run/@letter@.sock
+ListenStream=/srv/hr/run/@group@/@team@.sock
 SocketUser=hr
 SocketMode=600
 

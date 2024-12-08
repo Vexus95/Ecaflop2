@@ -7,25 +7,9 @@ from pathlib import Path
 SRC_PATH = Path(".").resolve().parent
 DJANGO_DB_PATH = SRC_PATH / "backend/db.sqlite3"
 
-LETTERS = {
-    1: list("abcdefghijklm"),
-    2: list("nopqrstuvwxyz"),
-}
-ALL_LETTERS = LETTERS[1] + LETTERS[2]
-
-
-def get_letters(group):
-    res = LETTERS[group]
-    assert len(res) == 13
-    return res
-
-
-def group_from_letter(letter):
-    if letter in LETTERS[1]:
-        return 1
-    if letter in LETTERS[2]:
-        return 2
-    assert False, f"letter {letter} not found"
+# TEAMS = list("abcdefghijklm")
+# TODO: --num-teams
+TEAMS = list("ab")
 
 
 def run(cwd, cmd, **kwargs):
@@ -60,30 +44,29 @@ def scp_multi(sources, url):
     run(Path.cwd(), cmd)
 
 
-def generate_from_template(in_path, gen_path, letter):
+def generate_from_template(in_path, gen_path, group, team):
     in_text = in_path.read_text()
-    out_text = in_text.replace("@letter@", letter)
-    group = group_from_letter(letter)
-    out_text = out_text.replace("@group@", str(group))
+    out_text = in_text.replace("@group@", group).replace("@team@", team)
     gen_parent_path = gen_path.parent
-    gen_parent_path.mkdir(exist_ok=True)
+    gen_parent_path.mkdir(exist_ok=True, parents=True)
     gen_path.write_text(out_text)
     print("Generated", gen_path)
 
 
-def generate_nginx_server_conf(c):
+def generate_nginx_server_conf(group, team):
     in_path = SRC_PATH / "infra/nginx/servers/sub.conf.in"
-    gen_path = SRC_PATH / f"infra/nginx/servers/gen/{c}.conf"
-    generate_from_template(in_path, gen_path, c)
+    gen_path = SRC_PATH / f"infra/nginx/servers/gen/{group}-{team}.conf"
+    generate_from_template(in_path, gen_path, group, team)
 
     in_path = SRC_PATH / "infra/nginx/upstreams/conf.in"
-    gen_path = SRC_PATH / f"infra/nginx/upstreams/gen/{c}.conf"
-    generate_from_template(in_path, gen_path, c)
+    gen_path = SRC_PATH / f"infra/nginx/upstreams/gen/{group}-{team}.conf"
+    generate_from_template(in_path, gen_path, group, team)
 
 
 def deploy_nginx(args):
-    for c in ALL_LETTERS:
-        generate_nginx_server_conf(c)
+    group = args.group
+    for team in TEAMS:
+        generate_nginx_server_conf(group, team)
     src = SRC_PATH / "infra/nginx"
     rsync(src, "root@hr.dmerej.info:/etc/nginx")
     ssh("root@hr.dmerej.info", "nginx -t")
@@ -94,13 +77,15 @@ def deploy_backend(args):
     src = SRC_PATH / "backend"
     excludes_file = src / ".rsyncexcludes"
     group = args.group
-    rsync(src, f"hr@hr.dmerej.info:src/group{group}", excludes=excludes_file)
+    rsync(src, f"hr@hr.dmerej.info:src/{group}", excludes=excludes_file)
 
-    restart_backend(args)
+    if args.restart:
+        restart_backend(args)
 
 
 def restart_backend(args):
-    to_restart = [f"gunicorn-{c}.service" for c in ALL_LETTERS]
+    group = args.group
+    to_restart = [f"gunicorn-{group}-{team}.socket" for team in TEAMS]
     ssh("root@hr.dmerej.info", f"systemctl restart {' '.join(to_restart)}")
 
 
@@ -111,33 +96,30 @@ def migrate_django_db():
     run(cwd, cmd)
 
 
-def re_init_remote_dbs():
-    # Copy the newly migrated db
+def re_init_remote_dbs(args):
+    group = args.group
     scp(DJANGO_DB_PATH, "hr@hr.dmerej.info:/srv/hr/data/init.db")
-
-    # Copy the script and run it
-    local_script = SRC_PATH / "infra/re-init-dbs.sh"
-    remote_script = "/srv/hr/data/re-init-dbs.sh"
-    scp(local_script, f"hr@hr.dmerej.info:{remote_script}")
-    ssh("hr@hr.dmerej.info", remote_script)
+    for team in TEAMS:
+        ssh("hr@hr.dmerej.info", f"cp /srv/hr/data/init.db /srv/hr/data/{group}/{team}.db")
 
 
 def reset_dbs(args):
     migrate_django_db()
-    re_init_remote_dbs()
+    re_init_remote_dbs(args)
 
 
 def deploy_systemd(args):
+    group = args.group
     to_copy = []
-    for letter in ALL_LETTERS:
+    for team in TEAMS:
         src_path = SRC_PATH / "infra/systemd/gunicorn.in.socket"
-        gen_path = SRC_PATH / f"infra/systemd/gen/gunicorn-{letter}.socket"
-        generate_from_template(src_path, gen_path, letter)
+        gen_path = SRC_PATH / f"infra/systemd/gen/gunicorn-{group}-{team}.socket"
+        generate_from_template(src_path, gen_path, group, team)
         to_copy.append(gen_path)
 
         src_path = SRC_PATH / "infra/systemd/gunicorn.in.service"
-        gen_path = SRC_PATH / f"infra/systemd/gen/gunicorn-{letter}.service"
-        generate_from_template(src_path, gen_path, letter)
+        gen_path = SRC_PATH / f"infra/systemd/gen/gunicorn-{group}-{team}.service"
+        generate_from_template(src_path, gen_path, group, team)
         to_copy.append(gen_path)
 
     dest_path = f"root@hr.dmerej.info:/etc/systemd/system"
@@ -149,13 +131,12 @@ def deploy_systemd(args):
 
 def main():
     parser = ArgumentParser()
-    actions = parser.add_subparsers(help="available actions", dest="action")
+    parser.add_argument("--group", required=True)
+    actions = parser.add_subparsers(help="available actions", dest="action", required=True)
 
     deploy_backend_parser = actions.add_parser("deploy-backend")
-    deploy_backend_parser.add_argument(
-        "--group", required=True, choices=[1, 2], type=int
-    )
-    deploy_backend_parser.set_defaults(action=deploy_backend)
+    deploy_backend_parser.add_argument("--no-restart", action="store_false", dest="restart")
+    deploy_backend_parser.set_defaults(action=deploy_backend, restart=True)
 
     deploy_systemd_parser = actions.add_parser("deploy-systemd")
     deploy_systemd_parser.set_defaults(action=deploy_systemd)
@@ -170,9 +151,6 @@ def main():
     restart_backend_parsed.set_defaults(action=restart_backend)
 
     args = parser.parse_args()
-    if not args.action:
-        parser.print_help()
-        sys.exit(2)
 
     args.action(args)
 
