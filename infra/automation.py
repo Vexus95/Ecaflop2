@@ -7,10 +7,8 @@ from pathlib import Path
 SRC_PATH = Path(".").resolve().parent
 DJANGO_DB_PATH = SRC_PATH / "backend/db.sqlite3"
 
-# TEAMS = list("abcdefghijklm")
-# TODO: --num-teams
-TEAMS = list("ab")
-
+def get_teams(num_teams):
+    return list("abcdefghijklmnopqrstuvwxyz")[0:num_teams]
 
 def run(cwd, cmd, **kwargs):
     print(f"{cwd}$", *cmd)
@@ -65,7 +63,7 @@ def generate_nginx_server_conf(group, team):
 
 def deploy_nginx(args):
     group = args.group
-    for team in TEAMS:
+    for team in get_teams(args.num_teams):
         generate_nginx_server_conf(group, team)
     src = SRC_PATH / "infra/nginx"
     rsync(src, "root@hr.dmerej.info:/etc/nginx")
@@ -85,7 +83,8 @@ def deploy_backend(args):
 
 def restart_backend(args):
     group = args.group
-    to_restart = [f"gunicorn-{group}-{team}.socket" for team in TEAMS]
+    teams = get_teams(args.num_teams)
+    to_restart = [f"gunicorn-{group}-{team}.socket" for team in teams]
     ssh("root@hr.dmerej.info", f"systemctl restart {' '.join(to_restart)}")
 
 
@@ -99,7 +98,7 @@ def migrate_django_db():
 def re_init_remote_dbs(args):
     group = args.group
     scp(DJANGO_DB_PATH, "hr@hr.dmerej.info:/srv/hr/data/init.db")
-    for team in TEAMS:
+    for team in get_teams(args.num_teams):
         ssh("hr@hr.dmerej.info", f"cp /srv/hr/data/init.db /srv/hr/data/{group}/{team}.db")
 
 
@@ -111,7 +110,7 @@ def reset_dbs(args):
 def deploy_systemd(args):
     group = args.group
     to_copy = []
-    for team in TEAMS:
+    for team in get_teams(args.num_teams):
         src_path = SRC_PATH / "infra/systemd/gunicorn.in.socket"
         gen_path = SRC_PATH / f"infra/systemd/gen/gunicorn-{group}-{team}.socket"
         generate_from_template(src_path, gen_path, group, team)
@@ -132,6 +131,7 @@ def deploy_systemd(args):
 def main():
     parser = ArgumentParser()
     parser.add_argument("--group", required=True)
+    parser.add_argument("--num-teams", required=True, type=int)
     actions = parser.add_subparsers(help="available actions", dest="action", required=True)
 
     deploy_backend_parser = actions.add_parser("deploy-backend")
