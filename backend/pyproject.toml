@@ -8,6 +8,7 @@ description = "HR DB"
 authors = ["Dimitri Merejkowsky <dimitri@dmerej.info>"]
 readme = "README.md"
 license = "BSD-3-Clause"
+package-mode = false
 
 
 [tool.poetry.dependencies]
