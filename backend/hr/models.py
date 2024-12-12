@@ -40,8 +40,7 @@ class Employee(models.Model):
     address = models.OneToOneField(Address, null=False, on_delete=models.CASCADE)
     manager = models.ForeignKey("self", on_delete=models.SET_NULL, null=True)
     is_manager = models.BooleanField(default=False)
-    # BUG
-    team = models.ForeignKey(Team, null=True, on_delete=models.DO_NOTHING)
+    team = models.ForeignKey(Team, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         res = self.basic_info.name
