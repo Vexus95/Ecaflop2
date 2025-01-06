@@ -81,10 +81,6 @@ DATABASES = {
     "default":  dj_database_url.parse(DATABASE_URL)
 }
 
-# NOTE: don't do this in real life, it will leak the database password :)
-print(DATABASES)
-
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
