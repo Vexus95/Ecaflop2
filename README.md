@@ -4,14 +4,33 @@ I'm a Web application with (almost) no tests.
 
 Test me!
 
-## Running the backend
+## Running the backend - docker
 
 * Install docker and docker-compose
 * Make sure port 5433 and 8000 are free
 * Run:
 
 ```
+$ cd backend/
 $ docker compose up --build
+```
+
+## Running the backend - python
+
+Install [poetry](https://python-poetry.org)
+
+
+Go to the `backend/.env` file with this contents:
+```
+DJANGO_SECRET_KEY=this-is-an-unsafe-secret
+DJANGO_DEBUG=true
+```
+
+
+```
+$ poetry install
+$ poetry run python manage.py migrate
+$ poetry run python manage.py runserver
 ```
 
 ## Instructions
