@@ -8,18 +8,15 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "tests:integration": "jest",
-    "tests:end-to-end": "playwright test"
+    "tests": "jest"
   },
   "dependencies": {
     "axios": "^1.2.0",
-    "pg": "^8.11.3",
-    "playwright": "^1.41.1",
-    "@playwright/test": "^1.41.1"
+    "sqlite": "^4.0.23",
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "@jest/globals": "^29.5.0",
-    "@types/pg": "^8.10.9",
     "jest": "^29.5.0",
     "ts-jest": "^29.1.0",
     "typescript": "^5.3.3"
