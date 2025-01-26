@@ -1,4 +1,4 @@
-package info.dmerej.hr.tests.integration;
+package info.dmerej.hr;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -15,40 +15,35 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AddTeamTest {
 
-    public static final String POSTGRES_URL = "jdbc:postgresql://localhost:5433/hr";
+    public static final String DATABASE_PATH = "jdbc:sqlite:../backend/db.sqlite3";
 
-    private static void makeRequest(OkHttpClient client, String url, Map<String, String> body) {
+    @Test
+    void can_create_a_team() {
+        // Call the /add_team route
+        var client = new OkHttpClient();
+
         var formBodyBuilder = new FormBody.Builder();
-        for (var entry : body.entrySet()) {
+        for (var entry : Map.of("name", "Java devs").entrySet()) {
             formBodyBuilder.add(entry.getKey(), entry.getValue());
         }
         var formBody = formBodyBuilder.build();
 
         var request = new Request.Builder()
-            .url(url)
+            .url("http://127.0.0.1:8000/add_team")
             .post(formBody)
             .build();
 
         try {
             var response = client.newCall(request).execute();
             assertTrue(response.isSuccessful());
-        } catch (IOException e) {
-            throw new RuntimeException("Error when making POST request for URL: " + url + " : " + e);
+        } catch (IOException e1) {
+            throw new RuntimeException("Error when making POST request for URL: " + "http://127.0.0.1:8000/add_team" + " : " + e1);
         }
-    }
 
-    @Test
-    void can_create_a_team() {
-        var client = new OkHttpClient();
 
-        makeRequest(client, "http://127.0.0.1:8000/reset_db", new HashMap<>());
-        makeRequest(client, "http://127.0.0.1:8000/add_team", Map.of("name", "Java devs"));
-
+        // Verify the list of teams
         try {
-            var properties = new Properties();
-            properties.setProperty("user", "hr");
-            properties.setProperty("password", "hr");
-            var connection = DriverManager.getConnection(POSTGRES_URL, properties);
+            var connection = DriverManager.getConnection(DATABASE_PATH);
             var query = "SELECT name FROM hr_team";
             var statement = connection.prepareStatement(query);
             var result = statement.executeQuery();
