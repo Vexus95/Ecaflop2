@@ -53,24 +53,6 @@ Put all the bugs you find into a bug tracker
 
 See: [The Playwright Kata](https://github.com/dmerejkowsky/kata-playwright)
 
-## Step 3
-
-
-* Make sure you can run the already existing **end-to-end** `add-team` test
-
-Once it's running, add tests for all the bugs found during step 1.
-
-Notes:
-
-* Use a fixture to reset the database
-* Make sure to use the "Page Object Model" design pattern.
-* Do _not_ issue POST or GET requests directly outside the browser
-(you'll do that in a later step)
-
-## Step 4
-
-Compare the code written using the Page Object Model with the one playwright automatically generated.
-
 # Part 3 - integration tests
 
 ## Step 1
