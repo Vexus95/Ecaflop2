@@ -9,17 +9,23 @@ Test me!
 
 Install Python >=3.12 and [poetry](https://python-poetry.org)
 
+Go to the `backend` folder
 
-Go to the `backend/.env` file with this contents:
+Create a `.env` file containing:
+
 ```
 DJANGO_SECRET_KEY=this-is-an-unsafe-secret
 DJANGO_DEBUG=true
 ```
 
+Run:
 
 ```
+# Install dependencies
 $ poetry install
+# Migrate the database
 $ poetry run python manage.py migrate
+# Run the server
 $ poetry run python manage.py runserver
 ```
 
