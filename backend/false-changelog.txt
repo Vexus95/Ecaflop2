@@ -1,5 +1,11 @@
-New in version 1.0.2:
+New in version ...
 
 - Display info about the employee before deleting them
 - Fix crash when deleting non-empty team
 - Fix bug when editing second line of address
+
+In reality:
+
+- The bug for 'display info' is fixed
+- The bug about editing the second line is NOT fixed
+- The crash when deleting non-empty team is gone but there's a regression
