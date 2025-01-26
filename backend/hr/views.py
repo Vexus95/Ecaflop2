@@ -52,6 +52,7 @@ def delete_employee(request, id):
 
 
 def add_employee(request):
+    status = 200
     if request.method == "GET":
         address_form = AddressForm()
         basic_info_form = BasicInfoForm()
@@ -72,6 +73,8 @@ def add_employee(request):
                 address=address, basic_info=basic_info, contract=contract
             )
             return redirect("hr:employees")
+        else:
+            status = 400
     return render(
         request,
         "hr/add_employee.haml",
@@ -80,10 +83,12 @@ def add_employee(request):
             "basic_info_form": basic_info_form,
             "contract_form": contract_form,
         },
+        status=status
     )
 
 
 def address(request, id):
+    status = 200
     employee = get_object_or_404(Employee, pk=id)
     address = employee.address
     old_line2 = address.address_line1
@@ -97,10 +102,13 @@ def address(request, id):
             address.address_line2 = old_line2
             address.save()
             return redirect("hr:employee", id=id)
-    return render(request, "hr/address.haml", {"form": form, "employee": employee})
+        else:
+            status = 400
+    return render(request, "hr/address.haml", {"form": form, "employee": employee}, status=status)
 
 
 def basic_info(request, id):
+    status = 200
     employee = get_object_or_404(Employee, pk=id)
     basic_info = employee.basic_info
     if request.method == "GET":
@@ -110,10 +118,13 @@ def basic_info(request, id):
         if form.is_valid():
             form.save()
             return redirect("hr:employee", id=id)
-    return render(request, "hr/basic_info.haml", {"form": form, "employee": employee})
+        else:
+            status = 400
+    return render(request, "hr/basic_info.haml", {"form": form, "employee": employee}, status=status)
 
 
 def contract(request, id):
+    status = 200
     employee = get_object_or_404(Employee, pk=id)
     contract = employee.contract
     if request.method == "GET":
@@ -123,7 +134,9 @@ def contract(request, id):
         if form.is_valid():
             form.save()
             return redirect("hr:employee", id=id)
-    return render(request, "hr/contract.haml", {"form": form, "employee": employee})
+        else:
+            status = 400
+    return render(request, "hr/contract.haml", {"form": form, "employee": employee}, status=status)
 
 
 def promote(request, id):
@@ -146,6 +159,7 @@ def teams(request):
 
 
 def add_team(request):
+    status = 200
     if request.method == "GET":
         form = TeamForm()
     else:
@@ -153,8 +167,10 @@ def add_team(request):
         if form.is_valid():
             form.save()
             return redirect("hr:teams")
+        else:
+            status = 400
 
-    return render(request, "hr/add_team.haml", {"form": form})
+    return render(request, "hr/add_team.haml", {"form": form}, status=status)
 
 
 def team(request, id):
@@ -190,6 +206,7 @@ def delete_team(request, id):
 
 
 def add_to_team(request, id):
+    status = 200
     employee = get_object_or_404(Employee, pk=id)
     if request.method == "GET":
         form = AddToTeamForm()
@@ -199,6 +216,8 @@ def add_to_team(request, id):
             employee.team = form.cleaned_data["team"]
             employee.save()
             return redirect("hr:employee", id=id)
+        else:
+            status = 400
     return render(
         request,
         "hr/add_to_team.haml",
@@ -206,4 +225,5 @@ def add_to_team(request, id):
             "employee": employee,
             "form": form,
         },
+        status=status
     )
