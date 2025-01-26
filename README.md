@@ -7,7 +7,7 @@ Test me!
 
 ## Running the backend
 
-Install Python >=3.12 and [poetry](https://python-poetry.org)
+Install Python >=3.12
 
 Go to the `backend` folder
 
@@ -21,12 +21,18 @@ DJANGO_DEBUG=true
 Run:
 
 ```
+# Create a virtual environment
+$ python -m venv .venv --prompt hr-db
+# Activate it
+$ source .venv/bin/activate
+# or
+.venv\Scripts\activate.bat
 # Install dependencies
-$ poetry install
+$ pip install -r requirements.txt
 # Migrate the database
-$ poetry run python manage.py migrate
+$ python manage.py migrate
 # Run the server
-$ poetry run python manage.py runserver
+$ python manage.py runserver
 ```
 
 # Part 1 - manual testing
