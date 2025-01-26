@@ -51,23 +51,7 @@ Put all the bugs you find into a bug tracker
 
 # Part 2 - end-to-end testing
 
-## Step 1
-
-* Open the folder corresponding to your prefer programming language
-* Install and configure `playwright`
-* Install a browser that playwright can control:
-
-```
-playwright install chromium
-```
-
-## Step 2
-
-* Use `playwright codegen` to automate the steps from one your tests in the test plan.
-
-* Add the code to the git repository *without any changes*.
-
-* Modify the code so that it can run.
+See: [The Playwright Kata](https://github.com/dmerejkowsky/kata-playwright)
 
 ## Step 3
 
