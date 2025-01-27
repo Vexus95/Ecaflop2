@@ -11,12 +11,7 @@ Install Python >=3.12
 
 Go to the `backend` folder
 
-Create a `.env` file containing:
-
-```
-DJANGO_SECRET_KEY=this-is-an-unsafe-secret
-DJANGO_DEBUG=true
-```
+Create a copy of the `.env.local` file named `.env`
 
 Run:
 
@@ -63,8 +58,10 @@ You'll see it only works when the database contains no other team.
 
 Find a strategy to handle clean separation between tests while still 
 using the database.
- 
-Once your done, rewrite the tests from part 2 using raw http request
+
+Note: do NOT use the `/reset_db`  route, that's cheating ...
+
+Once your done, rewrite the tests from part 2 using raw HTTP requests
 and SQL queries.
 
 Some clues:
