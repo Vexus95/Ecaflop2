@@ -26,7 +26,7 @@ async fn perf_test(num_employees: usize) -> Result<()> {
         .default_headers(default_headers)
         .build()?;
 
-    let instances = 'a'..='z';
+    let instances = 'a'..='i';
     let mut errors = 0;
     let stream = futures::stream::iter(instances.map(|c| {
         let client = client.clone();
@@ -69,14 +69,16 @@ async fn put_employee(client: &Client, instance: char, index: usize) -> Result<(
         ("address_line1", format!("line 1 -{}", index)),
         ("address_line2", format!("line 2 -{}", index)),
         ("city", "Paris".to_string()),
-        ("zip_code", format!("75-{}", index)),
+        ("zip_code", format!("75{}", index)),
+        ("hiring_date", "2025-01-01".to_owned()),
+        ("job_title", "dev".to_owned()),
     ]);
     if index % 10 == 0 {
         println!("instance {} employee {}", instance, index);
     }
-    let url = format!("https://{}.hr.dmerej.info/add_employee", instance);
+    let url = format!("https://{}.se1.hr.dmerej.info/add_employee", instance);
     let response = client
-        .put(url)
+        .post(url)
         .form(&body)
         .send()
         .await
