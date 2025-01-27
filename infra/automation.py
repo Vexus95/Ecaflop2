@@ -91,7 +91,7 @@ def restart_backend(args):
 def migrate_django_db():
     cwd = SRC_PATH / "backend"
     DJANGO_DB_PATH.unlink(missing_ok=True)
-    cmd = ["poetry", "run", "python", "manage.py", "migrate"]
+    cmd = [".venv/bin/python", "manage.py", "migrate"]
     run(cwd, cmd)
 
 
