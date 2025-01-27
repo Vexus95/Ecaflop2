@@ -8,12 +8,10 @@
 
   %p
     You are about to delete records about
-#- BUG: should be employee.basic_info.name
     %br/
-    name: {{ employee.name }}
+    name: {{ employee.basic_info.name }}
     %br/
-#- BUG: should be employee.basic_info.email
-    email: {{ employee.email }}
+    email: {{ employee.basic_info.email }}
     %br/
 
   %p
