@@ -1,0 +1,25 @@
+{% extends 'hr/base.html' %}
+{% load django_bootstrap5 %}
+{% block title %}
+  Add Employee
+
+{% endblock %}
+{% block content %}
+  <h2>Add new employee</h2>
+
+  <form method='post' action='{% url 'hr:add_employee' %}' class='form'>
+    <fieldset>
+      <legend>Basic Info</legend>
+      {% bootstrap_form basic_info_form %}
+    </fieldset>
+    <fieldset>
+      <legend>Address</legend>
+      {% bootstrap_form address_form %}
+    </fieldset>
+    <fieldset>
+      <legend>Contract</legend>
+      {% bootstrap_form contract_form %}
+      {% bootstrap_button button_type="submit" content="Add" %}
+    </fieldset>
+  </form>
+{% endblock %}

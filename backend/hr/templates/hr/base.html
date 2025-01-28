@@ -1,0 +1,34 @@
+{% load static %}
+{% load django_browser_reload %}
+{% load django_bootstrap5 %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HR DB -      {% block title %}
+      {% endblock %}
+</title>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <link rel='shortcut icon' href='{% static "favicon.ico" %}'>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel='stylesheet' href='{% static "style.css" %}'>
+  </head>
+  <body>
+
+    <nav>
+      <a href='/'>Home</a>
+
+    </nav>
+    {% block content %}
+
+    {% endblock %}
+
+    <footer>
+      Version 1.0.9
+
+    </footer>
+   {% django_browser_reload_script %}
+  </body>
+</html>

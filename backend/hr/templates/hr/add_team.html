@@ -1,0 +1,14 @@
+{% extends 'hr/base.html' %}
+{% load django_bootstrap5 %}
+{% block title %}
+  Add Team
+
+{% endblock %}
+{% block content %}
+  <h2>Create new team</h2>
+
+  <form action='{% url "hr:add_team" %}' method='post' class='form'>
+    {% bootstrap_form form %}
+    {% bootstrap_button button_type="submit" content="Add" %}
+  </form>
+{% endblock %}

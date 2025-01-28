@@ -1,0 +1,17 @@
+{% extends 'hr/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+  Edit basic Information
+
+{% endblock %}
+{% block content %}
+
+  <h2>Edit Employee Basic Information</h2>
+
+  <form action='{% url 'hr:basic_info' employee.id %}' method='post' class='form'>
+    {% bootstrap_form form %}
+    {% bootstrap_button type="submit" content="Update" %}
+  </form>
+{% endblock %}
+

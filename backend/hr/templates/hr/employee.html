@@ -1,0 +1,34 @@
+{% extends 'hr/base.html' %}
+{% block title %}
+  Edit Employee
+
+{% endblock %}
+{% block content %}
+  <h2>Edit Employee</h2>
+  <p>
+    {{ employee.basic_info.name }} - {{ employee.basic_info.email }}
+  </p>
+  <p>
+    {{ employee.contract.job_title }}
+  </p>
+  <p>
+    Hired on {{ employee.contract.hiring_date }}
+  </p>
+  <ul>
+    <li>
+      <a href='{% url 'hr:basic_info' employee.id %}'>Update basic info</a>
+    </li>
+    <li>
+      <a href='{% url 'hr:address' employee.id %}'>Update address</a>
+    </li>
+    <li>
+      <a href='{% url 'hr:contract' employee.id %}'>Update contract</a>
+    </li>
+    <li>
+      <a href='{% url 'hr:promote' employee.id %}'>Promote as manager</a>
+    </li>
+    <li>
+      <a href='{% url 'hr:add_to_team' employee.id %}'>Add to team</a>
+    </li>
+  </ul>
+{% endblock %}

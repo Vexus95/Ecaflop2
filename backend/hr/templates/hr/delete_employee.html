@@ -1,0 +1,27 @@
+{% extends 'hr/base.html' %}
+{% load django_bootstrap5 %}
+{% block title %}
+  Delete Employee
+
+{% endblock %}
+{% block content %}
+  <h2>Delete Employee</h2>
+
+  <p>
+    You are about to delete records about
+    <br>
+    name: {{ employee.basic_info.name }}
+    <br>
+    email: {{ employee.basic_info.email }}
+    <br>
+
+  </p>
+  <p>
+    This cannot be undone
+
+  </p>
+  <form method='post' action='{% url 'hr:delete_employee' employee.id %}'>
+     {% csrf_token %}
+     <button type='submit' class='btn btn-danger'>Proceed</button>
+  </form>
+{% endblock %}

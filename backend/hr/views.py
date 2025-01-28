@@ -12,12 +12,12 @@ from .models import Address, BasicInfo, Contract, Employee, Team
 
 
 def index(request):
-    return render(request, "hr/index.haml")
+    return render(request, "hr/index.html")
 
 
 def reset_db(request):
     if request.method == "GET":
-        return render(request, "hr/reset_db.haml")
+        return render(request, "hr/reset_db.html")
     else:
         BasicInfo.objects.all().delete()
         Contract.objects.all().delete()
@@ -30,7 +30,7 @@ def reset_db(request):
 def employees(request):
     return render(
         request,
-        "hr/employees.haml",
+        "hr/employees.html",
         context={"employees": Employee.objects.all()},
     )
 
@@ -38,14 +38,14 @@ def employees(request):
 def employee(request, id):
     employee = get_object_or_404(Employee, pk=id)
     context = {"employee": employee}
-    return render(request, "hr/employee.haml", context=context)
+    return render(request, "hr/employee.html", context=context)
 
 
 def delete_employee(request, id):
     employee = get_object_or_404(Employee, pk=id)
     if request.method == "GET":
         context = {"employee": employee}
-        return render(request, "hr/delete_employee.haml", context=context)
+        return render(request, "hr/delete_employee.html", context=context)
     else:
         employee.delete()
         return redirect("hr:employees")
@@ -77,7 +77,7 @@ def add_employee(request):
             status = 400
     return render(
         request,
-        "hr/add_employee.haml",
+        "hr/add_employee.html",
         {
             "address_form": address_form,
             "basic_info_form": basic_info_form,
@@ -104,7 +104,7 @@ def address(request, id):
             return redirect("hr:employee", id=id)
         else:
             status = 400
-    return render(request, "hr/address.haml", {"form": form, "employee": employee}, status=status)
+    return render(request, "hr/address.html", {"form": form, "employee": employee}, status=status)
 
 
 def basic_info(request, id):
@@ -120,7 +120,7 @@ def basic_info(request, id):
             return redirect("hr:employee", id=id)
         else:
             status = 400
-    return render(request, "hr/basic_info.haml", {"form": form, "employee": employee}, status=status)
+    return render(request, "hr/basic_info.html", {"form": form, "employee": employee}, status=status)
 
 
 def contract(request, id):
@@ -136,7 +136,7 @@ def contract(request, id):
             return redirect("hr:employee", id=id)
         else:
             status = 400
-    return render(request, "hr/contract.haml", {"form": form, "employee": employee}, status=status)
+    return render(request, "hr/contract.html", {"form": form, "employee": employee}, status=status)
 
 
 def promote(request, id):
@@ -147,13 +147,13 @@ def promote(request, id):
         employee.save()
         return redirect("hr:employees")
     else:
-        return render(request, "hr/promote.haml", context=context)
+        return render(request, "hr/promote.html", context=context)
 
 
 def teams(request):
     return render(
         request,
-        "hr/teams.haml",
+        "hr/teams.html",
         context={"teams": Team.objects.all()},
     )
 
@@ -170,14 +170,14 @@ def add_team(request):
         else:
             status = 400
 
-    return render(request, "hr/add_team.haml", {"form": form}, status=status)
+    return render(request, "hr/add_team.html", {"form": form}, status=status)
 
 
 def team(request, id):
     team = get_object_or_404(Team, pk=id)
     return render(
         request,
-        "hr/team.haml",
+        "hr/team.html",
         context={"team": team},
     )
 
@@ -187,7 +187,7 @@ def members(request, id):
     members = Employee.objects.filter(team=team)
     return render(
         request,
-        "hr/members.haml",
+        "hr/members.html",
         context={"team": team, "members": members},
     )
 
@@ -197,7 +197,7 @@ def delete_team(request, id):
     if request.method == "GET":
         return render(
             request,
-            "hr/delete_team.haml",
+            "hr/delete_team.html",
             context={"team": team},
         )
     else:
@@ -220,7 +220,7 @@ def add_to_team(request, id):
             status = 400
     return render(
         request,
-        "hr/add_to_team.haml",
+        "hr/add_to_team.html",
         {
             "employee": employee,
             "form": form,
