@@ -3,20 +3,13 @@
 ## Installing dependencies
 
 ```
-yarn
+npm install
 ```
 
 
-## Running end-to-end tests
+## Running tests
 
 ```
-yarn playwright install chromium
-yarn tests:end-to-end
-```
-
-## Running integration tests
-
-```
-yarn tests:integration
+npm run tests
 ```
 
